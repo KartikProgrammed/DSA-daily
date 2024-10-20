@@ -2,6 +2,7 @@
 #include<vector>
 #include<set>
 #include<algorithm>
+#include<stack>
 using namespace std;
 
 //Problem 216:-Combination Sum III
@@ -48,3 +49,37 @@ public:
         return resultVector;
     }
 };
+
+//DAILY PROBLEM 1106:- Parsing a Boolean Expression
+//A boolean expression is an expression that evaluates to either true or false. It can be in one of the following shapes:
+// 't' that evaluates to true.
+// 'f' that evaluates to false.
+// '!(subExpr)' that evaluates to the logical NOT of the inner expression subExpr.
+// '&(subExpr1, subExpr2, ..., subExprn)' that evaluates to the logical AND of the inner expressions subExpr1, subExpr2, ..., subExprn where n >= 1.
+// '|(subExpr1, subExpr2, ..., subExprn)' that evaluates to the logical OR of the inner expressions subExpr1, subExpr2, ..., subExprn where n >= 1.
+// Given a string expression that represents a boolean expression, return the evaluation of that expression.
+// It is guaranteed that the given expression is valid and follows the given rules. 
+
+//CODE:-
+class Solution {
+public:
+    bool parseBoolExpr(string exp) {
+        stack<char> stk;
+        for (char ch : exp) {
+            if (ch == ',') continue;
+            if (ch == ')') {
+                bool t = false, f = false;
+                while (stk.top() != '(') {
+                    t |= stk.top() == 't';
+                    f |= stk.top() == 'f';
+                    stk.pop();
+                }
+                stk.pop(); 
+                char op = stk.top(); stk.pop();
+                stk.push(op == '!' ? (t ? 'f' : 't') : (op == '&' ? (f ? 'f' : 't') : (t ? 't' : 'f')));
+            } else stk.push(ch);
+        }
+        return stk.top() == 't';
+    }
+};
+
