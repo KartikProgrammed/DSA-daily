@@ -127,3 +127,67 @@ public:
         return snode;
     }
 };
+
+//MAX HEAP IMPLEMENTATION
+class Solution {
+public:
+    int *heap;
+    int maxSize;
+    int size;
+    Solution(int maxsize){
+        maxSize=maxsize;
+        heap=new int[maxsize];
+        size=0;
+    }
+    int parent(int index){
+        return (index-1)/2;
+    }
+    int left(int index){
+        return (2*index)+1;
+    }
+    int right(int index){
+        return (2*index)+2;
+    }
+    void swap(int i,int sec){
+        int temp=heap[i];
+        heap[i]=heap[sec];
+        heap[sec]=temp;
+    }
+    void insert(int data){
+        if (size >= maxSize) {
+            printf("Heap is full\n");
+            return;
+        }
+        int pos=size;
+        heap[pos]= data;
+        //checking if heap properties not compromised
+        while(heap[pos]>heap[parent(pos)]){
+            swap(pos,parent(pos));
+            pos=parent(pos);
+        }
+        ++size;
+    }
+    void display(){
+        for(int i=0;i<size/2;i++){
+            printf("parent- %d |",heap[i]);
+            if(left(i)<size){
+               printf("left- %d |",heap[left(i)]); 
+            }
+            if(right(i)<size){
+                printf("right- %d |",heap[right(i)]);
+            }
+            printf("\n");
+        }
+    }
+};
+
+int main(){
+    Solution* maxheap=new Solution(10);
+    maxheap->insert(10);
+    maxheap->insert(20);
+    maxheap->insert(30);
+    maxheap->insert(40);
+    maxheap->insert(60);
+    maxheap->insert(50);
+    maxheap->display();
+}
