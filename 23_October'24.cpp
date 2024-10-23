@@ -12,9 +12,6 @@ using namespace std;
 // Note that the depth of a node is the number of edges in the path from the root node to it.
 
 // CODE:-
-
-
-
 struct TreeNode {
       int val;
       TreeNode *left;
