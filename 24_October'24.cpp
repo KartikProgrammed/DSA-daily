@@ -40,3 +40,104 @@ public:
         }
     }
 };
+
+
+//Problem 79:-Word Search
+// Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+// The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+// CODE:-
+class Solution {
+public:
+    bool recursion(vector<vector<char>> &board,string word,int i,int j,int curr,vector<vector<bool>> &check){
+        int m=board.size();
+        int n=board[0].size();
+        if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word[curr] || check[i][j]) {
+            return false;
+        }
+
+        if(curr==word.length()-1){
+            return true;
+        }
+        check[i][j] = true;
+        bool found= recursion(board,word,i+1,j,curr+1,check)||recursion(board,word,i-1,j,curr+1,check)||recursion(board,word,i,j+1,curr+1,check)||recursion(board,word,i,j-1,curr+1,check);
+        check[i][j]=false;
+        return found;
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        int m=board.size();
+        int n=board[0].size();
+        vector<vector<bool>> check(m, vector<bool>(n, false));
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (recursion(board, word, i, j, 0, check)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
+
+//Problem 51:- N-Queens Problem
+
+// The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+// Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+// Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
+
+//CODE:-
+class Solution {
+public:
+    void attacks(int i,int j,vector<vector<bool>> &occ, int n){
+        for(int width=0;width<n;width++){
+            occ[i][width]=true;
+        }
+        for(int len=0;len<n;len++){
+            occ[len][j]=true;
+        }
+
+        int x = i, y = j;
+        while (x >= 0 && y >= 0) {
+            occ[x--][y--] = true;
+        }
+
+        x = i, y = j;
+        while (x < n && y < n) {
+            occ[x++][y++] = true;
+        }
+
+        x = i, y = j;
+        while (x >= 0 && y < n) {
+            occ[x--][y++] = true;
+        }
+
+        x = i, y = j;
+        while (x < n && y >= 0) {
+            occ[x++][y--] = true;
+        }
+    }
+    void recursion(vector<vector<string>> &solutions,vector<string> &board,int row,vector<vector<bool>> occ,int n){
+        if (row == n) {
+            solutions.push_back(board); 
+            return;
+        }
+        for(int i=0;i<n;i++){
+            if(!occ[row][i]){
+                board[row][i]='Q';
+                vector<vector<bool>> tempOcc = occ;
+                attacks(row, i,tempOcc, n);
+                recursion(solutions, board, row + 1, tempOcc, n);
+                board[row][i] = '.';
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> solutions;
+        vector<string> board(n, string(n, '.')); 
+        vector<vector<bool>> occ(n, vector<bool>(n, false));
+
+        recursion(solutions, board, 0, occ, n);
+
+        return solutions;
+    }
+};
