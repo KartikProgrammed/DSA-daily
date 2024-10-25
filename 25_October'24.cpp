@@ -35,3 +35,22 @@ public:
         return result;
     }
 }; 
+
+//APPROACH 2:- Sorting the folders (very intruisive and beats 93%+)
+class Solution {
+public:
+    vector<string> removeSubfolders(vector<string>& folder) {
+        vector<string> result;
+        sort(folder.begin(),folder.end());
+        result.push_back(folder[0]);
+        for(int i=1;i<folder.size();i++){
+            string currfolder=folder[i];
+            string prev=result.back();
+            prev+="/";
+            if(currfolder.find(prev)!=0){
+                result.push_back(currfolder);
+            }
+        }
+        return result;
+    }
+};
