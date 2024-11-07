@@ -38,7 +38,7 @@ public:
 // 2 is selected first 
 //     32 times a loop will run as:
 //         2 & (1<<0) == 2 & 0001 = 0
-//         2 & (1<<1) == 2 & 0010 = 1 since 2 is 0010 and now the arrat bitcount will be incremented on index 1
+//         2 & (1<<1) == 2 & 0010 = 1 since 2 is 0010 and now the array bitcount will be incremented on index 1
 //         2 & (1<<2) == 2 && 0100 =0 
 //         so on 
 // 3 is selected now and done the same way
