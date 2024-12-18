@@ -98,3 +98,88 @@ public:
         return result;
     }
 };
+
+
+//42. Trapping Rain Water
+// Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+
+//CODE:-
+
+//BASIC understanding
+// calculate maximum heights of towers to the right and the left for each ith element, take the minimum of these towers and subtract with the current tower's height. Sum ut all up to get the final result
+
+//APPROACH 1(TLE)
+//Left max is updated as we proceed in the loop,rightmax is calculated everytime for n iterations
+//TLE doesnt pass the last case
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        if(height.size()==0){
+            return 0;
+        }
+        int leftmax=height[0];
+        int count=0;
+        for(int i=1;i<height.size()-1;i++){
+            int j=i;
+            int rightmax=INT_MIN;
+            while(j<height.size()){
+                rightmax=height[j]>rightmax?height[j]:rightmax;
+                j++;
+            }
+            int mini=min(leftmax,rightmax);
+            int incr=mini-height[i];
+            if(incr>0){
+                count+=incr;
+            }
+            if(height[i]>leftmax){
+                leftmax=height[i];
+            }
+        }
+        return count;
+    }
+};
+
+//APPROACH 2:- Beats 100%
+//just create an array to store the rightmax and the leftmax of each element~ basically trading off space for some time 
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        if(height.size()==0){
+            return 0;
+        }
+        vector<int> rightMax(height.size(),-1);
+        vector<int> leftMax(height.size(),-1);
+        int currL;
+        int currR;
+        int count=0;
+        for(int i=0,j=height.size()-1;i<height.size() && j>=0;i++,j--){
+            if(i==0){
+                leftMax[i]=-1;
+                currL=height[i];
+            }
+            else {
+                leftMax[i]=currL;     
+                currL=max(currL, height[i]);
+            }
+            if(j==height.size()-1){
+                rightMax[j]=-1;
+                currR=height[j];
+            }
+            else {
+                rightMax[j]=currR;
+                currR=max(currR, height[j]);
+            }
+        }
+        for(int i=1;i<height.size()-1;i++){
+            int mini=min(leftMax[i],rightMax[i]);
+            if(mini==-1){
+                break;
+            }
+            int incr=mini-height[i];
+            if(incr>0){
+                count+=incr;
+            }
+        }
+        return count;
+    }
+};
