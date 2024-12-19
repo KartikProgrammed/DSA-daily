@@ -41,3 +41,41 @@ public:
         }
     }
 };
+
+//48. Rotate Image
+// You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).
+
+// You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.
+
+//CODE:-
+class Solution {
+public:
+    void swap(vector<vector<int>> &matrix,int i,int j){
+        int temp=matrix[i][j];
+        matrix[i][j]=matrix[j][i];
+        matrix[j][i]=temp;
+    }
+    void swap2(vector<vector<int>> &matrix,int i,int j){
+        int size=matrix[0].size();
+        int temp=matrix[i][j];
+        matrix[i][j]=matrix[i][size-j-1];
+        matrix[i][size-j-1]=temp;
+    }
+    void rotate(vector<vector<int>>& matrix) {
+        int i=0,j=0;
+        while(i<matrix.size()){
+            j=i;
+            while(j<matrix[0].size()){
+                swap(matrix,i,j);
+                j++;
+            }
+            i++;
+        }
+        for(int i=0;i<matrix.size();i++){
+            for(int j=0;j<matrix[0].size()/2;j++){
+                swap2(matrix,i,j);
+            }
+        }
+    }
+
+};
