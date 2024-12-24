@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+//this problem is premium enables on LC so i had to generate test cases by myself :( lmk if theres any other tc which might be problematic 
 //Finding Diameter of a undirected graph
 
 //APPROACH:-
 //find the farthest distance from any node (i took 0 since it is always available) the farthest node would be always 1 end of the Diameter
 //then find the farthest distance from the previously calculated node this would be the other node of the Diameter
+
 
 //CODE:-
 int maxDiameter(vector<vector<int>> edges){
