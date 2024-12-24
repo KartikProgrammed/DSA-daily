@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//this problem is premium enables on LC so i had to generate test cases by myself :( lmk if theres any other tc which might be problematic 
+//this problem is premium enabled on LC so i had to generate test cases by myself :( lmk if theres any other tc which might be problematic 
 //Finding Diameter of a undirected graph
 
 //APPROACH:-
