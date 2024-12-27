@@ -133,3 +133,46 @@ public:
         return rangemax-rangemin;
     }
 };
+
+//402. Remove K Digits
+//Given string num representing a non-negative integer num, and an integer k, return the smallest possible integer after removing k digits from num.
+
+//APPROACH:- 
+//Use a monotonic stack and pop whenever top>num[i]
+
+//CODE:-
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        if(num.length()==k){
+            return "0";
+        }
+        if(k==0){
+            return num;
+        }
+        stack<char> helper;
+        for(int i=0;i<num.length();i++){
+            while(!helper.empty() && k>0 && helper.top()>num[i]){
+                helper.pop();
+                k--;
+            }
+            helper.push(num[i]);
+        }
+        while(!helper.empty() && k>0){
+            helper.pop();
+            k--;
+        }
+        string result="";
+        while(!helper.empty()){
+            result.push_back(helper.top());
+            helper.pop();
+        }
+        reverse(result.begin(), result.end());
+        int start=0;
+        while (start < result.length() && result[start] == '0') {
+            start++;
+        }
+        result = result.substr(start);
+        return result.empty() ? "0" : result;
+    }
+};
