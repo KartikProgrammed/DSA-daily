@@ -176,3 +176,48 @@ public:
         return result.empty() ? "0" : result;
     }
 };
+
+//84. Largest Rectangle in Histogram
+//Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.
+
+//APPROACH:-
+//finding the next smaller left and right for each elements using monotonic stack and computing area as
+//smaller left - smaller right -1 * heights[i]
+
+//CODE:-
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> helper;
+        int result=INT_MIN;
+        vector<int> NSL(heights.size(),-1);
+        vector<int> NSR(heights.size(),heights.size());
+        for(int i=0;i<heights.size();i++){
+            while(!helper.empty() && heights[helper.top()]>=heights[i]){
+                helper.pop();
+            }
+            if(!helper.empty()){
+                NSL[i]=helper.top();
+            }
+            helper.push(i);
+        }
+        while(!helper.empty()){
+            helper.pop();
+        }
+        for(int i=heights.size()-1;i>=0;i--){
+            while(!helper.empty() && heights[helper.top()]>heights[i]){
+                helper.pop();
+            }
+            if(!helper.empty()){
+                NSR[i]=helper.top();
+            }
+            helper.push(i);
+        }
+        for(int i=0;i<heights.size();i++){
+            int curr=(NSR[i]-NSL[i]-1)*heights[i];
+            result=result>curr?result:curr;
+        }
+        return result;
+
+    }
+};
