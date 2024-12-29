@@ -118,3 +118,30 @@ public:
         return recursion(words,target,0,0,dp,freq);      
     }
 };
+
+//239. Sliding Window Maximum
+//You are given an array of integers nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position.
+// Return the max sliding window.
+
+//CODE:-
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        deque<int> q;
+        vector<int> result;
+        for(int i=0;i<nums.size();i++){
+            while(!q.empty() && q.front() <= i-k){
+                q.pop_front();
+            }
+            while(!q.empty() && nums[i]>nums[q.back()]){
+                q.pop_back();
+            }
+            q.push_back(i);
+            if(i>=k-1){
+                result.push_back(nums[q.front()]);
+            }
+        }
+        return result;
+
+    }
+};
