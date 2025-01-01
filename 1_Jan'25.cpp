@@ -49,3 +49,93 @@ public:
         return ans;
     }
 };
+
+//146. LRU Cache
+//Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+
+// Implement the LRUCache class:
+
+// LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+// int get(int key) Return the value of the key if the key exists, otherwise return -1.
+// void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.
+// The functions get and put must each run in O(1) average time complexity.
+
+//APPROACH:-
+//use a doubly linked list and as well as a map for the traversal in O(1) time
+
+//CODE:-
+class LRUCache {
+public:
+class node
+{
+  public:
+  int key;
+  int val;
+  node* next;
+  node* prev;
+  node(int _key,int _val)
+  {
+    key = _key;
+    val = _val;
+  }
+};
+node* head = new node(-1,-1);
+node* tail = new node(-1,-1);
+
+int size;
+unordered_map<int,node*>mpp;
+    LRUCache(int capacity) {
+       size = capacity; 
+       head->next = tail;
+       tail->prev = head;  
+    }
+
+    void addNode(node* newNode){
+       
+       node* temp = head->next;
+       newNode->next = temp;
+       newNode->prev = head;
+       head->next = newNode;
+       temp->prev = newNode;
+    }
+
+    void deleteNode(node* delNode){
+         
+       node* delprev = delNode->prev;
+       node* delnext = delNode->next;
+       delprev->next = delnext;
+       delnext->prev = delprev;
+    }
+    
+    int get(int _key) {
+        
+        if(mpp.count(_key))
+        {
+          node* nde = mpp[_key];
+          int curr = nde->val;
+          mpp.erase(_key);
+          deleteNode(nde);
+          addNode(nde);
+          mpp[_key] = head->next;
+          return curr;
+        }
+        return -1;
+    }
+    
+    void put(int _key, int value) {
+        
+        if(mpp.count(_key))
+        {
+           node* nde = mpp[_key];
+           mpp.erase(_key);
+           deleteNode(nde);
+        }
+        if(mpp.size()==size)
+        {
+           mpp.erase(tail->prev->key);
+           deleteNode(tail->prev);
+        }
+        addNode(new node(_key,value));
+        mpp[_key] = head->next;
+    }
+};
