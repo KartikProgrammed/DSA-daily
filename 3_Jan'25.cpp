@@ -78,3 +78,35 @@ public:
         return res;
     }
 };
+
+//APPROACH 2:- (Beats 78%)
+//use indices of the last same-appeared character to find the result
+
+//CODE:-
+    class Solution {
+    public:
+        int lengthOfLongestSubstring(string s) {
+            int currlen=1;
+            int res=1;
+            if(s.length()==0){
+                return 0;
+            }
+            int i=0;
+            int j=1;
+            unordered_map<char,int> map;
+            map[s[i]]=0;
+            while(i<s.length() && j<s.length()){
+                if(map.find(s[j])!=map.end() && map[s[j]]>=i){
+                    i=map[s[j]]+1;
+                    map[s[j]]=j;
+                }
+                else{
+                    map[s[j]]=j;
+                }
+                currlen=j-i+1;
+                res=res>currlen?res:currlen;
+                j++;
+            }
+            return res;
+        }
+    };
