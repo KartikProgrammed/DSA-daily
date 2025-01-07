@@ -49,7 +49,7 @@ public:
 //CODE:-
 class Solution {
 public:
-    void rotate(vector<int> &zeroes,int newind,int &currindex){ //creates the zeroes array
+    void rotate(vector<int> &zeroes,int newind,int &currindex){ //creates the zeroes array  
         if(currindex==zeroes.size()){
             for(int i=0;i<zeroes.size()-1;i++){
                 zeroes[i]=zeroes[i+1];
