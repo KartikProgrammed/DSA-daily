@@ -189,3 +189,42 @@ public:
         return res;
     }
 };
+
+
+//1423. Maximum Points You Can Obtain from Cards
+// There are several cards arranged in a row, and each card has an associated number of points. The points are given in the integer array cardPoints.
+// In one step, you can take one card from the beginning or from the end of the row. You have to take exactly k cards.
+// Your score is the sum of the points of the cards you have taken.
+// Given the integer array cardPoints and the integer k, return the maximum score you can obtain.
+
+//APPROACH:-
+//the only thing to notice is we can pick the card only from either of the ends i.e left or right 
+//so for k=2 either 2 from left or 2 from right or 1-1 from left-right
+//find a sliding window of k-n with minimum score - it from total sum
+
+//CODE:-
+class Solution {
+public:
+    int maxScore(vector<int>& cardPoints, int k) {
+        int curr=0;
+        int res=0;
+        int left=0;
+        int right;
+        int n=cardPoints.size();
+        int newsize=n-k;
+        int tot=0;
+        for(int i=0;i<n;i++){
+            tot+=cardPoints[i];
+        }
+        for(right=0;right<newsize;right++){
+            curr+=cardPoints[right];
+        }
+        res=curr;
+        for(int i=newsize;i<n;i++){
+            curr = curr - cardPoints[i - newsize] + cardPoints[i];
+            res=min(res,curr);
+            left++;
+        }
+        return tot-res;
+    }
+};
