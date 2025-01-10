@@ -151,3 +151,41 @@ public:
         return res;
     }
 };
+
+//1358. Number of Substrings Containing All Three Characters
+//Given a string s consisting only of characters a, b and c.
+// Return the number of substrings containing at least one occurrence of all these characters a, b and c.
+
+
+//APPROACH:-
+//Sliding window basics
+
+//CODE:-
+class Solution {
+public:
+    bool is1(vector<int> map){
+        for(int i=0;i<3;i++){
+            if(map[i]==0){
+                return false;
+            }
+        }
+        return true;
+    }
+    int numberOfSubstrings(string s) {
+        vector<int> map(3,0);
+        int left=0;
+        int right=0;
+        int n=s.length();
+        int res=0;
+        while(right<n){
+            map[s[right]-'a']++;
+            while(left<=right && is1(map)){
+                res += n - right;
+                map[s[left] - 'a']--;
+                left++;
+            }
+            right++;
+        }
+        return res;
+    }
+};
