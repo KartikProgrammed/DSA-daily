@@ -164,3 +164,49 @@ public:
         return res;
     }
 };
+
+
+//76. Minimum Window Substring
+//Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
+// The testcases will be generated such that the answer is unique.
+
+//APPROACH:-
+//sliding window
+
+//CODE:-
+class Solution {
+public:
+    string minWindow(string s, string t) {
+    unordered_map<char,int> freq_req;
+    for(int i=0;i<t.length();i++){
+        freq_req[t[i]]++;
+    }
+    int left=0;
+    int right=0;
+    int count=0;
+    int m=t.length();
+    int minlen=INT_MAX;
+    int n=s.length();
+    int stindex=-1;
+    string res="";
+    while(right<n){
+        if(freq_req[s[right]]>0){
+            count++;
+        }
+        freq_req[s[right]]--;
+        while(count==m){
+            if(right-left+1<minlen){
+                minlen=right-left+1;
+                stindex=left;
+            }
+            freq_req[s[left]]++;
+            if(freq_req[s[left]]>0){
+                count--;
+            }
+            left++;
+        }
+        right++;
+    }
+    return (stindex == -1) ? "" : s.substr(stindex, minlen);
+    }
+};
