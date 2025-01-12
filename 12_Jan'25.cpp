@@ -63,3 +63,104 @@ public:
         return true;
     }
 };
+
+//992. Subarrays with K Different Integers
+//Given an integer array nums and an integer k, return the number of good subarrays of nums.
+// A good array is an array where the number of different integers in that array is exactly k.
+// For example, [1,2,3,1,2] has 3 different integers: 1, 2, and 3.
+// A subarray is a contiguous part of an array.
+
+//APPROACH 1:-
+//count the distince numbers again and again(TLE)
+
+//CODE:-
+class Solution {
+public:
+    int distinct(vector<int> map){
+        int count=0;
+        for(int i=0;i<map.size();i++){
+            if(map[i]>0){
+                count++;
+            }
+        }
+        return count;
+    }
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        int maxele=*max_element(nums.begin(),nums.end());
+        vector<int> map(maxele+1,0);
+        int left=0;
+        int right=0;
+        int n=nums.size();
+        int res=0;
+        while(right<n){
+            map[nums[right]]++;
+            while(distinct(map)>k){
+                map[nums[left]]--;
+                left++;
+            }
+            if(distinct(map)==k){
+                int temp=left;
+                while(temp<=right && distinct(map)==k){
+                    map[nums[temp]]--;
+                    temp++;
+                    res++;
+                }
+                for (int i = left; i < temp; i++) {
+                    map[nums[i]]++;
+                }
+            }
+            right++;
+        }
+        return res;
+    }
+};
+
+//APPROACH 2:-
+//maintain a var to count distinct var instead of calculating again and again
+
+//CODE:-
+class Solution {
+public:
+    
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        int maxele=*max_element(nums.begin(),nums.end());
+        vector<int> map(maxele+1,0);
+        int left=0;
+        int right=0;
+        int n=nums.size();
+        int res=0;
+        int distinct=0;
+        while(right<n){
+            if(map[nums[right]]==0){
+                distinct++;
+            }
+            map[nums[right]]++;
+            while(distinct>k){
+                if(map[nums[left]]==1){
+                    distinct--;
+                }
+                map[nums[left]]--;
+                left++;
+            }
+            if(distinct==k){
+                int temp=left;
+                while(temp<=right && distinct==k){
+                    if(map[nums[temp]]==1){
+                        distinct--;
+                    }
+                    map[nums[temp]]--;
+                    temp++;
+                    res++;
+                }
+                for (int i = left; i < temp; i++) {
+                    if(map[nums[i]]==0){
+                        distinct++;
+                    }
+                    map[nums[i]]++;
+                }
+            }
+            right++;
+        }
+        return res;
+    }
+};
