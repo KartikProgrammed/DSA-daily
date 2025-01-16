@@ -20,6 +20,59 @@ using namespace std;
 
 // The number of set bits of an integer is the number of 1's in its binary representation.
 
+//APPROACH 1:-
+//beats only 100TC
+
+//CODE:-
+class Solution {
+public:
+    int countset(int num1){
+        int temp=num1;
+        int count=0;
+        while(temp>0){
+            if(temp%2!=0){
+                count++;
+            }
+            temp/=2;
+        }
+        return count;
+    }
+    int minimizeXor(int num1, int num2) {
+        int set1=countset(num1);
+        int set2=countset(num2);
+        int res;
+        if(set1-set2==0){
+            return num1;
+        }
+        int diff=set1-set2;
+        if(diff>0){
+            res=num1;
+            while(diff>0){
+                if(res%2==0){
+                    res++;
+                }
+                else{
+                    res+=2;
+                }
+                diff--;
+            }
+
+        }
+        else if(diff<0){
+            res=num1;
+            while(diff<0){
+                if(res%2==0){
+                    res+=1;    
+                }
+                else{
+                    res+=2;
+                }
+                diff++;
+            }
+        }
+        return res;
+    }
+};
 
 //APPROACH:-
 //set unset bits
