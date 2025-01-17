@@ -3,6 +3,8 @@
         "*.ejs": "html",
         "vector": "cpp",
         "xstring": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp"
     }
 }
