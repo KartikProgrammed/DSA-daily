@@ -5,6 +5,8 @@
 #include <queue>
 #include<string>
 #include<unordered_set>
+#include<numeric>
+#include<climits>
 using namespace std;
 
 //2017. Grid Game
@@ -24,7 +26,7 @@ public:
 
         long long secondRowRemainSum = 0;
 
-        long long minimizedRobot2Sum = LONG_LONG_MAX;
+        long long minimizedRobot2Sum = LONG_MAX;
 
         for(int Robot1Col = 0; Robot1Col < grid[0].size(); Robot1Col++) { //O(col);
             //Robot1 took this strategy
