@@ -86,3 +86,45 @@ public:
         return res;
     }
 };
+
+
+//23. Merge k Sorted Lists
+// You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+
+// Merge all the linked-lists into one sorted linked-list and return it.
+
+//APPROACH:-
+// send all the node val to a min heap priority queue and then create a linkedlist out of it
+
+//CODE:-
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        priority_queue<int, vector<int>, greater<int>> pq;
+        for(ListNode* list:lists){
+            while(list!=NULL){
+                pq.push(list->val);
+                list=list->next;
+            }
+        }
+        struct ListNode *head=new ListNode(0);
+        struct ListNode *curr=head;
+        while(!pq.empty()){
+            curr->next=new ListNode(pq.top());
+            pq.pop();
+            
+            curr=curr->next;
+        }
+        return head->next;
+    }
+};
