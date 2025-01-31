@@ -126,3 +126,121 @@ public:
  * KthLargest* obj = new KthLargest(k, nums);
  * int param_1 = obj->add(val);
  */
+
+
+//295. Find Median from Data Stream
+// The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value, and the median is the mean of the two middle values.
+
+// For example, for arr = [2,3,4], the median is 3.
+// For example, for arr = [2,3], the median is (2 + 3) / 2 = 2.5.
+// Implement the MedianFinder class:
+
+// MedianFinder() initializes the MedianFinder object.
+// void addNum(int num) adds the integer num from the data stream to the data structure.
+// double findMedian() returns the median of all elements so far. Answers within 10-5 of the actual answer will be accepted.\
+
+//APPROACH 1:- (TLE)
+//use a max heap and depending upon the size of the heap calculate the median
+//use a temporary vector vec to push back the elements not required as of now
+
+//CODE:-
+class MedianFinder {
+private:
+    int size;
+    priority_queue<int> pq;
+public:
+    MedianFinder() {
+        size=0;
+    }
+    
+    void addNum(int num) {
+        size++;
+        pq.push(num);
+    }
+    
+    double findMedian() {
+        vector<int> vec;
+        double result=0;
+        if(size%2==0){
+            int pop=0;
+            int first=size/2-1;
+            int sec=size/2;
+            while(!pq.empty()){
+                if(pop==first){
+                    result+=pq.top();
+                    vec.push_back(pq.top());
+                    pq.pop();
+                    pop++;
+                }
+                if(pop==sec){
+                    result+=pq.top();
+                    result/=2;
+                    break;
+                }
+                vec.push_back(pq.top());
+                pq.pop();
+                pop++;
+            }
+        }
+        else{
+            int pop=0;
+            int first=size/2;
+            while(!pq.empty()){
+                if(pop==first){
+                    result+=pq.top();
+                    break;
+                }
+                vec.push_back(pq.top());
+                pq.pop();
+                pop++;
+            }
+        }
+        for(int i=0;i<vec.size();i++){
+            pq.push(vec[i]);
+        }
+        return result;
+    }
+};
+
+//APPROACH 2:-
+//create 2 priority queues 
+//1 for minheap and the other for maxheap
+//pop a maxheap into a minheap and take care of the sizes maxheap shall have at most 1 more element than minheap
+//calculate median according to the total size
+
+//CODE:-
+class MedianFinder {
+private:
+    priority_queue<int,vector<int>,greater<int>> minheap;
+    priority_queue<int> maxheap;
+public:
+    MedianFinder() {
+        
+    }
+    
+    void addNum(int num) {
+        maxheap.push(num);
+        minheap.push(maxheap.top());
+        maxheap.pop();
+        if(maxheap.size()<minheap.size()){
+            maxheap.push(minheap.top());
+            minheap.pop();
+        }
+    }
+    
+    double findMedian() {
+       if(maxheap.size()>minheap.size()){
+        return (double)maxheap.top();
+       }
+       else{
+        return (maxheap.top()+minheap.top())/2.0;
+       }
+    }
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
