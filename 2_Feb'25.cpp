@@ -47,3 +47,42 @@ public:
         return true;
     }
 };
+
+//347. Top K Frequent Elements
+// Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+
+//APPROACH:-
+//great question to test all the standard library of C++
+//the catch is in the constraints which also includes negative number so an unordered map is a must
+//we push the freq of each number into a priority queue along with the number itself
+//push the top k numbers in the vector res if not already included
+//use of set has been done to avoid duplicate pushing in the result vector
+
+//CODE:-
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int,int> map;
+        for(int i=0;i<nums.size();i++){
+            map[nums[i]]++;
+        }
+        priority_queue<pair<int,int>> pq;
+        for(auto& iter:map){
+            pq.push({iter.second,iter.first});
+        }
+        vector<int> res;
+        unordered_set<int> set;
+        while(k>0 && !pq.empty()){
+            int top=pq.top().first;
+            int num=pq.top().second;
+            pq.pop();  
+            if(set.find(num) == set.end()){
+                set.insert(num);
+                res.push_back(num);
+            }
+            k--;
+        }
+        
+        return res;
+    }
+};
