@@ -46,3 +46,68 @@ public:
         return max(res,curr);
     }
 };
+
+//455. Assign Cookies
+// Assume you are an awesome parent and want to give your children some cookies. But, you should give each child at most one cookie.
+
+// Each child i has a greed factor g[i], which is the minimum size of a cookie that the child will be content with; and each cookie j has a size s[j]. If s[j] >= g[i], we can assign the cookie j to the child i, and the child i will be content. Your goal is to maximize the number of your content children and output the maximum number.
+
+//APPROACH 1:- 
+//create a hashmap which is by default sorted since used vector and store the frequencies of the sizes
+//traverse the map from the min size of greed and reduce the frequency as required
+
+//CODE:-
+//memory limit exceeds
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        if (s.empty()) return 0;
+        int maxi=*max_element(s.begin(),s.end());
+        vector<int> map(maxi+1,0);
+        for(int i=0;i<s.size();i++){
+            map[s[i]]++;
+        }
+        int count=0;
+        for(int i=0;i<g.size();i++){
+            if(g[i]>maxi){
+                continue;
+            }
+            for(int j=g[i];j<map.size();j++){
+                if(map[j]>0){
+                    count++;
+                    map[j]--;
+                    break;
+                }
+            }
+        }
+        return count;
+    }
+};
+
+//APPROACH2:-
+//sort both the arrays and move forward as per requirement 
+//basically traded off memory for time not a big deal
+
+//CODE:-
+//BEATS 100%
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(g.begin(),g.end());
+        sort(s.begin(),s.end());
+        int st=0;
+        int st2=0;
+        int count=0;
+        while(st<g.size()&&st2<s.size()){
+            if(g[st]>s[st2]){
+                st2++;
+            }
+            else if(g[st]<=s[st2]){
+                st++;
+                st2++;
+                count++;
+            }
+        }
+        return count;
+    }
+};
