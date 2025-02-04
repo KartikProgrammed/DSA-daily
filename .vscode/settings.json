@@ -7,6 +7,7 @@
         "unordered_map": "cpp",
         "unordered_set": "cpp",
         "string": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "queue": "cpp"
     }
 }
