@@ -54,3 +54,33 @@ public:
         return false;
     }
 };
+
+//Coin Change (Minimum Coins)
+// You are given an array coins[] represent the coins of different denominations and a target value sum. You have an infinite supply of each of the valued coins{coins1, coins2, ..., coinsm}.  Find the minimum number of coins to make the change. If not possible to make a change then return -1.
+
+//APPROACH:- (Doesnt pass alot of cases)
+//greedy approach since thats what was required to learn here DP solution some other day maybe
+
+//CODE:-
+class Solution {
+  public:
+    int minCoins(vector<int> &coins, int sum) {
+        if(sum==0){
+            return 0;
+        }
+        sort(coins.begin(),coins.end());
+        int currsum=sum;
+        int count=0;
+            for(int i=coins.size()-1;i>=0;i--){
+                if(currsum<=0){
+                    break;
+                }
+                while(coins[i]<=currsum){
+                    currsum-=coins[i];
+                    count++;
+                }
+            }
+        return(currsum==0?count:-1);
+        
+    }
+};
