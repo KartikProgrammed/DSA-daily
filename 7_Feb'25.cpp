@@ -3,6 +3,7 @@
 #include <set>
 #include <algorithm>
 #include <queue>
+#include<stack>
 #include<string>
 #include<unordered_map>
 #include<unordered_set>
@@ -119,5 +120,59 @@ public:
             }
         }
         return true;
+    }
+};
+
+
+//678. Valid Parenthesis String
+// Given a string s containing only three types of characters: '(', ')' and '*', return true if s is valid.
+
+// The following rules define a valid string:
+
+// Any left parenthesis '(' must have a corresponding right parenthesis ')'.
+// Any right parenthesis ')' must have a corresponding left parenthesis '('.
+// Left parenthesis '(' must go before the corresponding right parenthesis ')'.
+// '*' could be treated as a single right parenthesis ')' or a single left parenthesis '(' or an empty string "".
+ 
+
+//APPROACH:-
+//use a greedy approach the either pop ) for ( or * for the 1st pass 
+//in the second pass cancel out ( for * only for the ( coming before *
+
+//CODE:- (Beats 100%)
+class Solution {
+public:
+    bool checkValidString(string s) {
+        stack<int> stk1;
+        stack<int> stk2;
+        for(int i=0;i<s.length();i++){
+            if(s[i]=='('){
+                stk1.push(i);
+            }
+            else if(s[i]=='*'){
+                stk2.push(i);
+            }
+            else{
+                if(!stk1.empty()){
+                    stk1.pop();
+                }
+                else if(!stk2.empty()){
+                    stk2.pop();
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        while(!stk1.empty() && !stk2.empty()){
+            if(stk1.top()<stk2.top()){
+                stk1.pop();
+                stk2.pop();
+            }
+            else{
+                return false;
+            }
+        }
+        return stk1.empty();
     }
 };
