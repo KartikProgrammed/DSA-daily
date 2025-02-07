@@ -62,3 +62,62 @@ public:
         return res;   
     }
 };
+
+
+//860. Lemonade Change
+//At a lemonade stand, each lemonade costs $5. Customers are standing in a queue to buy from you and order one at a time (in the order specified by bills). Each customer will only buy one lemonade and pay with either a $5, $10, or $20 bill. You must provide the correct change to each customer so that the net transaction is that the customer pays $5.
+
+// Note that you do not have any change in hand at first.
+
+// Given an integer array bills where bills[i] is the bill the ith customer pays, return true if you can provide every customer with the correct change, or false otherwise.
+
+//APPROACH:-
+//basic greedy approach
+
+//CODE:- (beats 100%)
+class Solution {
+public:
+    bool lemonadeChange(vector<int>& bills) {
+        if(bills[0]!=5){
+            return false;
+        }
+        vector<int> map(3,0);
+        for(int i=0;i<bills.size();i++){
+            int curr=bills[i];
+            if(curr==5){
+                map[0]++;
+                continue;
+            
+            }
+            else{
+                curr-=5;
+                if(curr==15){
+                    if(map[1]>0 && map[0]>0){
+                        map[1]--;
+                        map[0]--;
+                    }
+                    else if(map[0]>=3){
+                        curr-=15;
+                        map[0]-=3;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                else if(curr==5){
+                    if(map[0]>0){
+                        curr-=5;
+                        map[0]--;
+                    }
+                }
+            }
+            if(bills[i]==10){
+                map[1]++;
+            }
+            else{
+                map[2]++;
+            }
+        }
+        return true;
+    }
+};
