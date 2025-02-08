@@ -65,3 +65,40 @@ class NumberContainers {
      * obj->change(index,number);
      * int param_2 = obj->find(number);
      */
+
+
+//55. Jump Game
+// You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
+
+// Return true if you can reach the last index, or false otherwise.
+
+//APPROACH:-
+//use DP to try all ways and find all paths
+
+//CODE:-
+class Solution {
+    public:
+        bool recursion(int curr,vector<int> &nums,unordered_map<int,bool> &memo){
+            if(curr==nums.size()-1){
+                return true;
+            }
+            if(nums[curr]==0 && curr<nums.size()){
+                return false;
+            }
+            if (memo.find(curr) != memo.end()) {
+                return memo[curr];
+            }
+            bool res=false;
+            for(int i=0;curr+i+1<nums.size() && i<nums[curr];i++){
+                if (recursion(curr + i+1, nums, memo)) {
+                    res = true;
+                    break; 
+                }
+            }
+            return memo[curr]=res;
+        }
+        bool canJump(vector<int>& nums) {
+            unordered_map<int,bool> memo;
+            return recursion(0,nums,memo);
+        }
+    };
