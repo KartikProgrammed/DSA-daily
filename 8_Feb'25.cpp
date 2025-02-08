@@ -1,0 +1,67 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <queue>
+#include<stack>
+#include<string>
+#include<unordered_map>
+#include<unordered_set>
+#include<numeric>
+#include<climits>
+using namespace std;
+
+// 2349. Design a Number Container System
+// Design a number container system that can do the following:
+
+// Insert or Replace a number at the given index in the system.
+// Return the smallest index for the given number in the system.
+// Implement the NumberContainers class:
+
+// NumberContainers() Initializes the number container system.
+// void change(int index, int number) Fills the container at index with the number. If there is already a number at that index, replace it.
+// int find(int number) Returns the smallest index for the given number, or -1 if there is no index that is filled by number in the system.
+
+
+//APPROACH:-
+//create 2 maps
+//1 stores index->number
+//2nd stores number->indices
+
+//CODE:-
+class NumberContainers {
+    private:
+        unordered_map<int, int> map;
+        unordered_map<int, set<int>> indices;
+        int currindex=0;
+    public:
+        NumberContainers() {
+        }
+        
+        void change(int index, int number) {
+            if(map.find(index)!=map.end()){
+                int old=map[index];
+                indices[old].erase(index);
+                if (indices[old].empty()) {
+                    indices.erase(old);
+                }
+            }
+            map[index]=number;
+            indices[number].insert(index);
+            
+        }
+        
+        int find(int number) {
+            if(indices.find(number)!=indices.end()){
+                return *indices[number].begin();
+            }
+            return -1;
+        }
+    };
+    
+    /**
+     * Your NumberContainers object will be instantiated and called as such:
+     * NumberContainers* obj = new NumberContainers();
+     * obj->change(index,number);
+     * int param_2 = obj->find(number);
+     */
