@@ -62,3 +62,45 @@ class Solution {
             return total-count;
         }
     };
+
+
+//1814. Count Nice Pairs in an Array
+// You are given an array nums that consists of non-negative integers. Let us define rev(x) as the reverse of the non-negative integer x. For example, rev(123) = 321, and rev(120) = 21. A pair of indices (i, j) is nice if it satisfies all of the following conditions:
+
+// 0 <= i < j < nums.length
+// nums[i] + rev(nums[j]) == nums[j] + rev(nums[i])
+// Return the number of nice pairs of indices. Since that number can be too large, return it modulo 109 + 7.
+
+//APPROACH:-
+//complete opposite of the prev question
+//finding good pairs is all we have to do
+
+//CODE:-
+class Solution {
+    public:
+        int rev(int x){
+            int res=0;
+            while(x>0){
+                int curr=x%10;
+                res=res*10+curr;
+                x/=10;
+            }
+            return res;
+        }
+        int countNicePairs(vector<int>& nums) {
+            int count=0;
+            unordered_map<int,int> map;
+            for(int i=0;i<nums.size();i++){
+                int reverse=rev(nums[i]);
+                int curr=nums[i]-reverse;
+                map[curr]++;
+            }
+            for(auto&iter:map){
+                if(iter.second>1){
+                    long long curr=iter.second;
+                    count=(count + ((curr * (curr - 1) / 2) % 1000000007)) % 1000000007;
+                }
+            }
+            return count%(1000000007);
+        }
+    };
