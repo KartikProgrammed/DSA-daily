@@ -34,3 +34,31 @@ class Solution {
             return count;
         }
     };
+
+
+//APPROACH 2:-
+//find the number of good pairs
+//use a hashmap, good pairs will always give i-nums[i] and if the maps val>1 calculate the total good pairs
+//subtract the good pairs from total to find bad pairs
+
+//CODE:-
+class Solution {
+    public:
+        long long countBadPairs(vector<int>& nums) {
+            long long count=0;
+            long long n=nums.size();
+            unordered_map<int,int> map;
+            for(int i=0;i<nums.size();i++){
+                int curr=i-nums[i];
+                map[curr]++;
+            }
+            for(auto& iter:map){
+                if(iter.second>1){
+                    long long curr=iter.second;
+                    count+=curr*(curr-1)/2;
+                }
+            }
+            long long total=n*(n-1)/2;
+            return total-count;
+        }
+    };
