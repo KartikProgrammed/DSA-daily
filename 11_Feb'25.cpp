@@ -45,3 +45,45 @@ class Solution {
             return s;
         }
 };
+
+
+//57. Insert Interval
+// You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] represent the start and the end of the ith interval and intervals is sorted in ascending order by starti. You are also given an interval newInterval = [start, end] that represents the start and end of another interval.
+// Insert newInterval into intervals such that intervals is still sorted in ascending order by starti and intervals still does not have any overlapping intervals (merge overlapping intervals if necessary).
+// Return intervals after the insertion.
+// Note that you don't need to modify intervals in-place. You can make a new array and return it.
+
+
+//APPROACH:-
+//find the specific merge interval and find the new interval using min and max
+
+//CODE:-
+class Solution {
+    public:
+        vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+            vector<vector<int>> res;
+            int st=newInterval[0];
+            int end=newInterval[1];
+            bool inserted=false;
+            for(int i=0;i<intervals.size();i++){
+                if (intervals[i][1] < st) {
+                    res.push_back(intervals[i]);
+                }
+                else if(intervals[i][0]>end){
+                    if(!inserted){
+                        res.push_back({st,end});
+                        inserted=true;
+                    }
+                    res.push_back(intervals[i]);
+                }
+                else{
+                    st = min(st, intervals[i][0]);
+                    end = max(end, intervals[i][1]);
+                }
+            }
+            if(!inserted){
+                res.push_back({st,end});
+            }
+            return res;
+        }
+    };
