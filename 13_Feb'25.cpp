@@ -11,85 +11,43 @@
 #include<climits>
 using namespace std;
 
-//2342. Max Sum of a Pair With Equal Sum of Digits
-// You are given a 0-indexed array nums consisting of positive integers. You can choose two indices i and j, such that i != j, and the sum of digits of the number nums[i] is equal to that of nums[j].
+//3066. Minimum Operations to Exceed Threshold Value II
+// You are given a 0-indexed integer array nums, and an integer k.
 
-// Return the maximum value of nums[i] + nums[j] that you can obtain over all possible indices i and j that satisfy the conditions.
+// In one operation, you will:
 
-//APPROACH:- (TLE)
-//find the sum of digits for each index
-//for the same index find the max sum of nums[i],nums[j]
+// Take the two smallest integers x and y in nums.
+// Remove x and y from nums.
+// Add min(x, y) * 2 + max(x, y) anywhere in the array.
+// Note that you can only apply the described operation if nums contains at least two elements.
 
-//CODE:-
-class Solution {
-    public:
-        int maximumSum(vector<int>& nums) {
-            vector<int> sumofdig(nums.size(),0);
-            for(int i=0;i<nums.size();i++){
-                int curr=nums[i];
-                int sum=0;
-                while(curr>0){
-                    int rem=curr%10;
-                    sum+=rem;
-                    curr/=10;
-                }
-                sumofdig[i]=sum;
-            }
-            int res=0;
-            bool changed=false;
-            for(int i=0;i<sumofdig.size();i++){
-                for(int j=i+1;j<sumofdig.size();j++){
-                    if(sumofdig[i]==sumofdig[j]){
-                        res=max(res,nums[i]+nums[j]);
-                        changed=true;
-                    }
-                }
-            }
-            if(!changed){
-                return -1;
-            }
-            return res;
-        }
-    };
-
+// Return the minimum number of operations needed so that all elements of the array are greater than or equal to k.
 
 //APPROACH:-
-//store the sum of digits as key and the numbers as elements in a priority queue all this in an unordered map
-//traverse this map and then find the sum of top2 numebers
-//compute max for res and return -1 if no same sum of digits found
+//take a priority min queue push the elements
+//pop 2 elements perform the operation and then push it back
+//do it until you're left with no element less than k in the priority queue
 
 //CODE:-
 class Solution {
     public:
-        int maximumSum(vector<int>& nums) {
-            unordered_map<int,priority_queue<int>> sumofdig;
-            for(int i=0;i<nums.size();i++){
-                int curr=nums[i];
-                int sum=0;
-                while(curr>0){
-                    int rem=curr%10;
-                    sum+=rem;
-                    curr/=10;
-                }
-                sumofdig[sum].push(nums[i]);
-            }
-            int res=0;
-            bool changed=false;
-            for(auto&iter:sumofdig){
-                int key=iter.first;
-                if(iter.second.size()==1){
-                    continue;
-                }
-                else{
-                    changed=true;
-                    int first = sumofdig[key].top(); sumofdig[key].pop();
-                    int second = sumofdig[key].top(); sumofdig[key].pop();
-                    res=max(res,first+second);
-                }
-            }
-            if(!changed){
-                return -1;
-            }
-            return res;
+        int minOperations(vector<int>& nums, int k) {
+           priority_queue<double,vector<double>,greater<double>> pq;
+           if(nums.size()<2){
+            return -1;
+           }
+           for(int i=0;i<nums.size();i++){
+            pq.push(nums[i]);
+           }
+           int count=0;
+           while(pq.size() > 1 && pq.top()<k){
+            count++;
+            double num1=pq.top();
+            pq.pop();
+            double num2=pq.top();
+            pq.pop();
+            pq.push(num1*2+num2);
+           }
+           return count;
         }
     };
