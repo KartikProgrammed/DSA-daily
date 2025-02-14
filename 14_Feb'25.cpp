@@ -83,3 +83,37 @@ class ProductOfNumbers {
      * obj->add(num);
      * int param_2 = obj->getProduct(k);
      */
+
+//56. Merge Intervals
+// Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input
+
+//APPROACH:-
+//find the overlapping intervals 
+//merge them accordingly if prev intervals end >= next interval's start
+
+//CODE:-
+class Solution {
+    public:
+        vector<vector<int>> merge(vector<vector<int>>& intervals) {
+            int n=intervals.size();
+            if(n<=1){
+                return intervals;
+            }
+            sort(intervals.begin(),intervals.end());
+            int st=intervals[0][0];
+            int next=intervals[0][1];
+            vector<vector<int>> res;
+            for(int i=1;i<n;i++){
+                if(next>=intervals[i][0]){
+                    next=max(next,intervals[i][1]);
+                }
+                else{
+                    res.push_back({st,next});
+                    st=intervals[i][0];
+                    next=intervals[i][1];
+                }
+            }
+            res.push_back({st,next});
+            return res;
+        }
+    };
