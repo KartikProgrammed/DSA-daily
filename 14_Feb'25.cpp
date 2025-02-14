@@ -25,7 +25,7 @@ using namespace std;
 //create an array and push elements whatever are added
 //compute the product of last k elements
 
-//CODE:- (Not TLE yet slow)
+//CODE:- 
 class ProductOfNumbers {
     private:
         vector<int> vec;
@@ -43,6 +43,37 @@ class ProductOfNumbers {
                 res*=vec[i];
             }
             return res;
+        }
+    };
+    
+    /**
+     * Your ProductOfNumbers object will be instantiated and called as such:
+     * ProductOfNumbers* obj = new ProductOfNumbers();
+     * obj->add(num);
+     * int param_2 = obj->getProduct(k);
+     */
+
+//APPROACH 2:-
+//compute the product of k last elements while adding new elements
+//the vec would be used to store the product this time
+
+//CODE:-
+class ProductOfNumbers {
+    private:
+        vector<int> vec;
+    public:
+        ProductOfNumbers() {}
+        
+        void add(int num) {
+            for(int i=0;i<vec.size();i++){
+                vec[i]=vec[i]*num;
+            }
+            vec.push_back(num);
+        }
+        
+        int getProduct(int k) {
+            int st=vec.size()-k;
+            return vec[st];
         }
     };
     
