@@ -96,6 +96,30 @@ class Solution {
         }
     };
 
+//APPROACH 2:-
+//iterative
+
+//CODE:-
+class Solution {
+    public:
+        vector<int> preorderTraversal(TreeNode* root) {
+            stack<TreeNode*> stk;
+            struct TreeNode* curr=root;
+            vector<int> vec;
+            while(!stk.empty() || curr!=NULL ){
+                if(curr!=NULL){
+                    vec.push_back(curr->val);
+                    stk.push(curr);
+                    curr=curr->left;
+                }
+                else{
+                    curr=stk.top()->right;
+                    stk.pop();
+                }
+            };
+            return vec;
+        }
+    };
 
 //94. Binary Tree Inorder Traversal
 // Given the root of a binary tree, return the inorder traversal of its nodes' values.
