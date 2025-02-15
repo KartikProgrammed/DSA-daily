@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <queue>
+#include<stack>
+#include<string>
+#include<unordered_map>
+#include<unordered_set>
+#include<numeric>
+#include<climits>
+using namespace std;
+
+//2698. Find the Punishment Number of an Integer
+// Given a positive integer n, return the punishment number of n.
+
+// The punishment number of n is defined as the sum of the squares of all integers i such that:
+
+// 1 <= i <= n
+// The decimal representation of i * i can be partitioned into contiguous substrings such that the sum of the integer values of these substrings equals i.
+
+//APPROACH:-
+//traverse till the number n and check if the squares are punishment numbers
+//the check will be done using a recursive function which recursively breaks down the number into different parts and adds it up in the currsum
+//if at any point currsum == original i value, we break and return True
+
+//CODE:-
+class Solution {
+    public:
+        bool punishment(int i,int currsum,string s,int num){
+            if(i==s.length()){
+                return currsum==num;
+            }
+            if(currsum>num){
+                return false;
+            }
+            bool possible=false;
+            for(int j=i;j<s.length();j++){
+                string sub=s.substr(i,j-i+1);
+                int val=stoi(sub);
+                possible=possible||punishment(j+1,currsum+val,s,num);
+                if(possible==true){
+                    break;
+                }
+            }
+            return possible;
+        }
+        int punishmentNumber(int n) {
+            int res=0;
+            if(n==0){
+                return 0;
+            }
+            for(int i=1;i<=n;i++){
+                int curr=i*i;
+                string s=to_string(curr);
+                if(punishment(0,0,s,i)){
+                    res+=curr;
+                }
+            }
+            return res;
+        }
+    };
