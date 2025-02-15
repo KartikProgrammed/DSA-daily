@@ -95,3 +95,30 @@ class Solution {
             return vec;
         }
     };
+
+
+//94. Binary Tree Inorder Traversal
+// Given the root of a binary tree, return the inorder traversal of its nodes' values.
+
+//APPROACH:-
+//recursive
+
+//CODE:-
+
+//  * Definition for a binary tree node.
+
+class Solution {
+    public:
+        void recursion(TreeNode* root,vector<int> &vec){
+            if(root!=NULL){
+                recursion(root->left,vec);
+                vec.push_back(root->val);
+                recursion(root->right,vec);
+            }
+        }
+        vector<int> inorderTraversal(TreeNode* root) {
+            vector<int> vec;
+            recursion(root,vec);
+            return vec;
+        }
+    };
