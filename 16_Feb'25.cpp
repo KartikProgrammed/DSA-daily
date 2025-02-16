@@ -68,3 +68,42 @@ public:
         return res;
     }
 };
+
+
+//94. Binary Tree Inorder Traversal
+// Given the root of a binary tree, return the inorder traversal of its nodes' values.
+
+//APPROACH:-
+//Iterative Approach
+
+//CODE:-
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+ 
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+      stack<TreeNode*> stk;
+      vector<int> res;
+      struct TreeNode* curr=root;
+      while(!stk.empty() || curr!=NULL){
+        if(curr!=NULL){
+            stk.push(curr);
+            curr=curr->left;
+        }
+        else{
+            curr=stk.top();
+            stk.pop();
+            res.push_back(curr->val);
+            curr=curr->right;
+        }
+      }
+      return res;
+    }
+};
