@@ -107,3 +107,35 @@ public:
       return res;
     }
 };
+
+//PostOrder Traversal
+
+//APPROACH:-
+//2 stack iterative
+
+//CODE:-
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        if(root==NULL){
+            return {};
+        }
+        stack<TreeNode*> stk1;
+        stack<TreeNode*> stk2;
+        stk1.push(root);
+        struct TreeNode* curr;
+        while(!stk1.empty()){
+            curr=stk1.top();
+            stk1.pop();
+            if(curr->left!=NULL) stk1.push(curr->left);
+            if(curr->right!=NULL) stk1.push(curr->right);
+            stk2.push(curr);
+        }
+        vector<int> res;
+        while(!stk2.empty()){
+            res.push_back(stk2.top()->val);
+            stk2.pop();
+        }
+        return res;
+    }
+};
