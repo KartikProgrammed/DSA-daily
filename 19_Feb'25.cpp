@@ -29,31 +29,60 @@ using namespace std;
 
 //CODE:-
 class Solution {
-    public:
-        void recursion(vector<string>& res,string curr,char prev,int n){
-            if(curr.length()==n){
-                res.push_back(curr);
-                return ;
-            }
-            if(prev!='a'){
-                string newcurr=curr;
-                recursion(res,newcurr.append("a"),'a',n);
-            }
-            if(prev!='b'){
-                string newcurr=curr;
-                recursion(res,newcurr.append("b"),'b',n);
-            }
-            if(prev!='c'){
-                string newcurr=curr;
-                recursion(res,newcurr.append("c"),'c',n);
-            }
+public:
+    void recursion(vector<string>& res,string curr,char prev,int n){
+        if(curr.length()==n){
+            res.push_back(curr);
+            return ;
         }
-        string getHappyString(int n, int k) {
-            vector<string> res;
-            recursion(res,"",'z',n);
-            if(k>res.size()){
-                return "";
-            }
-            return res[k-1];
+        if(prev!='a'){
+            string newcurr=curr;
+            recursion(res,newcurr.append("a"),'a',n);
         }
-    };
+        if(prev!='b'){
+            string newcurr=curr;
+            recursion(res,newcurr.append("b"),'b',n);
+        }
+        if(prev!='c'){
+            string newcurr=curr;
+            recursion(res,newcurr.append("c"),'c',n);
+        }
+    }
+    string getHappyString(int n, int k) {
+        vector<string> res;
+        recursion(res,"",'z',n);
+        if(k>res.size()){
+            return "";
+        }
+        return res[k-1];
+    }
+};
+
+//CODE 2:-
+//cutting off the append function to space some space of the new variable and some time as well
+class Solution {
+public:
+    void recursion(vector<string>& res,string curr,char prev,int n){
+        if(curr.length()==n){
+            res.push_back(curr);
+            return ;
+        }
+        if(prev!='a'){
+            recursion(res,curr+'a','a',n);
+        }
+        if(prev!='b'){
+            recursion(res,curr+'b','b',n);
+        }
+        if(prev!='c'){
+            recursion(res,curr+'c','c',n);
+        }
+    }
+    string getHappyString(int n, int k) {
+        vector<string> res;
+        recursion(res,"",'z',n);
+        if(k>res.size()){
+            return "";
+        }
+        return res[k-1];
+    }
+};
