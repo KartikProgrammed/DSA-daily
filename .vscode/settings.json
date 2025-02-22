@@ -8,6 +8,8 @@
         "unordered_set": "cpp",
         "string": "cpp",
         "numeric": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "ios": "cpp",
+        "xiosbase": "cpp"
     }
 }
