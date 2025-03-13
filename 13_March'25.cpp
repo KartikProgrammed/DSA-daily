@@ -86,3 +86,45 @@ public:
         return ans;
     }
 };
+
+
+// 110. Balanced Binary Tree
+// Given a binary tree, determine if it is height-balanced.
+
+//APPROACH
+//find height of each nodes left and right return -1 if unbalanced
+
+//CODE:-
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+class Solution {
+    public:
+        int recursion(TreeNode *root){
+            if(root==NULL){
+                return 0;
+            }
+            int op1=recursion(root->left);
+            if(op1==-1)
+                return -1;
+            int op2=recursion(root->right);
+            if(op2==-1)
+                return -1;
+            
+            if(abs(op1-op2)>1)
+                return -1;
+            return max(op1,op2)+1;
+        }
+        bool isBalanced(TreeNode* root) {
+            int res= recursion(root);
+            if(res==-1){
+                return false;
+            }
+            return true;
+        }
+    };
