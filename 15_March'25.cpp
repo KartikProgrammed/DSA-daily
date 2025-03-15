@@ -89,19 +89,43 @@ struct TreeNode {
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 class Solution {
-    public:
-        int recursion(TreeNode *root,int &path){
-            if(root==NULL){
-                return 0;
-            }
-            int left=max(0,recursion(root->left,path));
-            int right=max(0,recursion(root->right,path));
-            path=max(path,left+right+root->val);
-            return max(left,right)+root->val;
+public:
+    int recursion(TreeNode *root,int &path){
+        if(root==NULL){
+            return 0;
         }
-        int maxPathSum(TreeNode* root) {
-            int val=INT_MIN;
-            recursion(root,val);
-            return val;
+        int left=max(0,recursion(root->left,path));
+        int right=max(0,recursion(root->right,path));
+        path=max(path,left+right+root->val);
+        return max(left,right)+root->val;
+    }
+    int maxPathSum(TreeNode* root) {
+        int val=INT_MIN;
+        recursion(root,val);
+        return val;
+    }
+};
+
+
+//100. Same Tree
+// Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+// Two binary trees are considered the same if they are structurally identical, and the nodes have the same value./
+
+//APPROACH:-
+//recursion
+
+//CODE:-
+
+class Solution {
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        if(p==NULL && q==NULL){
+            return true;
         }
-    };
+        if(p==NULL || q==NULL || p->val!=q->val)
+            return false;
+        bool left=isSameTree(p->left,q->left);
+        bool right=isSameTree(p->right,q->right);
+        return left&&right;
+    }
+};
