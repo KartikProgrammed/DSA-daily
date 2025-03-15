@@ -36,3 +36,37 @@ public:
         return recursion(nums,k,0);
     }
 };
+
+//APPROACH 2:-
+//Binary Search
+
+//CODE:-
+class Solution {
+public:
+    bool check(vector<int>& nums, int k,int cap){
+        int house=0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]<=cap){
+                house++;
+                i++;
+            }
+        }
+        return house>=k;
+    }
+    int minCapability(vector<int>& nums, int k) {
+        int low=*min_element(nums.begin(),nums.end());
+        int high=*max_element(nums.begin(),nums.end());
+        int mid;
+        int res=0;
+        while(low<=high){
+            mid=low+(high-low)/2;
+            if(check(nums,k,mid)){
+                res=mid;
+                high=mid-1;
+            }
+            else
+                low=mid+1;
+        }
+        return res;
+    }
+};
