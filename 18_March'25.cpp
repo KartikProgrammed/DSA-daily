@@ -46,3 +46,42 @@ public:
         return res;
     }
 };
+
+
+// 103. Binary Tree Zigzag Level Order Traversal
+// Given the root of a binary tree, return the zigzag level order traversal of its nodes' values. (i.e., from left to right, then right to left for the next level and alternate between).
+
+//APPROACH:-
+//RECURSION
+
+//CODE:-
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+class Solution {
+public:
+    void recursion(vector<vector<int>> &res,TreeNode *root,int level){
+        if(root==NULL){
+            return ;
+        }
+        if (level >= res.size())
+            res.push_back({});
+
+        if (level % 2 == 0)
+            res[level].push_back(root->val);
+        else
+            res[level].insert(res[level].begin(), root->val); 
+        recursion(res,root->left,level+1);
+        recursion(res,root->right,level+1);
+    }
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        recursion(res,root,0);
+        return res;
+    }
+};
