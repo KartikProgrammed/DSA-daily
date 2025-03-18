@@ -138,3 +138,50 @@ public:
         return res;
     }
 };
+
+
+//199. Binary Tree Right Side View 
+// Given the root of a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+//APPROACH:-
+//BFS
+
+//CODE:-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        queue<pair<int,TreeNode*>> q;
+        vector<int> res;
+        if(root==NULL){
+            return res;
+        }
+        q.push({0,root});
+        while(!q.empty()){
+            auto it=q.front();
+            q.pop();
+            int ind=it.first;
+            TreeNode *node=it.second;
+            if(ind+1>res.size()){
+                res.push_back(node->val);
+            }
+            if(node->right){
+                q.push({ind+1,node->right});
+            }
+            if(node->left){
+                q.push({ind+1,node->left});
+            }
+        }
+        return res;
+    }
+};
