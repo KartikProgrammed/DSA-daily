@@ -85,3 +85,55 @@ public:
         return res;
     }
 };
+
+
+//987. Vertical Order Traversal of a Binary Tree
+// Given the root of a binary tree, calculate the vertical order traversal of the binary tree.
+// For each node at position (row, col), its left and right children will be at positions (row + 1, col - 1) and (row + 1, col + 1) respectively. The root of the tree is at (0, 0).
+// The vertical order traversal of a binary tree is a list of top-to-bottom orderings for each column index starting from the leftmost column and ending on the rightmost column. There may be multiple nodes in the same row and same column. In such a case, sort these nodes by their values.
+// Return the vertical order traversal of the binary tree.
+
+//APPROACH:-
+//BFS
+
+//CODE:-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        map<int, map<int, multiset<int>>> nodes;
+        vector<vector<int>> res;
+        queue<pair<TreeNode*, pair<int, int>>> q;
+
+        q.push({root,{0,0}});
+        while(!q.empty()){
+            auto [node,pos]=q.front();
+            q.pop();
+            int col=pos.first;
+            int row=pos.second;
+            nodes[col][row].insert(node->val);
+            if (node->left)
+                q.push({node->left, {col - 1, row + 1}});
+            if (node->right)
+                q.push({node->right, {col + 1, row + 1}});
+        }
+        for (auto &[col, rows] : nodes) {
+            vector<int> colNodes;
+            for (auto &[row, values] : rows) {
+                colNodes.insert(colNodes.end(), values.begin(), values.end());
+            }
+            res.push_back(colNodes);
+        }
+        return res;
+    }
+};
