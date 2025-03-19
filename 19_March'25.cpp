@@ -146,3 +146,83 @@ public:
         return res;
     }
 };
+
+
+// 863. All Nodes Distance K in Binary Tree
+// Given the root of a binary tree, the value of a target node target, and an integer k, return an array of the values of all nodes that have a distance k from the target node.
+// You can return the answer in any order
+
+//APPROACH:-
+//BFS 1st to find parent nodes of all nodes
+//2nd bfs is from target in right left and upwards direction
+
+//CODE:-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        unordered_map<TreeNode*,TreeNode*> map;
+        queue<TreeNode*> q;
+        unordered_set<TreeNode*> visited;
+        vector<int> res;
+        if(root==NULL){
+            return res;
+        }
+        q.push(root);
+        while(!q.empty()){
+            TreeNode* node=q.front();
+            q.pop();
+            if(node->left){
+                map[node->left]=node;
+                q.push(node->left);
+            }
+            if(node->right){
+                map[node->right]=node;
+                q.push(node->right);
+            }
+        }
+        int dist=0;
+        while(!q.empty()){
+            q.pop();
+        }
+        visited.insert(target);
+        q.push(target);
+        while(!q.empty()){
+            if(dist==k){
+                while (!q.empty()) {
+                    res.push_back(q.front()->val);
+                    q.pop();
+                }
+                return res;
+            }
+            int n=q.size();
+            for(int i=0;i<n;i++){
+                TreeNode *temp=q.front();
+                q.pop();
+                if(map.find(temp)!=map.end() && visited.find(map[temp]) == visited.end()){
+                    q.push(map[temp]);
+                    visited.insert(map[temp]);
+                }
+                if(temp->left  && visited.find(temp->left) == visited.end()){
+                    q.push(temp->left);
+                    visited.insert(temp->left);
+                }
+                if(temp->right && visited.find(temp->right) == visited.end()){
+                    q.push(temp->right);
+                    visited.insert(temp->right);
+                }
+            }
+            dist++;
+        }
+        return res;
+    }
+};
+
