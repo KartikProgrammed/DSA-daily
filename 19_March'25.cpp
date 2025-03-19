@@ -85,3 +85,64 @@ public:
         return recursion(root,p,q);
     }
 };
+
+
+//662. Maximum Width of Binary Tree
+// Given the root of a binary tree, return the maximum width of the given tree.
+// The maximum width of a tree is the maximum width among all levels.
+// The width of one level is defined as the length between the end-nodes (the leftmost and rightmost non-null nodes), where the null nodes between the end-nodes that would be present in a complete binary tree extending down to that level are also counted into the length calculation.
+// It is guaranteed that the answer will in the range of a 32-bit signed integer.
+
+//APPROACH:-
+//BFS
+//tip: use unsigned int 64 to pass tc since it overflows otherwise
+
+//CODE:-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        if(root==NULL){
+            return 0;
+        }
+        queue<pair<uint64_t,TreeNode*>> q;
+        uint64_t res=0;
+        q.push({0,root});
+        while(!q.empty()){
+            uint64_t st;
+            long long n=q.size();
+            uint64_t end;
+            for(int i=0;i<n;i++){
+                auto it=q.front();
+                q.pop();
+                if(i==0){
+                    st=it.first;
+                }
+                if(i==n-1){
+                    end=it.first;
+                }
+                uint64_t ind=it.first;
+                TreeNode* curr=it.second;
+                if(curr->left){
+                    q.push({2*ind+1,curr->left});
+                }
+                if(curr->right){
+                    q.push({2*ind+2,curr->right});
+                }
+            }
+            uint64_t curr=end-st+1;
+            res=max(curr,res);
+        }
+        return res;
+    }
+};
