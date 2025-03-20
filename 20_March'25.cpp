@@ -121,3 +121,45 @@ public:
         return res;
     }
 };
+
+// 106. Construct Binary Tree from Inorder and Postorder Traversal
+// Given two integer arrays inorder and postorder where inorder is the inorder traversal of a binary tree and postorder is the postorder traversal of the same tree, construct and return the binary tree.
+
+//APPROACH:-
+//RECURSION
+
+//CODE:-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* Recursion(vector<int>& inorder,int inst,int inend,vector<int>& postorder,int prest,int prend,unordered_map<int,int> &map){
+        if(inst>inend||prest>prend){
+            return NULL;
+        }
+        TreeNode* root=new TreeNode(postorder[prend]);
+        int ind=map[root->val];
+        int numst=ind-inst;
+
+        root->left=Recursion(inorder,inst,ind-1,postorder,prest,prest+numst-1,map);
+        root->right=Recursion(inorder,ind+1,inend,postorder,prest+numst,prend-1,map);
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        unordered_map<int,int> map;
+        for(int i=0;i<inorder.size();i++){
+            map[inorder[i]]=i;
+        }
+        TreeNode* root=Recursion(inorder,0,inorder.size()-1,postorder,0,postorder.size()-1,map);
+        return root;
+    }
+};
