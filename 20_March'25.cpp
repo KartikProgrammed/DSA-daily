@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <queue>
 #include<stack>
+#include <sstream>
 #include <map>
 #include<string>
 #include<unordered_map>
@@ -160,6 +161,110 @@ public:
             map[inorder[i]]=i;
         }
         TreeNode* root=Recursion(inorder,0,inorder.size()-1,postorder,0,postorder.size()-1,map);
+        return root;
+    }
+};
+
+
+//297. Serialize and Deserialize Binary Tree
+// Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.
+// Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary tree can be serialized to a string and this string can be deserialized to the original tree structure.
+// Clarification: The input/output format is the same as how LeetCode serializes a binary tree. You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.
+
+//APPROACH:-
+//multiple queues used
+
+//CODE:-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+    int maxheight(TreeNode* root){
+        if(root==NULL){
+            return 0;
+        }
+        int left=maxheight(root->left);
+        int right=maxheight(root->right);
+        return max(left,right)+1;
+    }
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        int h=maxheight(root);
+        string res="";
+        queue<TreeNode*> q;
+        if(root==NULL){
+            return "n";
+        }
+        q.push(root);
+        res+=to_string(root->val);
+        int curr=1;
+        while(!q.empty()){
+            int n=q.size();
+            for(int i=0;i<n;i++){
+                TreeNode* node=q.front();
+                q.pop();
+                if(node->left){
+                    q.push(node->left);
+                    res+=","+to_string(node->left->val);
+                }
+                else if(!node->left && curr<h){
+                    res+=",n";
+                }
+                if(node->right){
+                    q.push(node->right);
+                    res+=","+to_string(node->right->val);
+                }
+                else if(!node->right && curr<h){
+                    res+=",n";
+                }
+            }
+            curr++;
+        }
+        // if (!res.empty()) res.pop_back();
+        return res;
+
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if (data == "n") return NULL;  // Edge case: empty tree
+
+        stringstream ss(data);
+        string val;
+        getline(ss, val, ',');
+
+        TreeNode* root = new TreeNode(stoi(val));
+        queue<TreeNode*> q;
+        q.push(root);
+
+        while (!q.empty()) {
+            TreeNode* node = q.front();
+            q.pop();
+
+            // Process left child
+            if (getline(ss, val, ',')) {
+                if (val != "n") {
+                    node->left = new TreeNode(stoi(val));
+                    q.push(node->left);
+                }
+            }
+
+            // Process right child
+            if (getline(ss, val, ',')) {
+                if (val != "n") {
+                    node->right = new TreeNode(stoi(val));
+                    q.push(node->right);
+                }
+            }
+        }
+
         return root;
     }
 };
