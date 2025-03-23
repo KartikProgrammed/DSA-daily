@@ -146,3 +146,106 @@ public:
         return temp;
     }
 };
+
+
+//450. Delete Node in a BST
+//Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST.
+// Basically, the deletion can be divided into two stages:
+// Search for a node to remove.
+// If the node is found, delete the node.
+
+
+//approach:-
+//connect target node's left node to the node's right's leftmost node
+
+//code:-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* recursion(TreeNode* root,int val){
+        if(root==NULL || (root->left!=NULL&&root->left->val==val) || (root->right!=NULL&&root->right->val==val)){
+            return root;
+        }
+        if(root->val>val){
+            return recursion(root->left,val);
+        }
+        return recursion(root->right,val);
+    }
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        if(root==NULL){
+            return NULL;
+        }
+        if(root->val==key){
+            TreeNode* root2=root->right;
+            if(root->right==NULL && root->left==NULL){
+                return NULL;
+            }
+            else if(root->left==NULL){
+                return root->right;
+            }
+            else if(root->right==NULL){
+                return root->left;
+            }
+            else{
+                TreeNode* tempr=root->right;
+                TreeNode* templ=root->left;
+                while(tempr->left){
+                    tempr=tempr->left;
+                }
+                tempr->left=templ;
+                return root2;
+            }
+        }
+        TreeNode* parent=recursion(root,key);
+        if(parent==NULL){
+            return root;
+        }
+        if (parent->left != NULL && parent->left->val == key) {
+            TreeNode* nodeToDelete = parent->left;
+            
+            if (nodeToDelete->left == NULL) { 
+                parent->left = nodeToDelete->right;
+            } 
+            else if (nodeToDelete->right == NULL) {
+                parent->left = nodeToDelete->left;
+            } 
+            else { 
+                TreeNode* temp = nodeToDelete->right;
+                while (temp->left) { 
+                    temp = temp->left;
+                }
+                temp->left = nodeToDelete->left;
+                parent->left = nodeToDelete->right;
+            }
+        } 
+        else if (parent->right != NULL && parent->right->val == key) {
+            TreeNode* nodeToDelete = parent->right;
+
+            if (nodeToDelete->left == NULL) { 
+                parent->right = nodeToDelete->right;
+            } 
+            else if (nodeToDelete->right == NULL) { 
+                parent->right = nodeToDelete->left;
+            } 
+            else {
+                TreeNode* temp = nodeToDelete->right;
+                while (temp->left) { 
+                    temp = temp->left;
+                }
+                temp->left = nodeToDelete->left;
+                parent->right = nodeToDelete->right;
+            }
+        }
+        return root;
+    }
+};
