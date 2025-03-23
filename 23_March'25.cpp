@@ -293,3 +293,24 @@ public:
         return pq.top();
     }
 };
+
+
+//APPROACH:-
+//INORDER TRAV
+
+//CODE:-
+class Solution {
+public:
+    void inorder(TreeNode* root,vector<int> &inordervec){
+        if(root){
+            inorder(root->left,inordervec);
+            inordervec.push_back(root->val);
+            inorder(root->right,inordervec);
+        }
+    }
+    int kthSmallest(TreeNode* root, int k) {
+        vector<int> inordervec;
+        inorder(root,inordervec);
+        return inordervec[k-1];
+    }
+};
