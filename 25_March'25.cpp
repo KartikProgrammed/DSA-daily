@@ -119,3 +119,51 @@ public:
         return false;
     }
 };
+
+
+//653. Two Sum IV - Input is a BST
+// Given the root of a binary search tree and an integer k, return true if there exist two elements in the BST such that their sum is equal to k, or false otherwise.
+
+//APPROACH:-
+//find inorder and run simple 2sum
+
+//CODE:-
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void inordertrav(TreeNode* root,vector<int> &inorder){
+        if(root!=NULL){
+            inordertrav(root->left,inorder);
+            inorder.push_back(root->val);
+            inordertrav(root->right,inorder);
+        }
+    }
+    bool findTarget(TreeNode* root, int k) {
+        vector<int> inorder;
+        inordertrav(root,inorder);
+        int left=0;
+        int right=inorder.size()-1;
+        while(left<right){
+            if(inorder[left]+inorder[right]==k){
+                return true;
+            }
+            else if(inorder[left]+inorder[right]<k){
+                left++;
+            }
+            else{
+                right--;
+            }
+        }
+        return false;
+    }
+};
