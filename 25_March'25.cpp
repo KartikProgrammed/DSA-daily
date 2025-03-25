@@ -67,3 +67,55 @@ public:
         return res2.size() >= 3;
     }
 };
+
+
+//173. Binary Search Tree Iterator
+// Implement the BSTIterator class that represents an iterator over the in-order traversal of a binary search tree (BST):
+// BSTIterator(TreeNode root) Initializes an object of the BSTIterator class. The root of the BST is given as part of the constructor. The pointer should be initialized to a non-existent number smaller than any element in the BST.
+// boolean hasNext() Returns true if there exists a number in the traversal to the right of the pointer, otherwise returns false.
+// int next() Moves the pointer to the right, then returns the number at the pointer.
+// Notice that by initializing the pointer to a non-existent smallest number, the first call to next() will return the smallest element in the BST.
+// You may assume that next() calls will always be valid. That is, there will be at least a next number in the in-order traversal when next() is called.
+
+//APPROACH:-
+//use an inorder vector to store the inorder trav
+//use iterator for next and has nxt functions
+
+//CODE:-
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+class BSTIterator {
+private:
+    int it=-1;
+    vector<int> inorder;
+public:
+    void inordertrav(TreeNode* root){
+        if(root!=NULL){
+            inordertrav(root->left);
+            inorder.push_back(root->val);
+            inordertrav(root->right);
+        }
+    }
+    BSTIterator(TreeNode* root) {
+        inordertrav(root);
+    }
+    
+    int next() {
+        return inorder[++it];
+    }
+    
+    bool hasNext() {
+        int curr=it;
+        curr++;
+        if(curr<inorder.size()){
+            return true;
+        }
+        return false;
+    }
+};
