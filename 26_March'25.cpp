@@ -46,3 +46,65 @@ public:
         return res;
     }
 };
+
+
+//DFS in a graph
+
+//CODE:-
+class Solution {
+  public:
+    // Function to return a list containing the DFS traversal of the graph.
+    vector<int> dfsOfGraph(vector<vector<int>>& adj) {
+        int n=adj.size();
+        vector<bool> visited(n,false);
+        stack<int> stk;
+        vector<int> res;
+        
+        for(int start=0;start<n;start++){
+            if(!visited[start]){
+                stk.push(start);
+                visited[start]=true;
+                while(!stk.empty()){
+                    int curr=stk.top();
+                    stk.pop();
+                    res.push_back(curr);
+                    for(int i=adj[curr].size()-1;i>=0;i--){
+                        if(!visited[adj[curr][i]]){
+                            stk.push(adj[curr][i]);
+                            visited[adj[curr][i]]=true;
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
+
+//APPROACH 2: 
+//RECURSION
+
+//CODE:-
+class Solution {
+  public:
+    void dfs(vector<int> &res,int curr,vector<bool> &visited,vector<vector<int>>& adj){
+        if(visited[curr]){
+            return;
+        }
+        res.push_back(curr);
+        visited[curr]=true;
+        for(int i=0;i<adj[curr].size();i++){
+            dfs(res,adj[curr][i],visited,adj);
+        }
+    }
+    vector<int> dfsOfGraph(vector<vector<int>>& adj) {
+        // Code here
+        vector<int> res;
+        int n=adj.size();
+        vector<bool> visited(n,false);
+        for(int i=0;i<adj.size();i++){
+            dfs(res,i,visited,adj);
+        }
+        return res;
+    }
+};
