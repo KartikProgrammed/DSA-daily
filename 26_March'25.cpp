@@ -198,3 +198,82 @@ public:
         return res;
     }
 };
+
+
+//994. Rotting Oranges
+// You are given an m x n grid where each cell can have one of three values:
+// 0 representing an empty cell,
+// 1 representing a fresh orange, or
+// 2 representing a rotten orange.
+// Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
+// Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
+
+
+//APPROACH:-
+//BFS
+
+//CODE:-
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int rot=0;
+        int tot=0;
+        int time=0;
+        int m=grid.size();
+        int n=grid[0].size();
+        queue<pair<int,int>> q;
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[i].size();j++){
+                if(grid[i][j]==1){
+                    tot++;
+                }
+                if(grid[i][j]==2){
+                    rot++;
+                    tot++;
+                    q.push({i,j});
+                }
+            }
+        }
+        while(!q.empty()){
+            bool rotted = false;
+            int size=q.size();
+            for(int i=0;i<size;i++){
+                auto top=q.front();
+                q.pop();
+                int x=top.first;
+                int y=top.second;
+                if(x>0 && grid[x-1][y]==1){
+                    q.push({x-1,y});
+                    grid[x-1][y]=2;
+                    rotted=true;
+                    rot++;
+                }
+                if(x<m-1 && grid[x+1][y]==1){
+                    q.push({x+1,y});
+                    grid[x+1][y]=2;
+                    rot++;
+                    rotted=true;
+                }
+                if(y>0 && grid[x][y-1]==1){
+                    q.push({x,y-1});
+                    grid[x][y-1]=2;
+                    rot++;
+                    rotted=true;
+                }
+                if(y<n-1 && grid[x][y+1]==1){
+                    q.push({x,y+1});
+                    grid[x][y+1]=2;
+                    rot++;
+                    rotted=true;
+                }
+            }
+            if(rotted)
+                time++;
+        } 
+        if(tot==rot){
+            return time;
+        }
+        return -1;
+    }
+
+};
