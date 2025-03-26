@@ -49,6 +49,11 @@ public:
 
 
 //DFS in a graph
+// Given a connected undirected graph represented by an adjacency list adj, which is a vector of vectors where each adj[i] represents the list of vertices connected to vertex i. Perform a Depth First Traversal (DFS) starting from vertex 0, visiting vertices from left to right as per the adjacency list, and return a list containing the DFS traversal of the graph.
+// Note: Do traverse in the same order as they are in the adjacency list.
+
+//APPROACH:-
+//STACK - Iterative approach
 
 //CODE:-
 class Solution {
@@ -106,5 +111,40 @@ class Solution {
             dfs(res,i,visited,adj);
         }
         return res;
+    }
+};
+
+
+//BFS in a graph
+//Given a undirected graph represented by an adjacency list adj, which is a vector of vectors where each adj[i] represents the list of vertices connected to vertex i. Perform a Breadth First Traversal (BFS) starting from vertex 0, visiting vertices from left to right according to the adjacency list, and return a list containing the BFS traversal of the graph.
+// Note: Do traverse in the same order as they are in the adjacency list.
+
+//approach:-
+//use a queue
+
+//CODE:-
+class Solution {
+  public:
+    // Function to return Breadth First Traversal of given graph.
+    vector<int> bfsOfGraph(vector<vector<int>> &adj) {
+        // Code here
+        vector<int> res;
+        queue<int> q;
+        int v=adj.size();
+        vector<bool> visited(v,false);
+        visited[0]=true;
+        q.push(0);
+        while(!q.empty()){
+            int curr=q.front();
+            q.pop();
+            res.push_back(curr);
+            for(int i=0;i<adj[curr].size();i++){
+                if(!visited[adj[curr][i]]){
+                    q.push(adj[curr][i]);
+                    visited[adj[curr][i]]=true;
+                }
+            }
+        }
+    return res;
     }
 };
