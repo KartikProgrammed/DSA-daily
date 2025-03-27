@@ -50,3 +50,56 @@ public:
         return -1;
     }
 };
+
+
+// 733. Flood Fill
+// You are given an image represented by an m x n grid of integers image, where image[i][j] represents the pixel value of the image. You are also given three integers sr, sc, and color. Your task is to perform a flood fill on the image starting from the pixel image[sr][sc].
+// To perform a flood fill:
+// Begin with the starting pixel and change its color to color.
+// Perform the same process for each pixel that is directly adjacent (pixels that share a side with the original pixel, either horizontally or vertically) and shares the same color as the starting pixel.
+// Keep repeating this process by checking neighboring pixels of the updated pixels and modifying their color if it matches the original color of the starting pixel.
+// The process stops when there are no more adjacent pixels of the original color to update.
+// Return the modified image after performing the flood fill.
+
+
+//APPROACH:-
+//BFS
+
+//CODE:-
+class Solution {
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        queue<pair<int,int>> q;
+        int m=image.size();
+        int n=image[0].size();
+        if(image[sr][sc]==color){
+            return image;
+        }
+        q.push({sr,sc});
+        int curr=image[sr][sc];
+        image[sr][sc]=color;
+        while(!q.empty()){
+            auto it=q.front();
+            q.pop();
+            int x=it.first;
+            int y=it.second;
+            if(x>0 && image[x-1][y]==curr){
+                image[x-1][y]=color;
+                q.push({x-1,y});
+            }
+            if(x<m-1 && image[x+1][y]==curr){
+                image[x+1][y]=color;
+                q.push({x+1,y});
+            }
+            if(y>0 && image[x][y-1]==curr){
+                image[x][y-1]=color;
+                q.push({x,y-1});
+            }
+            if(y<n-1 && image[x][y+1]==curr){
+                image[x][y+1]=color;
+                q.push({x,y+1});
+            }
+        }
+        return image;
+    }
+};
