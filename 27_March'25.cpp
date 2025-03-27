@@ -103,3 +103,46 @@ public:
         return image;
     }
 };
+
+
+//542. 01 Matrix
+// Given an m x n binary matrix mat, return the distance of the nearest 0 for each cell.
+// The distance between two cells sharing a common edge is 1.
+
+//APPROACH:-
+//BFS
+
+//CODE:-
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        int m = mat.size();
+        int n = mat[0].size();
+        vector<vector<int>> res(m, vector<int>(n, -1));
+        queue<pair<int, int>> q;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] == 0) {
+                    res[i][j] = 0;
+                    q.push({i, j});
+                }
+            }
+        }
+        vector<pair<int, int>> directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        while (!q.empty()) {
+            auto [x, y] = q.front();
+            q.pop();
+            
+            for (auto [dx, dy] : directions) {
+                int newX = x + dx;
+                int newY = y + dy;
+                if (newX >= 0 && newX < m && newY >= 0 && newY < n && res[newX][newY] == -1) {
+                    res[newX][newY] = res[x][y] + 1;
+                    q.push({newX, newY});
+                }
+            }
+        }
+
+        return res;
+    }
+};
