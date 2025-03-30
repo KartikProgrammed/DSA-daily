@@ -211,3 +211,53 @@ public:
         return res;
     }
 };
+
+
+// 210. Course Schedule II
+// There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+// For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
+// Return the ordering of courses you should take to finish all courses. If there are many valid answers, return any of them. If it is impossible to finish all courses, return an empty array.
+
+//APPROACH:-
+//DFS - CYCLE DETECTION
+
+//CODE:-
+class Solution {
+public:
+    bool dfs(vector<vector<int>> &adj,vector<int> &pathvis,vector<int> &vis,int curr,vector<int> &res){
+        pathvis[curr]=1;
+        vis[curr]=1;
+        for(auto it:adj[curr]){
+            if(!vis[it]){
+                if(dfs(adj,pathvis,vis,it,res)==true){
+                    return true;
+                }
+            }
+            if(pathvis[it]==1){
+                return true;
+            }
+        }
+        pathvis[curr]=0;
+        res.push_back(curr);
+        return false;
+    }
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> adj(numCourses);
+        vector<int> vis(numCourses,0);
+        vector<int> res;
+        vector<int> pathvis(numCourses,0);
+        int n=prerequisites.size();
+        for(int i=0;i<n;i++){
+            adj[prerequisites[i][1]].push_back(prerequisites[i][0]);
+        }
+        for(int i=0;i<numCourses;i++){
+            if(vis[i]==0){
+                if(dfs(adj,pathvis,vis,i,res)){
+                    return {};
+                }
+            }
+        }
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
