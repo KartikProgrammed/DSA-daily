@@ -62,54 +62,54 @@ public:
 
 //CODE:-
 class Solution {
-    public:
-        int numEnclaves(vector<vector<int>>& grid) {
-            int tot=0;
-            int bound=0;
-            int m=grid.size();
-            int n=grid[0].size();
-            vector<vector<bool>> visited(m,vector<bool>(n,false));
-            queue<pair<int,int>> q;
-            for(int i=0;i<m;i++){
-                for(int j=0;j<n;j++){
-                    if(i==0 || i==m-1 || j==n-1 || j==0){
-                        if(grid[i][j]==1){
-                            bound++;
-                            q.push({i,j});
-                            visited[i][j]=true;
-                        }
-                    }
+public:
+    int numEnclaves(vector<vector<int>>& grid) {
+        int tot=0;
+        int bound=0;
+        int m=grid.size();
+        int n=grid[0].size();
+        vector<vector<bool>> visited(m,vector<bool>(n,false));
+        queue<pair<int,int>> q;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(i==0 || i==m-1 || j==n-1 || j==0){
                     if(grid[i][j]==1){
-                        tot++;
+                        bound++;
+                        q.push({i,j});
+                        visited[i][j]=true;
                     }
                 }
-            }
-            while(!q.empty()){
-                auto it=q.front();
-                q.pop();
-                int x=it.first;
-                int y=it.second;
-                if(x>0 && grid[x-1][y]==1 && !visited[x-1][y]){
-                    q.push({x-1,y});
-                    visited[x-1][y]=true;
-                    bound++;
-                }
-                if(x<m-1 && grid[x+1][y]==1 && !visited[x+1][y]){
-                    q.push({x+1,y});
-                    visited[x+1][y]=true;
-                    bound++;
-                }
-                if(y>0 && grid[x][y-1]==1 && !visited[x][y-1]){
-                    q.push({x,y-1});
-                    visited[x][y-1]=true;
-                    bound++;
-                }
-                if(y<n-1 && grid[x][y+1]==1 && !visited[x][y+1]){
-                    q.push({x,y+1});
-                    visited[x][y+1]=true;
-                    bound++;
+                if(grid[i][j]==1){
+                    tot++;
                 }
             }
-            return tot-bound;
         }
-    };
+        while(!q.empty()){
+            auto it=q.front();
+            q.pop();
+            int x=it.first;
+            int y=it.second;
+            if(x>0 && grid[x-1][y]==1 && !visited[x-1][y]){
+                q.push({x-1,y});
+                visited[x-1][y]=true;
+                bound++;
+            }
+            if(x<m-1 && grid[x+1][y]==1 && !visited[x+1][y]){
+                q.push({x+1,y});
+                visited[x+1][y]=true;
+                bound++;
+            }
+            if(y>0 && grid[x][y-1]==1 && !visited[x][y-1]){
+                q.push({x,y-1});
+                visited[x][y-1]=true;
+                bound++;
+            }
+            if(y<n-1 && grid[x][y+1]==1 && !visited[x][y+1]){
+                q.push({x,y+1});
+                visited[x][y+1]=true;
+                bound++;
+            }
+        }
+        return tot-bound;
+    }
+};
