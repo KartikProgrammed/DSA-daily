@@ -163,3 +163,51 @@ public:
         return res==INT_MAX?0:res;
     }
 };
+
+
+//785. Is Graph Bipartite?
+// There is an undirected graph with n nodes, where each node is numbered between 0 and n - 1. You are given a 2D array graph, where graph[u] is an array of nodes that node u is adjacent to. More formally, for each v in graph[u], there is an undirected edge between node u and node v. The graph has the following properties:
+// There are no self-edges (graph[u] does not contain u).
+// There are no parallel edges (graph[u] does not contain duplicate values).
+// If v is in graph[u], then u is in graph[v] (the graph is undirected).
+// The graph may not be connected, meaning there may be two nodes u and v such that there is no path between them.
+// A graph is bipartite if the nodes can be partitioned into two independent sets A and B such that every edge in the graph connects a node in set A and a node in set B.
+// Return true if and only if it is bipartite.
+
+
+//APPROACH:-
+//DFS on uncolored nodes - color them w 1/2
+
+//CODE:-
+class Solution {
+public:
+    bool dfs(vector<vector<int>>& graph,int curr,vector<int> &color,int sent){
+        if(color[curr]!=0){
+            return color[curr]==sent;
+        }
+        color[curr]=sent;
+        int newcol;
+        if(sent==1){
+            newcol=2;
+        }
+        else{
+            newcol=1;
+        }
+        bool res=true;
+        for(int i=0;i<graph[curr].size();i++){
+            res=res&&dfs(graph,graph[curr][i],color,newcol);
+        }
+        return res;
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n=graph.size();
+        vector<int> color(n,0);
+        bool res=true;
+        for(int i=0;i<n;i++){
+            if(color[i]==0){
+                res=res&&dfs(graph,i,color,1);
+            }
+        }
+        return res;
+    }
+};
