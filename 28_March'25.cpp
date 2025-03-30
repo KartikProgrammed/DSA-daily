@@ -113,3 +113,53 @@ public:
         return tot-bound;
     }
 };
+
+
+// 127. Word Ladder
+// A transformation sequence from word beginWord to word endWord using a dictionary wordList is a sequence of words beginWord -> s1 -> s2 -> ... -> sk such that:
+// Every adjacent pair of words differs by a single letter.
+// Every si for 1 <= i <= k is in wordList. Note that beginWord does not need to be in wordList.
+// sk == endWord
+// Given two words, beginWord and endWord, and a dictionary wordList, return the number of words in the shortest transformation sequence from beginWord to endWord, or 0 if no such sequence exists.
+
+
+//APPROACH:-
+//BFS
+
+//CODE:-
+class Solution {
+public:
+    int diff(string wd1,string wd2){
+        int count=0;
+        for(int i=0;i<wd1.length();i++){
+            if(wd1[i]!=wd2[i]){
+                count++;
+            }
+        }
+        return count;
+    }
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        int n=wordList.size();
+        vector<bool> visited(n,false);
+        queue<pair<string,int>> q;
+        q.push({beginWord,1});
+        int res=INT_MAX;
+        while(!q.empty()){
+            auto it=q.front();
+            q.pop();
+            int curr=it.second;
+            string st=it.first;
+            if(st==endWord){
+                res=min(res,curr);
+            }
+            for(int i=0;i<n;i++){
+                int temp=diff(st,wordList[i]);
+                if(!visited[i] && temp==1){
+                    q.push({wordList[i],curr+1});
+                    visited[i]=true;
+                }
+            }
+        }
+        return res==INT_MAX?0:res;
+    }
+};
