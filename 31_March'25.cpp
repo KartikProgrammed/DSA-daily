@@ -46,3 +46,51 @@ public:
         return maxSum-minSum;
     }
 };
+
+
+//207. Course Schedule
+// There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+// For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
+// Return true if you can finish all courses. Otherwise, return false.
+
+//APPROACH:-:-
+//detect cycle classic problem
+
+//CODE:-
+class Solution {
+public:
+    bool dfs(vector<vector<int>> &adj,vector<bool> &vis,vector<bool> &pathvis,int curr){
+        vis[curr]=true;
+        pathvis[curr]=true;
+
+        for(auto it:adj[curr]){
+            if(!vis[it]){
+                if(dfs(adj,vis,pathvis,it)==true){
+                    return true;
+                }
+            }
+            if(pathvis[it]==true){
+                return true;
+            }
+        }
+        pathvis[curr]=false;
+        return false;
+    }
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> adj(numCourses);
+        for(auto pre:prerequisites){
+            adj[pre[1]].push_back(pre[0]);
+        }
+        int m=prerequisites.size();
+        vector<bool> vis(numCourses,false);
+        vector<bool> pathvis(numCourses,false);
+        for(int i=0;i<numCourses;i++){
+            if(!vis[i]){
+                if(dfs(adj,vis,pathvis,i)==true){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
