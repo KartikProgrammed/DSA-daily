@@ -44,3 +44,51 @@ public:
         return dfs(questions, 0);
     }
 };
+
+
+//1631. Path With Minimum Effort
+// You are a hiker preparing for an upcoming hike. You are given heights, a 2D array of size rows x columns, where heights[row][col] represents the height of cell (row, col). You are situated in the top-left cell, (0, 0), and you hope to travel to the bottom-right cell, (rows-1, columns-1) (i.e., 0-indexed). You can move up, down, left, or right, and you wish to find a route that requires the minimum effort.
+// A route's effort is the maximum absolute difference in heights between two consecutive cells of the route.
+// Return the minimum effort required to travel from the top-left cell to the bottom-right cell.
+
+//APPROACH:-
+//DIJKSTRA'S
+
+//CODE:-
+class Solution {
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
+        int m=heights.size();
+        int n=heights[0].size();
+        if(m==1 && n==1){
+            return 0;
+        }
+        vector<vector<int>> dist(m,vector<int>(n,INT_MAX));
+        vector<int> dx={1,0,-1,0};
+        vector<int> dy={0,1,0,-1};
+        dist[0][0]=0;
+        pq.push({0,{0,0}});
+        int res=INT_MAX;
+        while(!pq.empty()){
+            auto it=pq.top();
+            pq.pop();
+            int curr=it.first;
+            int x=it.second.first;
+            int y=it.second.second;
+            if (x == m - 1 && y == n - 1) return curr;
+            for(int i=0;i<4;i++){
+                int newx=x+dx[i];
+                int newy=y+dy[i];
+                if(newx>=0 && newx<m && newy>=0 && newy<n){
+                    int ndist=max(curr,abs(heights[x][y]-heights[newx][newy]));
+                    if(ndist<dist[newx][newy]){
+                        dist[newx][newy]=ndist;
+                        pq.push({ndist,{newx,newy}});
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
