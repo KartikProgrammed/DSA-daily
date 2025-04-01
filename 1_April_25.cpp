@@ -92,3 +92,44 @@ public:
         return res;
     }
 };
+
+
+// 743. Network Delay Time
+// You are given a network of n nodes, labeled from 1 to n. You are also given times, a list of travel times as directed edges times[i] = (ui, vi, wi), where ui is the source node, vi is the target node, and wi is the time it takes for a signal to travel from source to target.
+// We will send a signal from a given node k. Return the minimum time it takes for all the n nodes to receive the signal. If it is impossible for all the n nodes to receive the signal, return -1.
+
+//APPROACH:-
+//DIJKSTRA
+
+//CODE:-
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        vector<int> dist(n,INT_MAX);
+        vector<vector<pair<int,int>>> adj(n);
+        for (int i = 0; i < times.size(); i++) {
+            adj[times[i][0] - 1].push_back({times[i][1] - 1, times[i][2]});
+        }
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        dist[k-1]=0;
+        pq.push({0,k-1});
+        while(!pq.empty()){
+            auto it=pq.top();
+            pq.pop();
+            int currdist=it.first;
+            int curr=it.second;
+
+            for (auto& neighbor : adj[curr]) {
+                int next = neighbor.first;
+                int edgeWeight = neighbor.second;
+                int newDist = currdist + edgeWeight;
+                if (dist[next] > newDist) {
+                    dist[next] = newDist;
+                    pq.push({newDist, next});
+                }
+            }
+        }
+        int res=*max_element(dist.begin(),dist.end());
+        return res==INT_MAX?-1:res;
+    }
+};
