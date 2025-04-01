@@ -133,3 +133,50 @@ public:
         return res==INT_MAX?-1:res;
     }
 };
+
+
+//787. Cheapest Flights Within K Stops
+// There are n cities connected by some number of flights. You are given an array flights where flights[i] = [fromi, toi, pricei] indicates that there is a flight from city fromi to city toi with cost pricei.
+// You are also given three integers src, dst, and k, return the cheapest price from src to dst with at most k stops. If there is no such route, return -1.
+
+
+//APPROACH:-
+//dijkstra's w a twist - use a queue because k matters more than dist
+
+//CODE:-
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        queue<pair<int,pair<int,int>>> pq;
+        vector<int> dist(n,INT_MAX);
+        vector<vector<pair<int,int>>> adj(n);
+        for(int i=0;i<flights.size();i++){
+            adj[flights[i][0]].push_back({flights[i][1],flights[i][2]});
+        }
+        dist[src]=0;
+        int res=INT_MAX;
+        pq.push({0,{0,src}});
+        while(!pq.empty()){
+            auto it=pq.front();
+            pq.pop();
+            int node=it.second.second;
+            int currd=it.first;
+            int stop=it.second.first;
+            if(node==dst){
+                res=min(res,currd);
+            }
+            if(stop>k){
+                continue;
+            }
+            for(auto neigh:adj[node]){
+                int newdist=currd+neigh.second;
+                int newnode=neigh.first;
+                if(dist[newnode]>newdist){
+                    dist[newnode]=newdist;
+                    pq.push({newdist,{stop+1,newnode}});
+                }
+            }
+        }
+        return res==INT_MAX?-1:res;
+    }
+};
