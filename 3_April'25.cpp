@@ -133,3 +133,45 @@ public:
         return -1;
     }
 };
+
+//DISJOINT SET
+
+//APPROACH:-
+//REFER CHEATSHEET
+
+//CODE:-
+class disjointSet{
+    vector<int> size;
+    vector<int> parent;
+
+    public:
+        disjointSet(int n){
+            size.resize(n+1,1);
+            parent.resize(n+1);
+            for(int i=0;i<n;i++){
+                parent[i]=i;
+            }
+        }
+        int findUparent(int u){
+            if(parent[u]==u){
+                return u;
+            }
+            return findUparent(parent[u]);
+        }
+
+        void unionFind(int u,int v){
+            int uu=findUparent(u);
+            int uv=findUparent(v);
+            if(uv==uu){
+                return;
+            }
+            if(size[uu]<size[uv]){
+                parent[uu]=uv;
+                size[uv]+=size[uu];
+            }
+            else{
+                parent[uv]=uu;
+                size[uu]+=size[uv];
+            }
+        }
+};
