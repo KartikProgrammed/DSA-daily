@@ -148,15 +148,15 @@ class disjointSet{
         disjointSet(int n){
             size.resize(n+1,1);
             parent.resize(n+1);
-            for(int i=0;i<n;i++){
+            for(int i=0;i<=n;i++){
                 parent[i]=i;
             }
         }
         int findUparent(int u){
-            if(parent[u]==u){
-                return u;
+            if(u!=parent[u]){
+                parent[u]=findUparent(parent[u]);
             }
-            return findUparent(parent[u]);
+            return parent[u];
         }
 
         void unionFind(int u,int v){
@@ -174,4 +174,43 @@ class disjointSet{
                 size[uu]+=size[uv];
             }
         }
+};
+
+
+// 947. Most Stones Removed with Same Row or Column
+// On a 2D plane, we place n stones at some integer coordinate points. Each coordinate point may have at most one stone.
+// A stone can be removed if it shares either the same row or the same column as another stone that has not been removed.
+// Given an array stones of length n where stones[i] = [xi, yi] represents the location of the ith stone, return the largest possible number of stones that can be removed.
+
+//APPROACH:-
+//Disjoint sets
+
+//CODE:-
+class Solution {
+public:
+    int removeStones(vector<vector<int>>& stones) {
+        int n=stones.size();
+        int maxrows=0;
+        int maxcol=0;
+        for(auto it:stones){
+            maxrows=max(maxrows,it[0]);
+            maxcol=max(maxcol,it[1]);
+        }
+        unordered_map<int,int> map;
+        disjointSet ds(maxrows+maxcol+1);
+        for(auto it:stones){
+            int currrow=it[0];
+            int currcol=it[1]+maxrows+1;
+            ds.unionFind(currrow,currcol);
+            map[currrow]=1;
+            map[currcol]=1;
+        }
+        int count=0;
+        for(auto it:map){
+            if(ds.findUparent(it.first)==it.first){
+                count++;
+            }
+        }
+    return n-count;
+    }
 };
