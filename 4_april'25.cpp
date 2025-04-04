@@ -66,3 +66,86 @@ public:
         return parent(root,0,maxh-1);
     }
 };
+
+//721. Accounts Merge
+// Given a list of accounts where each element accounts[i] is a list of strings, where the first element accounts[i][0] is a name, and the rest of the elements are emails representing emails of the account.
+// Now, we would like to merge these accounts. Two accounts definitely belong to the same person if there is some common email to both accounts. Note that even if two accounts have the same name, they may belong to different people as people could have the same name. A person can have any number of accounts initially, but all of their accounts definitely have the same name.
+// After merging the accounts, return the accounts in the following format: the first element of each account is the name, and the rest of the elements are emails in sorted order. The accounts themselves can be returned in any order.
+
+//APPROACH:-
+//DISJOINT SETS
+
+//CODE:-
+class DisjointSet{
+public:
+vector<int> parent;
+vector<double> size;
+
+    DisjointSet(int n){
+        parent.resize(n+1,0);
+        size.resize(n+1,1);
+        for(int i=0;i<=n;i++){
+            parent[i]=i;
+        }
+    }
+    int findUPar(int u){
+        if(parent[u]==u){
+            return parent[u];
+        }
+        return parent[u]=findUPar(parent[u]);
+    }
+    void unionBySize(int u,int v){
+        int uv=findUPar(v);
+        int uu=findUPar(u);
+        if(size[uv]<size[uu]){
+            parent[uv]=uu;
+            size[uu]+=size[uv];
+        }
+        else{
+            parent[uu]=uv;
+            size[uv]+=size[uu];
+        }
+    }
+};
+
+class Solution {
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        int n=accounts.size();
+        DisjointSet ds(n);
+        unordered_map<string,int> map;
+        for(int i=0;i<n;i++){
+            for(int j=1;j<accounts[i].size();j++){
+                if(map.find(accounts[i][j])==map.end()){
+                    map[accounts[i][j]]=i;
+                }
+                else{
+                    ds.unionBySize(i,map[accounts[i][j]]);
+                }
+            }
+        }
+        vector<vector<string>> mails(n);
+        for(auto it:map){
+            string mail=it.first;
+            int node=it.second;
+            int realnode=ds.findUPar(node);
+            mails[realnode].push_back(mail);
+        }
+
+        vector<vector<string>> res;
+        for(int i=0;i<n;i++){
+            if(mails[i].size()==0){
+                continue;
+            }
+            sort(mails[i].begin(),mails[i].end());
+            vector<string> temp;
+            string name=accounts[i][0];
+            temp.push_back(name);
+            for(auto it:mails[i]){
+                temp.push_back(it);
+            }
+            res.push_back(temp);
+        }
+        return res;
+    }
+};
