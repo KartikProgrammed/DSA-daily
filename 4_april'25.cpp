@@ -216,3 +216,46 @@ public:
         return res==0?n*n:res;
     }
 };
+
+
+//778. Swim in Rising Water
+// You are given an n x n integer matrix grid where each value grid[i][j] represents the elevation at that point (i, j).
+// The rain starts to fall. At time t, the depth of the water everywhere is t. You can swim from a square to another 4-directionally adjacent square if and only if the elevation of both squares individually are at most t. You can swim infinite distances in zero time. Of course, you must stay within the boundaries of the grid during your swim.
+// Return the least time until you can reach the bottom right square (n - 1, n - 1) if you start at the top left square (0, 0).
+
+//APPROACH:-
+//DIJKSTRA'S
+
+//CODE:-
+class Solution {
+public:
+    int swimInWater(vector<vector<int>>& grid) {
+        int n=grid.size();
+        priority_queue< pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>> ,greater<pair<int,pair<int,int>>>> pq;
+        pq.push({grid[0][0],{0,0}});
+        vector<int> dx={0,1,0,-1};
+        vector<int> dy={1,0,-1,0};
+        vector<vector<bool>> visited(n,vector<bool>(n,false));
+        visited[0][0]=true;
+        while(!pq.empty()){
+            auto it=pq.top();
+            pq.pop();
+            int level=it.first;
+            int x=it.second.first;
+            int y=it.second.second;
+            if(x==n-1 && y==n-1){
+                return level;
+            }
+            for(int i=0;i<4;i++){
+                int newr=x+dx[i];
+                int newc=y+dy[i];
+                if(newr>=0 && newr<n && newc>=0 && newc<n && !visited[newr][newc]){
+                    visited[newr][newc]=true;
+                    int newl=max(level,grid[newr][newc]);
+                    pq.push({newl,{newr,newc}});
+                }
+            }
+        }
+        return 0;
+    }
+};
