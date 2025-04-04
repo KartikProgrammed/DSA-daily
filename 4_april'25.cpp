@@ -97,6 +97,9 @@ vector<double> size;
     void unionBySize(int u,int v){
         int uv=findUPar(v);
         int uu=findUPar(u);
+        if(uu==uv){
+            return;
+        }
         if(size[uv]<size[uu]){
             parent[uv]=uu;
             size[uu]+=size[uv];
@@ -147,5 +150,69 @@ public:
             res.push_back(temp);
         }
         return res;
+    }
+};
+
+//827. Making A Large Island
+// You are given an n x n binary matrix grid. You are allowed to change at most one 0 to be 1.
+// Return the size of the largest island in grid after applying this operation.
+// An island is a 4-directionally connected group of 1s.
+
+//APPROACH:-
+//DISJOINT SET
+
+//CODE:-
+
+class Solution {
+public:
+    int largestIsland(vector<vector<int>>& grid) {
+        int n=grid.size();
+        DisjointSet ds(n*n);
+        vector<vector<int>> idgrid(n,vector<int>(n));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                idgrid[i][j]=n*i+j;
+            }
+        }
+        vector<int> dx={1,0,-1,0};
+        vector<int> dy={0,1,0,-1};
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1){
+                    int oldid=i*n+j;
+                    for(int k=0;k<4;k++){
+                        int newr=i+dx[k];
+                        int newc=j+dy[k];
+                        int newid=newr*n+newc;
+                        if(newr>=0 && newr<n && newc>=0 && newc<n && grid[newr][newc]==1){
+                            ds.unionBySize(oldid,newid);
+                        }
+                    }
+                }
+            }
+        }
+        int res=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==0){
+                    int curr=1;
+                    unordered_set<int> uniqueParents;
+                    for(int k=0;k<4;k++){
+                        int newr=i+dx[k];
+                        int newc=j+dy[k];
+                        int newid=newr*n+newc;
+                        if(newr>=0 && newr<n && newc>=0 && newc<n && grid[newr][newc]==1){
+                            int par=ds.findUPar(newid);
+                            uniqueParents.insert(par);
+                        }
+                    }
+                    for (int p : uniqueParents) {
+                        curr += ds.size[p];
+                    }
+                    res=max(res,curr);
+                }
+            }
+        }
+        return res==0?n*n:res;
     }
 };
