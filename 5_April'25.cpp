@@ -87,3 +87,33 @@ public:
         return res;
     }
 };
+
+//70. Climbing Stairs
+// You are climbing a staircase. It takes n steps to reach the top.
+// Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+//APPROACH:-
+//DP-1D
+
+//CODE:-
+class Solution {
+public:
+    int recursion(int n,vector<int> &mem){
+        if(n==0){
+            return 1;
+        }
+        if(n<0){
+            return 0;
+        }
+        if(mem[n]!=-1){
+            return mem[n];
+        }
+        int one=recursion(n-1,mem);
+        int two=recursion(n-2,mem);
+        return mem[n]=one+two;
+    }
+    int climbStairs(int n) {
+        vector<int> mem(n+1,-1);
+        return recursion(n,mem);
+    }
+};
