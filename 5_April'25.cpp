@@ -117,3 +117,33 @@ public:
         return recursion(n,mem);
     }
 };
+
+//198. House Robber
+// You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
+// Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.
+
+//APPROACH:-
+//DP
+
+//CODE:-
+class Solution {
+public:
+    int recursion(vector<int>& nums,int curr,int sum,bool choose,vector<vector<int>> &memo){
+        if(curr>=nums.size()){
+            return sum;
+        }
+        if (memo[curr][choose] != -1) {
+            return memo[curr][choose] + sum;
+        }
+        if(!choose){
+            return recursion(nums,curr+1,sum,true,memo);
+        }
+        int r1=recursion(nums,curr+1,sum,true,memo);
+        int r2=recursion(nums,curr+1,sum+nums[curr],false,memo);
+        return memo[curr][choose]=max(r1,r2);
+    }
+    int rob(vector<int>& nums) {
+        vector<vector<int>> memo(nums.size(), vector<int>(2, -1));
+        return recursion(nums,0,0,true,memo);
+    }
+};
