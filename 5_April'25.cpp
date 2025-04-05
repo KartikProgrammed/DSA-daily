@@ -38,3 +38,52 @@ public:
         return recursion(nums,0,0);
     }
 };
+
+//1192. Critical Connections in a Network
+// There are n servers numbered from 0 to n - 1 connected by undirected server-to-server connections forming a network where connections[i] = [ai, bi] represents a connection between servers ai and bi. Any server can reach other servers directly or indirectly through the network.
+// A critical connection is a connection that, if removed, will make some servers unable to reach some other server.
+// Return all critical connections in the network in any order.
+
+//APPROACH:-
+//TARJAN'S ALGO
+
+//CODE:-
+class Solution {
+private:
+    int timer=0;
+public:
+
+    void dfs(int node,int parent,vector<bool> &visited,vector<vector<int>> &adj,vector<int> &time,vector<int> &low,vector<vector<int>> &res){
+        visited[node]=true;
+        time[node]=low[node]=timer;
+        timer++;
+        for(auto it:adj[node]){
+            if(it==parent){
+                continue;
+            }
+            if(!visited[it]){
+                dfs(it,node,visited,adj,time,low,res);
+                low[node]=min(low[node],low[it]);
+                if(low[it]>time[node]){
+                    res.push_back({node,it});
+                }
+            }
+            else{
+                low[node]=min(low[node],low[it]);
+            }
+        }
+    }
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        vector<vector<int>> adj(n);
+        for(auto it:connections){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+        vector<bool> visited(n,false);
+        vector<int> time(n);
+        vector<int> low(n);
+        vector<vector<int>> res;
+        dfs(0,-1,visited,adj,time,low,res);
+        return res;
+    }
+};
