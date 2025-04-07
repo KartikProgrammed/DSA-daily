@@ -10,6 +10,7 @@
         "numeric": "cpp",
         "queue": "cpp",
         "ios": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "sstream": "cpp"
     }
 }
