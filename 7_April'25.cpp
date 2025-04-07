@@ -160,3 +160,36 @@ public:
         return dp(grid,memo,0,0);
     }
 };
+
+
+//120. Triangle
+// Given a triangle array, return the minimum path sum from top to bottom.
+// For each step, you may move to an adjacent number of the row below. More formally, if you are on index i on the current row, you may move to either index i or index i + 1 on the next row.
+
+//APPROACH:-
+//DP-2D
+
+//CODE:-
+class Solution {
+public:
+    int dp(vector<vector<int>>& triangle,vector<vector<int>>& memo,int x,int y){
+        int m=triangle.size();
+        int n=triangle[x].size();
+        if(x==m-1){
+            return triangle[x][y];
+        }
+        if(memo[x][y]!=-1){
+            return memo[x][y];
+        }
+        int same,right=INT_MAX;
+        same=triangle[x][y]+dp(triangle,memo,x+1,y);
+        right=triangle[x][y]+dp(triangle,memo,x+1,y+1);
+        return memo[x][y]=min(same,right);
+    }
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int m=triangle.size();
+        int n=triangle[m-1].size();
+        vector<vector<int>> memo(m,vector<int>(n,-1));
+        return dp(triangle,memo,0,0);
+    }
+};
