@@ -41,3 +41,43 @@ public:
         return (op+2)/3;
     }
 };
+
+
+//931. Minimum Falling Path Sum
+// Given an n x n array of integers matrix, return the minimum sum of any falling path through matrix.
+// A falling path starts at any element in the first row and chooses the element in the next row that is either directly below or diagonally left/right. Specifically, the next element from position (row, col) will be (row + 1, col - 1), (row + 1, col), or (row + 1, col + 1).
+
+//APPROACH:-
+//DP
+
+//CODE:-
+class Solution {
+public:
+    int dp(vector<vector<int>>& matrix,vector<vector<int>>& memo,int x,int y){
+        int m=matrix.size();
+        if(x==m-1){
+            return matrix[x][y];
+        }
+        if(memo[x][y]!=INT_MIN){
+            return memo[x][y];
+        }
+        int left=INT_MAX,bott=INT_MAX,right=INT_MAX;
+        if(y>0){
+            left=matrix[x][y]+dp(matrix,memo,x+1,y-1);
+        }
+        if(y<m-1){
+            right=matrix[x][y]+dp(matrix,memo,x+1,y+1);
+        }
+        bott=matrix[x][y]+dp(matrix,memo,x+1,y);
+        return memo[x][y]=min({bott,left,right});
+    }
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int res=INT_MAX;
+        int n=matrix.size();
+        vector<vector<int>> memo(n,vector<int>(n,INT_MIN));
+        for(int i=0;i<n;i++){
+            res=min(res,dp(matrix,memo,0,i));
+        }
+        return res;
+    }
+};
