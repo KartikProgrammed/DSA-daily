@@ -159,3 +159,38 @@ public:
         return res==INT_MAX?-1:res;
     }
 };
+
+
+//518. Coin Change II
+// You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+// Return the number of combinations that make up that amount. If that amount of money cannot be made up by any combination of the coins, return 0.
+// You may assume that you have an infinite number of each kind of coin.
+// The answer is guaranteed to fit into a signed 32-bit integer.
+
+//APPROACH:-
+//DP
+
+//CODE:-
+class Solution {
+public:
+    int dp(vector<int>& coins,int ind, int amount,vector<vector<int>> &memo){
+        if(amount==0){
+            return 1;
+        }
+        if(amount<0|| ind == coins.size()){
+            return 0;
+        }
+        if(memo[amount][ind]!=-1){
+            return memo[amount][ind];
+        }
+        int take=dp(coins,ind,amount-coins[ind],memo);
+        int nott=dp(coins,ind+1,amount,memo);
+
+        return memo[amount][ind]=take+nott;
+    }
+    int change(int amount, vector<int>& coins) {
+        vector<vector<int>> memo(amount+1,vector<int>(coins.size(),-1));
+        int res=dp(coins,0,amount,memo);
+        return res;
+    }
+};
