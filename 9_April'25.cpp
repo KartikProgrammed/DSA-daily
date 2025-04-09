@@ -122,3 +122,40 @@ public:
         return count;
     }
 };
+
+//322. Coin Change
+// You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+// Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+// You may assume that you have an infinite number of each kind of coin.
+
+//APPROACH:-
+//DP
+
+//CODE:-
+class Solution {
+public:
+    int dp(vector<int>& coins, int amount,vector<int>& memo){
+        if(amount==0){
+            return 0;
+        }
+        if(amount<0){
+            return INT_MAX;
+        }
+        if(memo[amount]!=-1){
+            return memo[amount];
+        }
+        int res=INT_MAX;
+        for(int i=0;i<coins.size();i++){
+            int subres=dp(coins,amount-coins[i],memo);
+            if(subres!=INT_MAX){
+                res=min(res,subres+1);
+            }
+        }
+        return memo[amount]=res;
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> memo(amount+1,-1);
+        int res=dp(coins,amount,memo);
+        return res==INT_MAX?-1:res;
+    }
+};
