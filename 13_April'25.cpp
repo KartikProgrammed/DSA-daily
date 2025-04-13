@@ -80,3 +80,35 @@ public:
         return rec(text1,text2,0,0,memo);
     }
 };
+
+
+//516. Longest Palindromic Subsequence
+// Given a string s, find the longest palindromic subsequence's length in s.
+// A subsequence is a sequence that can be derived from another sequence by deleting some or no elements without changing the order of the remaining elements.
+
+//APPROACH:-
+//just reverse the string and find the LCS withthe original string
+
+//CODE:-
+class Solution {
+public:
+    int rec(string &s,string &s2,int left,int right,vector<vector<int>> &memo){
+        if(left>=s.length()||right>=s2.length()){
+            return 0;
+        }
+        if(memo[left][right]!=-1){
+            return memo[left][right];
+        }
+        if(s[left]==s2[right]){
+            return memo[left][right]=1+rec(s,s2,left+1,right+1,memo);
+        }
+        return memo[left][right]=max(rec(s,s2,left+1,right,memo),rec(s,s2,left,right+1,memo));
+    }
+    int longestPalindromeSubseq(string s) {
+        int n=s.length();
+        string s2=s;
+        reverse(s2.begin(),s2.end());
+        vector<vector<int>> memo(n,vector<int>(n,-1));
+        return rec(s,s2,0,0,memo);
+    }
+};
