@@ -145,3 +145,36 @@ public:
         return rec(s,0,n-1,memo);
     }
 };
+
+//583. Delete Operation for Two Strings
+// Given two strings word1 and word2, return the minimum number of steps required to make word1 and word2 the same.
+// In one step, you can delete exactly one character in either string.
+
+//APPROACH:-
+//find lcs nd substract the total length (wrd1+wrd2) from it
+//return the ans
+
+//CODE:-
+class Solution {
+public:
+    int rec(string &word1, string &word2,int left,int right,vector<vector<int>> &memo){
+        if(left>=word1.length() || right>=word2.length()){
+            return 0;
+        }
+        if(memo[left][right]!=-1){
+            return memo[left][right];
+        }
+        if(word1[left]==word2[right]){
+            return memo[left][right]=1+rec(word1,word2,left+1,right+1,memo);
+        }
+        return memo[left][right]=max(rec(word1,word2,left+1,right,memo),rec(word1,word2,left,right+1,memo));
+    }
+    int minDistance(string word1, string word2) {
+        int l=word1.length();
+        int r=word2.length();
+        vector<vector<int>> memo(l,vector<int>(r,-1));
+        int lcs=rec(word1,word2,0,0,memo);
+        lcs=2*lcs;
+        return l+r-lcs;
+    }
+};
