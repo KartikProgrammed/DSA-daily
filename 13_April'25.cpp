@@ -46,3 +46,37 @@ public:
         return ((long long)odd*even) %M;
     }
 };
+
+
+//1143. Longest Common Subsequence
+//Given two strings text1 and text2, return the length of their longest common subsequence. If there is no common subsequence, return 0.
+// A subsequence of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.
+// For example, "ace" is a subsequence of "abcde".
+// A common subsequence of two strings is a subsequence that is common to both strings.
+
+//APPROACH:-
+//DP
+
+//CODE:-
+class Solution {
+public:
+    int rec(string &text1, string &text2,int left,int right,vector<vector<int>> &memo){
+        if(left>=text1.length() || right>=text2.length()){
+            return 0;
+        }
+        if( memo[left][right]!=-1){
+            return  memo[left][right];
+        }
+        int res=0;
+        if(text1[left]==text2[right]){
+            return memo[left][right]=1+rec(text1,text2,left+1,right+1,memo);
+        }
+        return memo[left][right]=max(rec(text1,text2,left+1,right,memo),rec(text1,text2,left,right+1,memo));
+    }
+    int longestCommonSubsequence(string text1, string text2) {
+        int l=text1.length();
+        int r=text2.length();
+        vector<vector<int>> memo(l,vector<int>(r,-1));
+        return rec(text1,text2,0,0,memo);
+    }
+};
