@@ -112,3 +112,36 @@ public:
         return rec(s,s2,0,0,memo);
     }
 };
+
+
+//1312. Minimum Insertion Steps to Make a String Palindrome
+// Given a string s. In one step you can insert any character at any index of the string.
+// Return the minimum number of steps to make s palindrome.
+// A Palindrome String is one that reads the same backward as well as forward.
+
+//APPROACH:-
+//start w 2 pointers 1 from left and 1 from right
+//when the ele at either indices are ==, skip both
+//otherwise add an element at either side and compute min additions
+
+//CODE:-
+class Solution {
+public:
+    int rec(string &s,int left,int right,vector<vector<int>> &memo){
+        if(left>right){
+            return 0;
+        }
+        if(memo[left][right]!=-1){
+            return memo[left][right];
+        }
+        if(s[left]==s[right]){
+            return memo[left][right]=rec(s,left+1,right-1,memo);
+        }
+        return memo[left][right]=(1+min(rec(s,left+1,right,memo),rec(s,left,right-1,memo)));
+    }
+    int minInsertions(string s) {
+        int n=s.length();
+        vector<vector<int>> memo(n,vector<int>(n,-1));
+        return rec(s,0,n-1,memo);
+    }
+};
