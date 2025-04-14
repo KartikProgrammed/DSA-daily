@@ -79,3 +79,46 @@ public:
         return rec(s,t,0,0,memo);
     }
 };
+
+
+//72. Edit Distance
+// Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2.
+// You have the following three operations permitted on a word:
+// Insert a character
+// Delete a character
+// Replace a character
+
+//APPROACH:-
+//If the char matches, no peration required
+//if it doesnt, u can either ins,del,replace try all find min
+
+//CODE:-
+class Solution {
+public:
+    int rec(string &word1,string &word2,int left,int right,vector<vector<int>> &memo){
+        if(right>=word2.length()){
+            return word1.length()-left;
+        }
+        if(left>=word1.length()){
+            return word2.length()-right;
+        }
+        if(memo[left][right]!=-1){
+            return memo[left][right];
+        }
+        if(word1[left]==word2[right]){
+            return memo[left][right]=rec(word1,word2,left+1,right+1,memo); //skip
+            
+        }
+        int subb=rec(word1,word2,left,right+1,memo); //ins
+        int subb2=rec(word1,word2,left+1,right,memo); //del
+        int subb3=rec(word1,word2,left+1,right+1,memo); //replace
+        
+        return memo[left][right]=1+min({subb,subb2,subb3});        
+    }
+    int minDistance(string word1, string word2) {
+        int m=word1.length();
+        int n=word2.length();
+        vector<vector<int>> memo(m,vector<int>(n,-1));
+        return rec(word1,word2,0,0,memo);
+    }
+};
