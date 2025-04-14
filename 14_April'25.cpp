@@ -43,3 +43,39 @@ public:
         return res;
     }
 };
+
+
+//115. Distinct Subsequences
+// Given two strings s and t, return the number of distinct subsequences of s which equals t.
+// The test cases are generated so that the answer fits on a 32-bit signed integer.
+
+//APPROACH:-
+//DP ON STRINGS BASIC
+
+//CODE:-
+class Solution {
+public:
+    int rec(string &s,string &t,int left,int right,vector<vector<int>> &memo){
+        if(right>=t.length()){
+            return 1;
+        }
+        if(left>=s.length()){
+            return 0;
+        }
+        if(memo[left][right]!=-1){
+            return memo[left][right];
+        }
+        int res=0;
+        if(s[left]==t[right]){
+            res+=rec(s,t,left+1,right+1,memo);
+        }
+        res+=rec(s,t,left+1,right,memo);
+        return memo[left][right]=res;
+    }
+    int numDistinct(string s, string t) {
+        int m=s.length();
+        int n=t.length();
+        vector<vector<int>> memo(m,vector<int>(n,-1));
+        return rec(s,t,0,0,memo);
+    }
+};
