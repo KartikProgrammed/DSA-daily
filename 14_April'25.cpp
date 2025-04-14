@@ -122,3 +122,44 @@ public:
         return rec(word1,word2,0,0,memo);
     }
 };
+
+// 44. Wildcard Matching
+// Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*' where:
+// '?' Matches any single character.
+// '*' Matches any sequence of characters (including the empty sequence).
+// The matching should cover the entire input string (not partial).
+
+//APPROACH:-
+//* should be taken care of carefully else all easy
+
+//CODE:-
+class Solution {
+public:
+    bool rec(string &s,string &p,int left,int right,vector<vector<int>> &memo){
+        if(right>=p.length()){
+            return left==s.length();
+        }
+        if(left>=s.length()){
+            for (int k = right; k < p.length(); ++k)
+                if (p[k] != '*') return false;
+            return true;
+        }
+        if(memo[left][right]!=-1){
+            return memo[left][right];
+        }
+        
+        if(p[right]=='?' || s[left]==p[right]){
+            return memo[left][right]= rec(s,p,left+1,right+1,memo);
+        }
+        if(p[right]=='*'){
+            return memo[left][right]= rec(s,p,left+1,right,memo) || rec(s,p,left,right+1,memo);
+        }
+        return memo[left][right]= false;
+    }
+    bool isMatch(string s, string p) {
+        int m=s.length();
+        int n=p.length();
+        vector<vector<int>> memo(m,vector<int>(n,-1));
+        return rec(s,p,0,0,memo);
+    }
+};
