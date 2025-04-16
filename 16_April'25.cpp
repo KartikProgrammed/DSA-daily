@@ -50,3 +50,44 @@ public:
         return res;
     }
 };
+
+
+// 123. Best Time to Buy and Sell Stock III
+// You are given an array prices where prices[i] is the price of a given stock on the ith day, and two integers k and m.
+// Find the maximum profit you can achieve. You may complete at most k transactions, and you must sell the stock before you can buy again.
+// Note that you cannot buy and sell the stock on the same day, and you must sell the stock before you can buy again.
+// A transaction is defined as one buy and one sell.
+// The final answer should be the maximum profit you can achieve after at most k transactions and m days.
+
+//APPROACH:-
+//Dynamic programming approach
+
+//CODE:-
+class Solution {
+public:
+    int dp(vector<int>& prices,int curr,int buy,bool holding,vector<vector<vector<int>>> &memo){
+        if(curr>=prices.size() || buy==2){
+            return 0;
+        }
+        if(memo[curr][buy][holding]!=-1){
+            return memo[curr][buy][holding];
+        }
+        int res=0;
+        if(holding){
+            int op1=prices[curr]+dp(prices,curr+1,buy+1,false,memo);
+            int op2=dp(prices,curr+1,buy,true,memo);
+            res= max(op1,op2);
+        }
+        else{
+            int op1=-prices[curr]+dp(prices,curr+1,buy,true,memo);
+            int op2=dp(prices,curr+1,buy,false,memo);
+            res=max(op1,op2);
+        }
+        return memo[curr][buy][holding]=res;
+    }
+    int maxProfit(vector<int>& prices) {
+        int n=prices.size();
+        vector<vector<vector<int>>> memo(n,vector<vector<int>>(2,vector<int>(2,-1)));
+        return dp(prices,0,0,false,memo);
+    }
+};
