@@ -82,3 +82,44 @@ public:
         return dp(prices,0,false,memo);
     }
 };
+
+
+//714. Best Time to Buy and Sell Stock with Transaction Fee
+// You are given an array prices where prices[i] is the price of a given stock on the ith day, and an integer fee representing a transaction fee.
+// Find the maximum profit you can achieve. You may complete as many transactions as you like, but you need to pay the transaction fee for each transaction.
+// Note:
+// You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+// The transaction fee is only charged once for each stock purchase and sale.
+
+//APPROACH:-
+//Dynamic programming approach
+
+//CODE:-
+class Solution {
+public:
+    int dp(vector<int>& prices, int fee,int curr,bool holding,vector<vector<int>> &memo){
+        if(curr>=prices.size()){
+            return 0;
+        }
+        if(memo[curr][holding]!=-1){
+            return memo[curr][holding];
+        }
+        int res=0;
+        if(holding){
+            int op1=prices[curr]-fee+dp(prices,fee,curr+1,false,memo);
+            int op2=dp(prices,fee,curr+1,true,memo);
+            res=max(op1,op2);
+        }
+        else{
+            int op1=-prices[curr]+dp(prices,fee,curr+1,true,memo);
+            int op2=dp(prices,fee,curr+1,false,memo);
+            res=max(op1,op2);
+        }
+        return memo[curr][holding]= res;
+    }
+    int maxProfit(vector<int>& prices, int fee) {
+        int n=prices.size();
+        vector<vector<int>> memo(n,vector<int>(2,-1));
+        return dp(prices,fee,0,false,memo);
+    }
+};
