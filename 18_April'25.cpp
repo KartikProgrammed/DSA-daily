@@ -48,3 +48,37 @@ public:
         return rec(n,"1");
     }
 };
+
+
+//300. Longest Increasing Subsequence
+// Given an integer array nums, return the length of the longest strictly increasing subsequence.
+
+
+//APPROACH:-
+//Dynamic programming approach
+
+//CODE:-
+class Solution {
+public:
+    int rec(vector<int>& nums,int ind,int prev,vector<vector<int>> &dp){
+        if(ind>=nums.size()){
+            return 0;
+        }
+        if(dp[ind][prev+1]!=-1){
+            return dp[ind][prev+1];
+        }
+        int res=0;
+        int op1=0;
+        if(prev==-1 || nums[ind]>nums[prev]){
+            op1=1+rec(nums,ind+1,ind,dp);
+        }
+        int op2=rec(nums,ind+1,prev,dp);
+        res=max(op1,op2);
+        return dp[ind][prev+1]=res;
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>> dp(n, vector<int>(n + 1, -1));
+        return rec(nums,0,-1,dp);
+    }
+};
