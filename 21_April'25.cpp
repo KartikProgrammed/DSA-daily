@@ -52,3 +52,25 @@ public:
         return res;
     }
 };
+
+//APPROACH:-
+//Optimized brute force, using maths
+
+//CODE:-
+class Solution {
+public:
+    int numberOfArrays(vector<int>& differences, int lower, int upper) {
+        int maxval=0;
+        int minval=0;
+        int curr=0;
+        for(int i=0;i<differences.size();i++){
+            curr=curr+differences[i];
+            maxval=max(curr,maxval);
+            minval=min(curr,minval);
+            if((upper-maxval)-(lower-minval)+1<=0){
+                return 0;
+            }
+        }
+        return (upper-maxval)-(lower-minval)+1;
+    }
+};
