@@ -96,3 +96,44 @@ public:
         return recursion(0,0,s,dp);
     }
 };
+
+//1043. Partition Array for Maximum Sum
+// Given an integer array arr, partition the array into (contiguous) subarrays of length at most k. After partitioning, each subarray has their values changed to become the maximum value of that subarray.
+// Return the largest sum of the given array after partitioning. Test cases are generated so that the answer fits in a 32-bit integer.
+
+
+//Approach:
+//Use dynamic programming to find the maximum sum of the array after partitioning.
+//at every index i, you can either partition at the index or not
+//if you do, then change the left pointer to i+1 and check if the maximum value of the subarray is greater than the current maximum value
+//if it is, then you can add the maximum value to the sum of the right side of the array
+
+// CODE:
+class Solution {
+public:
+    int recursion(vector<int> &arr,int k,int left,int curr,vector<vector<int>> &dp){
+        if(curr==arr.size()){
+            if (curr - left > k) return INT_MIN;
+            if (left >= arr.size()) return 0;
+            return *max_element(arr.begin()+left,arr.begin()+curr)*(curr-left);
+        }
+        if(dp[left][curr]!=-1){
+            return dp[left][curr];
+        }
+        int op1=INT_MIN;
+        if(curr - left + 1 <= k){
+            int next=recursion(arr,k,curr+1,curr+1,dp);
+            int partmax=*max_element(arr.begin()+left,arr.begin()+curr+1);
+            if(next!=INT_MIN){
+                op1=partmax*(curr-left+1)+next;
+            }
+        }
+        int op2=recursion(arr,k,left,curr+1,dp);
+        return dp[left][curr]=max(op1,op2);
+    }
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        int n=arr.size();
+        vector<vector<int>> dp(n+1,vector<int>(n,-1));
+        return recursion(arr,k,0,0,dp);
+    }
+};
