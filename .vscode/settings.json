@@ -11,6 +11,7 @@
         "queue": "cpp",
         "ios": "cpp",
         "xiosbase": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "iomanip": "cpp"
     }
 }

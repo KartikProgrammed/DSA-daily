@@ -72,3 +72,76 @@ public:
         return res;
     }
 };
+
+//85. Maximal Rectangle
+// Given a rows x cols binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
+
+// Approach:
+// Use dynamic programming to calculate the height of each column and then use a stack to find the largest rectangle in each row.
+
+// CODE:
+class Solution {
+public:
+    vector<int> newVec(vector<char> &curr,vector<int> &prev){
+        int n=curr.size();
+        vector<int> res(n);
+        for(int i=0;i<n;i++){
+            res[i]=curr[i]=='1'?1+prev[i]:0;
+        }
+        return res;
+    }
+    int maxRect(vector<int> curr){
+        int n=curr.size();
+        int res=0;
+        stack<int> helper;
+        vector<int> NSL(n,-1);
+        vector<int> NSR(n,n);
+
+        for(int i=0;i<n;i++){
+            while(!helper.empty() && curr[helper.top()]>=curr[i]){
+                helper.pop();
+            }
+            if(!helper.empty()){
+                NSL[i]=helper.top();
+            }
+            helper.push(i);
+        }
+
+        while(!helper.empty()){
+            helper.pop();
+        }
+
+        for(int i=n-1;i>=0;i--){
+            while(!helper.empty() && curr[helper.top()]>=curr[i]){
+                helper.pop();
+            }
+            if(!helper.empty()){
+                NSR[i]=helper.top();
+            }
+            helper.push(i);
+        }
+
+        for(int i=0;i<n;i++){
+            int temp=(NSR[i]-NSL[i]-1)*curr[i];
+            res=max(temp,res);
+        }
+        return res;
+    }
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        
+        int n=matrix.size();
+        if(n==0){
+            return 0;
+        }
+        int m=matrix[0].size();
+        
+        vector<int> prev(m,0);
+        int res=0;
+        for(int i=0;i<matrix.size();i++){
+            prev=newVec(matrix[i],prev);
+            int curr=maxRect(prev);
+            res=max(curr,res);
+        }
+        return res;
+    }
+};
