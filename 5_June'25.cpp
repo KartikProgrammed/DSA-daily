@@ -145,3 +145,36 @@ public:
         return res;
     }
 };
+
+//1277. Count Square Submatrices with All Ones
+// Given a m * n matrix of ones and zeros, return how many square submatrices have all ones.
+
+
+// Approach:
+// Use dynamic programming to calculate the size of the largest square submatrix ending at each cell.
+
+//  CODE:
+class Solution {
+public:
+    int countSquares(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+        int m=matrix[0].size();
+        int res=0;
+        vector<vector<int>> dp(n,vector<int>(m,0));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]==1){
+                    if(i==0||j==0){
+                        dp[i][j]=1;
+                    }
+                    else{
+                    int mini=min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]});
+                    dp[i][j]=mini+1;
+                    }
+                    res+=dp[i][j];
+                }
+            }
+        }
+        return res;
+    }
+};
