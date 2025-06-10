@@ -128,3 +128,32 @@ public:
         return res;
     }
 };
+
+//686. Repeated String Match
+// Given two strings a and b, return the minimum number of times you should repeat string a so that string b is a substring of it. If it is impossible for b​​​​​​ to be a substring of a after repeating it, return -1.
+// Notice: string "abc" repeated 0 times is "", repeated 1 time is "abc" and repeated 2 times is "abcabc".
+
+//Approach:
+// Calculate the minimum number of times to repeat string a such that string b can be a substring of it. Use a loop to check if b is a substring of repeated a.
+
+// CODE:
+class Solution {
+public:
+    int repeatedStringMatch(string a, string b) {
+        int count=1;
+        string repeated=a;
+        while(repeated.size()<b.size()){
+            count++;
+            repeated+=a;
+        }
+        if(repeated.find(b)!=string::npos){
+            return count;
+        }
+        repeated+=a;
+        count++;
+        if(repeated.find(b)!=string::npos){
+            return count;
+        }
+        return -1;
+    }
+};
