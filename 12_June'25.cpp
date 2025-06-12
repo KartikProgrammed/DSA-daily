@@ -41,3 +41,33 @@ public:
         return res;
     }
 };
+
+//28. Find the Index of the First Occurrence in a String
+// Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack
+
+//Approach:
+//use two loops to iterate through the haystack and needle strings, checking for a match.
+
+// CODE:
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        for(int i=0;i<haystack.length();i++){
+            if(haystack[i]==needle[0] && i+needle.length()<=haystack.length()){
+                bool found=true;
+                int k;
+                for(int j=0,k=i;j<needle.size();j++,k++){
+                    if(needle[j]!=haystack[k]){
+                        found=false;
+                        break;
+                    }
+                }
+                if(found){
+                    return i;
+                }
+            }
+            continue;
+        }
+        return -1;
+    }
+};
