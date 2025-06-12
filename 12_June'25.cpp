@@ -71,3 +71,25 @@ public:
         return -1;
     }
 };
+
+//214. Shortest Palindrome
+// You are given a string s. You can convert s to a palindrome by adding characters in front of it.
+// Return the shortest palindrome you can find by performing this transformation.
+
+//Approach:
+//use cpp inbuilt functions to check if a string is a palindrome and find the shortest palindrome by adding characters in front of it.
+
+// CODE:
+class Solution {
+public:
+    string shortestPalindrome(string s) {
+        string rev=s;
+        reverse(rev.begin(),rev.end());
+        for(int i=0;i<s.length();i++){
+            if(!memcmp(s.c_str(),rev.c_str()+i,s.length()-i)){
+                return rev.substr(0,i)+s;
+            }
+        }
+        return rev+s;
+    }
+};
