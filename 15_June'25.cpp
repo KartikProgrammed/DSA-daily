@@ -112,3 +112,26 @@ public:
         }
     }
 };
+
+//Approach2:-
+//use reverse function to rotate the array in place.
+
+class Solution {
+public:
+    vector<int> rotate(vector<int> nums,int beg,int end){
+        while(beg<end){
+            int temp=nums[beg];
+            nums[beg]=nums[end];
+            nums[end]=temp;
+            beg++;
+            end--;
+        }
+        return nums;
+    }
+    void rotate(vector<int>& nums, int k) {
+        k=k%nums.size();
+        nums=rotate(nums,0,nums.size()-1);
+        nums=rotate(nums,0,k-1);
+        nums=rotate(nums,k,nums.size()-1);
+    }
+};
