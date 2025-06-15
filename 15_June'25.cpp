@@ -135,3 +135,34 @@ public:
         nums=rotate(nums,k,nums.size()-1);
     }
 };
+
+
+//283. Move Zeroes
+// Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+// Note that you must do this in-place without making a copy of the array.
+
+// Approach:
+// Use two pointers to keep track of the position of the last non-zero element and the current element.
+
+// CODE:
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int z=0;
+        int nonz=0;
+        while(nonz<nums.size() && z<=nonz){
+            if(nums[z]!=0){
+                z++;
+                if (z > nonz) nonz = z;
+            }
+            else if(nums[nonz]==0){
+                nonz++;
+            }
+            else if(nums[z]==0 && nums[nonz]!=0){
+                nums[z++]=nums[nonz];
+                nums[nonz]=0;
+                nonz++;
+            }
+        }
+    }
+};
