@@ -189,3 +189,22 @@ public:
         return 0;
     }
 };
+
+
+//Approach2:-
+// Use the formula for the sum of the first n natural numbers to find the missing number.
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n=nums.size();
+        int sum=0;
+        int curr=0;
+        for(int i=1;i<=n;i++){
+            sum+=i;
+        }
+        for(int i=0;i<nums.size();i++){
+            curr+=nums[i];
+        }
+        return sum-curr;
+    }
+};
