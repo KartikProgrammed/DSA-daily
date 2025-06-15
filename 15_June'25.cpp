@@ -87,3 +87,28 @@ public:
         return stoi(maxi)-stoi(mini);
     }
 };
+
+//189. Rotate Array
+// Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
+
+//Approach:
+//use an extra array to store the rotated elements.
+
+
+// CODE:
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        k=k%nums.size();
+        vector<int> temp=nums;
+        for(int i=nums.size()-k;i<nums.size();i++){
+            temp[i-(nums.size()-k)]=nums[i];
+        }
+        for(int i=k;i<nums.size();i++){
+            temp[i]=nums[i-k];
+        }
+        for(int i=0;i<nums.size();i++){
+            nums[i]=temp[i];
+        }
+    }
+};
