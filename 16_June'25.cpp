@@ -38,3 +38,24 @@ public:
         return res;
     }
 };
+
+//Approach2:-
+// Use a single pass to find the maximum difference by keeping track of the minimum value seen so far.
+
+// CODE:
+class Solution {
+public:
+    int maximumDifference(vector<int>& nums) {
+        int res=-1;
+        int minVal=nums[0];
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]>minVal){
+                res=max(res,nums[i]-minVal);
+            }
+            else{
+                minVal=nums[i];
+            }
+        }
+        return res;
+    }
+};
