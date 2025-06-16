@@ -85,3 +85,22 @@ public:
         return res;    
     }
 };
+
+//136. Single Number
+// Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+// You must implement a solution with a linear runtime complexity and use only constant extra space.
+
+// Approach:
+// Use XOR operation to find the single number since XOR of a number with itself is 0 and XOR with 0 is the number itself.
+
+// CODE:
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int res=0;
+        for(int i=0;i<nums.size();i++){
+            res^=nums[i];
+        }
+        return res;
+    }
+};
