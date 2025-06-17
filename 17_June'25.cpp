@@ -139,3 +139,25 @@ public:
         return curr;
     }
 };
+
+//53. Maximum Subarray
+// Given an integer array nums, find the subarray with the largest sum, and return its sum.
+
+// Approach: Kadane's algorithm
+// Kadane's algorithm is a dynamic programming approach that finds the maximum sum of a contiguous subarray in linear time.
+// It maintains a current sum and a maximum sum, updating them as it iterates through the array.
+
+
+//CODE:-
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int curr=0;
+        int res=INT_MIN;
+        for(int i=0;i<nums.size();i++){
+            curr=max(curr+nums[i],nums[i]);
+            res=max(res,curr);
+        }
+        return res;
+    }
+};
