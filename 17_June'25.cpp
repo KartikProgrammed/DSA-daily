@@ -98,6 +98,7 @@ public:
  
 
 // Approach:
+//Unordered map to count occurrences of each element
 // The algorithm maintains a count and a candidate for the majority element.
 
 //CODE:-
@@ -112,5 +113,29 @@ public:
             }
         }
         return nums[0];
+    }
+};
+
+//Approach2:
+//Boyer-Moore Voting Algorithm
+// The Boyer-Moore Voting Algorithm is an efficient algorithm to find the majority element in linear time and constant space.
+// It works by maintaining a count and a candidate for the majority element.
+// The count is incremented when the current element matches the candidate and decremented otherwise.
+// If the count reaches zero, the current element becomes the new candidate.
+
+
+//CODE:-
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int curr=0;
+        int count=0;
+        for(int num:nums){
+            if(count==0){
+                curr=num;
+            }
+            count+=(num==curr?1:-1);
+        }
+        return curr;
     }
 };
