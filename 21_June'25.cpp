@@ -73,3 +73,24 @@ public:
         return res;
     }
 };
+
+//Approach: use a single pass to find the maximum profit by keeping track of the minimum price seen so far and the maximum profit.
+//kadane's algorithm can be used to find the maximum profit in O(n) time.
+
+// CODE:
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int res=0;
+        int mini=prices[0];
+        for(int i=1;i<prices.size();i++){
+            if(prices[i]<mini){
+                mini=prices[i];
+            }
+            else{
+                res=max(res,prices[i]-mini);
+            }
+        }
+        return res;
+    }
+};
