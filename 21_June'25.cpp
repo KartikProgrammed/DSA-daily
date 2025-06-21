@@ -146,3 +146,36 @@ public:
 };
 //wont work because the arr has more positive integers than negative integers.
 
+//Approach 2:- use 3 vectors to store positive and negative integers, then merge them in the required order.
+
+// CODE:
+class Solution {
+public:
+    vector<int> rearrangeArray(vector<int>& nums) {
+        vector<int> res;
+        vector<int> pos;
+        vector<int> neg;
+        int n=nums.size();
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]>0){
+                pos.push_back(nums[i]);
+            }
+            else{
+                neg.push_back(nums[i]);
+            }
+        }
+        int posi=0;
+        int nega=0;
+        bool flag=true;
+        for(int i=0;i<n;i++){
+            if(flag){
+                res.push_back(pos[posi++]);
+            }
+            else{
+                res.push_back(neg[nega++]);
+            }
+            flag=!flag;
+        }
+        return res;
+    }
+};
