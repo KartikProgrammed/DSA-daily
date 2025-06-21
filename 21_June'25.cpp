@@ -94,3 +94,55 @@ public:
         return res;
     }
 };
+
+
+//2149. Rearrange Array Elements by Sign
+// You are given a 0-indexed integer array nums of even length consisting of an equal number of positive and negative integers.
+// You should return the array of nums such that the the array follows the given conditions:
+// Every consecutive pair of integers have opposite signs.
+// For all integers with the same sign, the order in which they were present in nums is preserved.
+// The rearranged array begins with a positive integer.
+// Return the modified array after rearranging the elements to satisfy the aforementioned conditions.
+
+//Apprach: use pos,neg and curr pointers to rearrange the elements in the array.
+
+// CODE:
+class Solution {
+public:
+    vector<int> rearrangeArray(vector<int>& nums) {
+        int pos=0;
+        int neg=0;
+        int curr=0;
+        int n=nums.size();
+        bool flag=true;
+        while(curr<nums.size()){
+            if(flag && nums[curr]<0){
+                pos=max(pos,curr+1);
+                while(pos<n){
+                    if(nums[pos]>0){
+                        swap(nums[curr],nums[pos]);
+                        break;
+                    }
+                    pos++;
+                }
+                
+            }
+            else if(!flag && nums[curr]>0){
+                neg=max(neg,curr+1);
+                while(neg<n){
+                    if(nums[neg]<0){
+                        swap(nums[curr],nums[neg]);
+                        break;
+                    }
+                    neg++;
+                }
+                
+            }
+            flag=!flag;
+            curr++;
+        }
+        return nums;
+   }
+};
+//wont work because the arr has more positive integers than negative integers.
+
