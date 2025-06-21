@@ -50,3 +50,26 @@ public:
         return res;
     }
 };
+
+//121. Best Time to Buy and Sell Stock
+// You are given an array prices where prices[i] is the price of a given stock on the ith day.
+// You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+// Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+
+//Approach: brute force to find the maximum profit by checking all pairs of days. (TLE for large inputs)
+
+// CODE:
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int res=0;
+        for(int i=0;i<prices.size();i++){
+            int curr=0;
+            for(int j=i+1;j<prices.size();j++){
+                curr=max(prices[j]-prices[i],curr);
+            }
+            res=max(res,curr);
+        }
+        return res;
+    }
+};
