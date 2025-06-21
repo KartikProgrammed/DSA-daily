@@ -179,3 +179,45 @@ public:
         return res;
     }
 };
+
+
+//73. Set Matrix Zeroes
+// Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
+// You must do it in place.
+
+//Approach: use a 2d vector to store the positions of the zeros, then set the rows and columns to zero.
+
+// CODE:
+class Solution {
+public:
+    vector<vector<int>> setz(vector<vector<int>> &matrix,int x,int y){
+        int m=matrix.size();
+        int n=matrix[0].size();
+        for(int i=0;i<m;i++){
+            matrix[i][y]=0;
+        }
+        for(int i=0;i<n;i++){
+            matrix[x][i]=0;
+        }
+        return matrix;
+    }
+    void setZeroes(vector<vector<int>>& matrix) {
+        int m=matrix.size();
+        int n=matrix[0].size();
+        vector<vector<bool>> init(m,vector<bool>(n,false));
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(matrix[i][j]==0){
+                    init[i][j]=true;
+                }
+            }
+        }
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(init[i][j]){
+                    matrix=setz(matrix,i,j);
+                }
+            }
+        }
+    }
+};
