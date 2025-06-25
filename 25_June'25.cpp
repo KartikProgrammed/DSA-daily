@@ -118,3 +118,28 @@ public:
         return res;
     }
 };
+
+//229. Majority Element II
+// Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+
+// Approach: Use a hash map to count the frequency of each element. Then, iterate through the map to find elements that appear more than n/3 times.
+
+// CODE:
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        unordered_map<int,int> map;
+        vector<int> res;
+        int n=nums.size();
+        for(int it:nums){
+            map[it]++;
+        }
+        for(auto &it:map){
+            if(it.second>n/3){
+                res.push_back(it.first);
+            }
+        }
+        return res;
+        
+    }
+};
