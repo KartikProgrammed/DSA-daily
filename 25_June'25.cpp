@@ -86,3 +86,35 @@ public:
         return count;
     }
 };
+
+
+//118. Pascal's Triangle
+// Given an integer numRows, return the first numRows of Pascal's triangle.
+// In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
+
+// Approach: Use a loop to generate each row of Pascal's triangle. Each element in the row can be calculated using the elements from the previous row.
+
+//CODE:-
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> res;
+        if(numRows==0){
+            return res;
+        }
+        res.push_back({1});
+        int curr=0;
+        while(curr<numRows-1){
+            vector<int> currvec=res[curr];
+            vector<int> temp;
+            temp.push_back(1);
+            for(int i=0;i<currvec.size()-1;i++){
+                temp.push_back(currvec[i]+currvec[i+1]);
+            }
+            temp.push_back(1);
+            curr++;
+            res.push_back(temp);
+        }
+        return res;
+    }
+};
