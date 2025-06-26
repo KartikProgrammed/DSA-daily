@@ -129,3 +129,53 @@ public:
         return res;
     }
 };
+
+//18. 4Sum
+// Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
+// 0 <= a, b, c, d < n
+// a, b, c, and d are distinct.
+// nums[a] + nums[b] + nums[c] + nums[d] == target
+// You may return the answer in any order.
+
+// Approach: Sort the array and use a four-pointer technique to find quadruplets that sum to the target value.
+
+// CODE:
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> res;
+        int n=nums.size();
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<nums.size();i++){
+            if(i>0 && nums[i]==nums[i-1]){
+                continue;
+            }
+            for(int j=i+1;j<nums.size();j++){
+                if(j>i+1 && nums[j]==nums[j-1])
+                    continue;
+                int k=j+1;
+                int z=n-1;
+                while(k<z){
+                    long long sum=1LL *nums[i]+nums[j]+nums[k]+nums[z];
+                    if(sum<target){
+                        k++;
+                    }
+                    else if(sum>target){
+                        z--;
+                    }
+                    else{
+                        vector<int> temp={nums[i],nums[j],nums[k],nums[z]};
+                        res.push_back(temp);
+                        k++;
+                        z--;
+                        while(k<z && nums[k]==nums[k-1])
+                            k++;
+                        while(k<z && nums[z]==nums[z+1])
+                            z--;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
