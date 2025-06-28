@@ -49,3 +49,38 @@ public:
         return res;
     }
 };
+
+
+//56. Merge Intervals
+// Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+
+// Approach:
+// Sort the intervals based on the start time.
+// Then iterate through the sorted intervals and merge them if they overlap.
+// If they don't overlap, add the current interval to the result.
+
+// CODE:
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        sort(intervals.begin(),intervals.end(),[](auto &a,auto &b){
+            return a[0]<b[0];
+        });
+        vector<vector<int>> res;
+        int end;
+        int curr=-1;
+        
+        for(int i=0;i<intervals.size();i++){
+            if(i==0 || intervals[i][0]>end ){
+                res.push_back(intervals[i]);
+                end=intervals[i][1];
+                curr++;
+            }
+            else{
+                res[curr][1]=max(res[curr][1],intervals[i][1]);
+                end=res[curr][1];
+            }
+        }
+        return res;
+    }
+};
