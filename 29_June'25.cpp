@@ -53,3 +53,40 @@ public:
         return res;
     }
 };
+
+//152. Maximum Product Subarray
+// Given an integer array nums, find a subarray that has the largest product, and return the product.
+// The test cases are generated so that the answer will fit in a 32-bit integer.
+
+// Approach:
+// Use 2 pointers one from the start and one from the end of the array.
+// Calculate the maximum product subarray by iterating through the array and keeping track of the maximum and minimum products at each step.
+// This is because a negative number can turn a small product into a large one.
+
+// CODE:
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int res=INT_MIN;
+        int curr=1;
+        int curr2=1;
+        int n=nums.size();
+        for(int i=0,j=n-1;i<n,j>=0;i++,j--){
+            if(curr==0)
+                curr=1;
+            if(curr2==0){
+                curr2=1;
+            }
+            curr*=nums[i];
+            curr2*=nums[j];
+            if(curr>res){
+                res=curr;
+            }
+            if(curr2>res){
+                res=curr2;
+            }
+        }
+        return res;
+    }
+};
+ 
