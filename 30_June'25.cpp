@@ -113,3 +113,39 @@ public:
         return -1;
     }
 }; 
+
+//35. Search Insert Position
+// Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+// You must write an algorithm with O(log n) runtime complexity.
+
+
+// Approach:
+// Use binary search to find the target in the sorted array.
+// Initialize two pointers, left and right, to the start and end of the array.
+// While left is less than or equal to right, calculate the middle index.
+// If the middle element is equal to the target, return the middle index.
+// If the middle element is less than the target, move the left pointer to mid + 1.
+// If the middle element is greater than the target, move the right pointer to mid - 1.
+// If the target is not found, return the left pointer as the insertion position.
+
+// CODE:
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int low=0;
+        int high=nums.size()-1;
+        while(low<=high){
+            int mid=(low+high)/2;
+            if(nums[mid]==target){
+                return mid;
+            }
+            else if(nums[mid]<target){
+                low=mid+1;
+            }
+            else{
+                high=mid-1;
+            }
+        }
+        return low;
+    }
+};
