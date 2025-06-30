@@ -52,3 +52,30 @@ public:
         return res;
     }
 };
+
+//Approach2:-
+//sliding window
+
+// CODE:
+class Solution {
+public:
+    int findLHS(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int left=0;
+        int right=0;
+        int res=0;
+        while(left<=right && right<nums.size()){
+            if(nums[right]-nums[left]>1){
+                left++;
+            }
+            else if(nums[right]-nums[left]<1){
+                right++;
+            }
+            else{
+                res=max(res,right-left+1);
+                right++;
+            }
+        }
+        return res;
+    }
+};
