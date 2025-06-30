@@ -79,3 +79,37 @@ public:
         return res;
     }
 };
+
+//704. Binary Search
+// Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.
+// You must write an algorithm with O(log n) runtime complexity.
+
+// Approach:
+// Use binary search to find the target in the sorted array.
+// Initialize two pointers, left and right, to the start and end of the array.
+// While left is less than or equal to right, calculate the middle index.
+// If the middle element is equal to the target, return the middle index.
+// If the middle element is less than the target, move the left pointer to mid + 1.
+// If the middle element is greater than the target, move the right pointer to mid - 1.
+
+// CODE:
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left=0;
+        int right=nums.size()-1;
+        while(left<=right){
+            int mid=(left+right)/2;
+            if(nums[mid]==target){
+                return mid;
+            }
+            else if(nums[mid]>target){
+                right=mid-1;
+            }
+            else{
+                left=mid+1;
+            }
+        }
+        return -1;
+    }
+}; 
