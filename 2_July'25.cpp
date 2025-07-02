@@ -56,3 +56,44 @@ public:
         return findpiv(nums);
     }
 };
+
+//540. Single Element in a Sorted Array
+// You are given a sorted array consisting of only integers where every element appears exactly twice, except for one element which appears exactly once.
+// Return the single element that appears only once.
+// Your solution must run in O(log n) time and O(1) space.
+
+// Approach:
+// 1. Initialize two pointers, left and right, to the start and end of the array.
+// 2. While left is less than right, calculate the middle index.
+// 3. If the middle index is even, check if the element at mid is equal to the
+//    element at mid + 1. If they are equal, it means the single element is
+//    in the right half of the array, so move the left pointer to mid +
+//    2. If they are not equal, it means the single element is in the left
+//    half of the array, so move the right pointer to mid.
+// 4. If the middle index is odd, check if the element at mid is equal to the
+//    element at mid - 1. If they are equal, it means the single element is
+//    in the right half of the array, so move the left pointer to mid +
+//    1. If they are not equal, it means the single element is in the left
+//    half of the array, so move the right pointer to mid - 1.
+
+// CODE:
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        int low=0;
+        int high=nums.size()-1;
+        while(low<high){
+            int mid=(low+high)/2;
+            if(mid%2!=0){
+                mid--;
+            }
+            if(nums[mid]==nums[mid+1]){
+                low=mid+2;
+            }
+            else{
+                high=mid;
+            }
+        }
+        return nums[low];
+    }
+};
