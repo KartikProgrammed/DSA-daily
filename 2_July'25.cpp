@@ -134,3 +134,46 @@ public:
         return low;
     }
 };
+
+
+//875. Koko Eating Bananas
+// Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.
+// Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.
+// Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
+// Return the minimum integer k such that she can eat all the bananas within h hours.0
+
+// Approach:
+// 1. Initialize two pointers, left and right, to 1 and the maximum number of bananas in any pile.
+// 2. While left is less than right, calculate the middle speed k.
+// 3. Calculate the total hours required to eat all bananas at speed k.
+// 4. If the total hours is less than or equal to h, it means k is a valid speed,
+//    so move the right pointer to k.
+// 5. If the total hours is greater than h, it means k is too slow, so move the left pointer to k + 1.
+
+// CODE:
+class Solution {
+public:
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int low=1;
+        int high=*max_element(piles.begin(),piles.end());
+        
+        int res=high;
+        while(low<=high){
+            int mid=(low+high)/2;
+            double steps=0;
+            int i=0;
+            while(i<piles.size()){
+                steps+=(piles[i]+mid-1)/mid;
+                i++;
+            }
+            if(steps<=h){
+                res=min(res,mid);
+                high=mid-1;
+            }
+            else{
+                low=mid+1;
+            }
+        }
+        return res;
+    }
+};
