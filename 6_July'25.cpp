@@ -179,3 +179,58 @@ public:
         return res;
     }
 };
+
+// 1011. Capacity To Ship Packages Within D Days
+// A conveyor belt has packages that must be shipped from one port to another within days days.
+// The ith package on the conveyor belt has a weight of weights[i]. Each day, we load the ship with packages on the conveyor belt (in the order given by weights). We may not load more weight than the maximum weight capacity of the ship.
+// Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within days days.
+
+// Approach:
+// 1. Initialize two pointers, left and right, to the maximum weight in the weights array
+//    and the sum of all weights, respectively.
+// 2. While left is less than right, calculate the middle capacity.
+// 3. Count the number of days required to ship all packages with the current capacity.
+// 4. If the number of days is less than or equal to days, it means the capacity is valid,
+//    so move the right pointer to mid. Otherwise, move the left pointer to mid + 1.
+// 5. Return the left pointer as the minimum capacity required to ship all packages.
+
+// CODE:
+class Solution {
+public:
+    int calc(vector<int>& weights,int mid){
+        int i=0;
+        int curr=0;
+        int day=0;
+        while(i<weights.size()){
+            if(curr+weights[i]>mid){
+                curr=weights[i];
+                day++;
+            }
+            else{
+                curr+=weights[i];
+            }
+            i++;
+        }
+        return day+1;
+    }
+    int shipWithinDays(vector<int>& weights, int days) {
+        int low=*max_element(weights.begin(),weights.end());
+        int high=0;
+        for(int it:weights){
+            high+=it;
+        }
+        int res=high;
+        while(low<=high){
+            int mid=(low+high)/2;
+            int expect=calc(weights,mid);
+            if(expect<=days){
+                high=mid-1;
+                res=min(mid,res);
+            }
+            else{
+                low=mid+1;
+            }
+        }
+        return res;
+    }
+};
