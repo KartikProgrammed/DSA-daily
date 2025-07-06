@@ -133,3 +133,49 @@ public:
         return res;
     }
 };
+
+//1283. Find the Smallest Divisor Given a Threshold
+// Given an array of integers nums and an integer threshold, we will choose a positive integer divisor, divide all the array by it, and sum the division's result. Find the smallest divisor such that the result mentioned above is less than or equal to threshold.
+// Each result of the division is rounded to the nearest integer greater than or equal to that element. (For example: 7/3 = 3 and 10/2 = 5).
+// The test cases are generated so that there will be an answer.
+
+// Approach:
+// 1. Initialize two pointers, left and right, to 1 and the maximum element
+//    in the nums array.
+// 2. While left is less than right, calculate the middle divisor.
+// 3. Calculate the total sum of the division results for all elements in nums
+//    using the current divisor.
+// 4. If the total sum is less than or equal to the threshold, it means
+//    the divisor is valid, so move the right pointer to mid.
+// 5. If the total sum is greater than the threshold, it means the divisor is too small,
+//    so move the left pointer to mid + 1.
+// 6. Return the left pointer as the smallest divisor.
+
+// CODE:
+class Solution {
+public:
+    int calc(vector<int>& nums,int mid){
+        int res=0;
+        for(int it:nums){
+            res+=(it+mid-1)/mid;
+        }
+        return res;
+    }
+    int smallestDivisor(vector<int>& nums, int threshold) {
+        int low=1;
+        int high=*max_element(nums.begin(),nums.end());
+        int res=high;
+        while(low<=high){
+            int mid=(low+high)/2;
+            int sum=calc(nums,mid);
+            if(sum<=threshold){
+                high=mid-1;
+                res=min(res,mid);
+            }
+            else{
+                low=mid+1;
+            }
+        }        
+        return res;
+    }
+};
