@@ -72,3 +72,64 @@ public:
  * obj->add(index,val);
  * int param_2 = obj->count(tot);
  */
+
+
+//1482. Minimum Number of Days to Make m Bouquets
+// You are given an integer array bloomDay, an integer m and an integer k.
+// You want to make m bouquets. To make a bouquet, you need to use k adjacent flowers from the garden.
+// The garden consists of n flowers, the ith flower will bloom in the bloomDay[i] and then can be used in exactly one bouquet.
+// Return the minimum number of days you need to wait to be able to make m bouquets from the garden. If it is impossible to make m bouquets return -1.
+
+// Approach:
+// 1. Initialize two pointers, left and right, to the minimum and maximum bloom days
+//    in the bloomDay array.
+// 2. While left is less than right, calculate the middle day.
+// 3. Count the number of bouquets that can be made by iterating through the
+//    bloomDay array and checking if the bloom day is less than or equal to the
+//    middle day. If it is, increment the count of adjacent flowers. If the count
+//    reaches k, increment the bouquet count and reset the adjacent flower count.
+// 4. If the bouquet count is greater than or equal to m, it means we can make
+//    enough bouquets, so move the right pointer to mid. Otherwise, move the left
+//    pointer to mid + 1.
+
+// CODE:
+class Solution {
+public:
+    int calc(vector<int>& arr,int mid,int k){
+        int left=0;
+        int steps=0;
+        int res=0;
+        while(left<arr.size()){
+            if(arr[left]<=mid){
+                steps++;
+                if(steps==k){
+                    res++;
+                    steps=0;
+                }
+                left++;
+            }
+            else{
+                steps=0;
+                left++;
+            }
+        }
+        return res;
+    }
+    int minDays(vector<int>& bloomDay, int m, int k) {
+        int low=1;
+        int high=*max_element(bloomDay.begin(),bloomDay.end());
+        int res=-1;
+        while(low<=high){
+            int mid=(low+high)/2;
+            int bouq=calc(bloomDay,mid,k);
+            if(bouq>=m){
+                res = (res == -1) ? mid : min(res, mid);
+                high=mid-1;
+            }
+            else{
+                low=mid+1;
+            }
+        }
+        return res;
+    }
+};
