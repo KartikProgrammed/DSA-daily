@@ -49,3 +49,49 @@ public:
     }
 };
  
+
+//Approach 2:-
+// Use dynamic programming with binary search to optimize the solution.
+
+// CODE:
+class Solution {
+public:
+    vector<vector<int>> dp;
+
+    int findNextEvent(const vector<vector<int>>& events, int currEnd, int startIdx) {
+        int low = startIdx, high = events.size() - 1;
+        int ans = events.size(); // default to "not found"
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (events[mid][0] > currEnd) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return ans;
+    }
+
+    int dfs(const vector<vector<int>>& events, int curr, int k) {
+        if (curr >= events.size() || k == 0) return 0;
+        if (dp[curr][k] != -1) return dp[curr][k];
+
+        // Option 1: Skip current event
+        int skip = dfs(events, curr + 1, k);
+
+        // Option 2: Take current event
+        int nextIdx = findNextEvent(events, events[curr][1], curr + 1);
+        int take = events[curr][2] + dfs(events, nextIdx, k - 1);
+
+        return dp[curr][k] = max(skip, take);
+    }
+
+    int maxValue(vector<vector<int>>& events, int k) {
+        sort(events.begin(), events.end()); // sort by start time
+        int n = events.size();
+        dp = vector<vector<int>>(n, vector<int>(k + 1, -1));
+        return dfs(events, 0, k);
+    }
+};
