@@ -95,3 +95,57 @@ public:
         return dfs(events, 0, k);
     }
 };
+
+
+//74. Search a 2D Matrix
+// You are given an m x n integer matrix matrix with the following two properties:
+// Each row is sorted in non-decreasing order.
+// The first integer of each row is greater than the last integer of the previous row.
+// Given an integer target, return true if target is in matrix or false otherwise.
+// You must write a solution in O(log(m * n)) time complexity.
+
+// Approach:
+// Use binary search to find the target in the 2D matrix.
+
+// CODE:
+class Solution {
+public:
+    int BSCol(vector<vector<int>>& matrix,int target){
+        int n=matrix.size();
+        int low=0;
+        int high=n-1;
+        int res=high;
+        while(low<=high){
+            int mid=(low+high)/2;
+            if(target<matrix[mid][0]){
+                high=mid-1;
+            }
+            else{
+                low=mid+1;
+                res=mid;
+            }
+        }
+        return res;
+    }
+    bool BSRow(vector<vector<int>>& matrix,int target,int col){
+        int low=0;
+        int high=matrix[0].size()-1;
+        while(low<=high){
+            int mid=(low+high)/2;
+            if(matrix[col][mid]==target){
+                return true;
+            }
+            else if(matrix[col][mid]>target){
+                high=mid-1;
+            }
+            else{
+                low=mid+1;
+            }
+        }
+        return false;
+    }
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int col=BSCol(matrix,target);
+        return BSRow(matrix,target,col);
+    }
+};
