@@ -94,3 +94,25 @@ public:
         return res;
     }
 }; 
+
+// 1903. Largest Odd Number in String
+// You are given a string num, representing a large integer. Return the largest-valued odd integer (as a string) that is a non-empty substring of num, or an empty string "" if no odd integer exists.
+// A substring is a contiguous sequence of characters within a string.
+
+// Approach:
+// Iterate through the string from the end to the beginning and check if the character is odd. If it is, return the substring from the start to that character.
+
+// CODE:
+class Solution {
+public:
+    string largestOddNumber(string num) {
+        int i=num.length()-1;
+        while(i>=0 && num[i]%2==0){
+            i--;
+        }
+        if(i<0){
+            return "";
+        }
+        return num.substr(0,i+1);
+    }
+};
