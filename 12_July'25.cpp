@@ -50,3 +50,33 @@ public:
         return false;
     }
 };
+
+//242. Valid Anagram
+// Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+// An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+// Approach:
+// Use a hash map to count the frequency of each character in both strings. If the frequency maps are equal, return true; otherwise, return false.
+
+// CODE:
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if(s.length()!=t.length()){
+            return false;
+        }
+        unordered_map<char,int> map;
+        for(char it:s){
+            map[it]++;
+        }
+        for(int i=0;i<t.length();i++){
+            if(map[t[i]]<=0){
+                return false;
+            }
+            else{
+                map[t[i]]--;
+            }
+        }
+        return true;
+    }
+};
