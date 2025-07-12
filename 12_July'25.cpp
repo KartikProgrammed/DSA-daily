@@ -80,3 +80,58 @@ public:
         return true;
     }
 };
+
+
+//451. Sort Characters By Frequency
+// Given a string s, sort it in decreasing order based on the frequency of the characters. The frequency of a character is the number of times it appears in the string.
+// Return the sorted string. If there are multiple answers, return any of them.
+ 
+
+// Approach:
+// Use a hash map to count the frequency of each character. Then, sort the characters based on their frequency and build the result string accordingly.
+
+// CODE:
+class Solution {
+public:
+    string frequencySort(string s) {
+        unordered_map<char,int> map;
+        for(char it:s){
+            map[it]++;
+        }
+        vector<pair<char,int>> curr(map.begin(),map.end());
+        sort(curr.begin(),curr.end(),[](const pair<char,int> &a,const pair<char,int> &b){
+            return a.second>b.second;
+        });
+        string res="";
+        for(auto it:curr){
+            res+=string(it.second, it.first);
+        }
+        return res;
+    }
+};
+
+//1614. Maximum Nesting Depth of the Parentheses
+// Given a valid parentheses string s, return the nesting depth of s. The nesting depth is the maximum number of nested parentheses.
+
+
+// Approach:
+// Use a counter to keep track of the current depth while iterating through the string. Update the maximum depth whenever you encounter an opening parenthesis.
+
+// CODE:
+class Solution {
+public:
+    int maxDepth(string s) {
+        int res=0;
+        int curr=0;
+        for(char it:s){
+            if(it=='('){
+                curr++;
+            }
+            else if(it==')'){
+                curr--;
+            }
+            res=max(res,curr);
+        }
+        return res;
+    }
+};
