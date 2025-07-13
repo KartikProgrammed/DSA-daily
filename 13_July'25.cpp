@@ -176,3 +176,41 @@ public:
         return (int)res;
     }
 };
+
+
+//5. Longest Palindromic Substring
+// Given a string s, return the longest palindromic substring in s.
+
+//Approach:
+//use strings to check for palindromes and find the longest one.
+
+//CODE:-
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string res="";
+        int n=s.length();
+        for(int i=0;i<s.length();i++){
+            int l=i;
+            int r=i;
+            while(l>=0 && r<n && s[l]==s[r]){
+                l--;
+                r++;
+            }
+            if(r-l-1>res.length()){
+                res=s.substr(l+1,r-l-1);
+            }
+
+            l=i;
+            r=i+1;
+            while(l>=0 && r<n && s[l]==s[r]){
+                l--;
+                r++;
+            }
+            if(r-l-1>res.length()){
+                res=s.substr(l+1,r-l-1);
+            }
+        }
+        return res;
+    }
+};
