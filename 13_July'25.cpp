@@ -135,3 +135,44 @@ public:
         return res;
     }
 };
+
+
+// 8. String to Integer (atoi)
+// Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer.
+// The algorithm for myAtoi(string s) is as follows:
+// Whitespace: Ignore any leading whitespace (" ").
+// Signedness: Determine the sign by checking if the next character is '-' or '+', assuming positivity if neither present.
+// Conversion: Read the integer by skipping leading zeros until a non-digit character is encountered or the end of the string is reached. If no digits were read, then the result is 0.
+// Rounding: If the integer is out of the 32-bit signed integer range [-231, 231 - 1], then round the integer to remain in the range. Specifically, integers less than -231 should be rounded to -231, and integers greater than 231 - 1 should be rounded to 231 - 1.
+// Return the integer as the final result.
+ 
+// Approach:
+//follow the steps mentioned in the problem statement to convert the string to an integer.
+
+//CODE:-
+class Solution {
+public:
+    int myAtoi(string s) {
+        int it=0;
+        while(s[it]==' '){
+            it++;
+        }
+        bool pos=true;
+        if(it<s.length() &&(s[it]=='-' || s[it]=='+')){
+            pos=(s[it]=='+');
+            it++;
+        }
+        bool st=false;
+        long long res=0;
+        while(it<s.length() && isdigit(s[it])){
+            res = res * 10 + (s[it] - '0');
+            if(pos && res > INT_MAX) return INT_MAX;
+            if(!pos && -res < INT_MIN) return INT_MIN;
+            it++;
+        }
+        if(!pos){
+            return (int)(-res);
+        }
+        return (int)res;
+    }
+};
