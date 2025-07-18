@@ -52,3 +52,51 @@ public:
         return false;
     }
 };
+
+//142. Linked List Cycle II
+// Given the head of a linked list, return the node where the cycle begins. If there is no cycle, return null.
+// There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to (0-indexed). It is -1 if there is no cycle. Note that pos is not passed as a parameter.
+// Do not modify the linked list.
+
+// Approach:
+// 1. Use two pointers, slow and fast.
+// 2. Move slow by one step and fast by two steps until they meet.
+// 3. When they meet, reset one pointer to the head and move both pointers by one step until they meet again.
+
+// CODE:
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(head==NULL || head->next==NULL){
+            return NULL;
+        }
+        bool flag=false;
+        ListNode* temp1=head;
+        ListNode* temp2=head;
+        while(temp1!=NULL && temp1->next!=NULL){
+            temp1=temp1->next->next;
+            temp2=temp2->next;
+            if(temp1==temp2){
+                flag=true;
+                break;
+            }
+        }
+        if(flag){
+            temp1=head;
+            while(temp1!=temp2){
+                temp1=temp1->next;
+                temp2=temp2->next;
+            }
+            return temp1;
+        }
+        return NULL;
+    }
+};
