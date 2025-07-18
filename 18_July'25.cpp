@@ -100,3 +100,54 @@ public:
         return NULL;
     }
 };
+
+//234. Palindrome Linked List
+// Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
+
+
+// Approach:
+//use a vector to store the values of the linked list.
+// 1. Traverse the linked list and store the values in a vector.
+// 2. Check if the vector is a palindrome by comparing the first half with the reversed second half.
+
+//better approach:
+// 1. Use a two-pointer technique to find the middle of the linked list.
+// 2. Reverse the second half of the linked list.
+// 3. Compare the first half with the reversed second half to check for palindrome.
+
+
+// CODE:
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    bool palindrome(vector<int>& temp){
+        int l=0;
+        int r=temp.size()-1;
+        while(l<=r){
+            if(temp[l]!=temp[r]){
+                return false;
+            }
+            l++;
+            r--;
+        }
+        return true;
+    }
+    bool isPalindrome(ListNode* head) {
+        vector<int> vec;
+        ListNode* temp=head;
+        while(temp!=NULL){
+            vec.push_back(temp->val);
+            temp=temp->next;
+        }
+        return palindrome(vec);
+    }
+};
