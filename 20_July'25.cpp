@@ -232,3 +232,75 @@ public:
     }
 };
 
+//2. Add Two Numbers
+// You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+// You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+// Approach:
+// 1. Initialize a dummy node to build the result linked list.
+// 2. Use a carry variable to handle the sum of two digits.
+// 3. Traverse both linked lists, adding corresponding digits and the carry.
+// 4. If one list is shorter, treat its missing digits as 0.
+// 5. If there's a carry left after processing both lists, add a new node with the carry value.
+
+// CODE:
+
+//  * Definition for singly-linked list.
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* newhead= new ListNode(-1);
+        ListNode* temp=newhead;
+        ListNode* l=l1;
+        ListNode* r=l2;
+        int carry=0;
+        while(l!=NULL && r!=NULL){
+            int sum=l->val+r->val+carry;
+            int add=sum%10;
+            carry=sum/10;
+            l=l->next;
+            r=r->next;
+            ListNode* curr= new ListNode();
+            curr->val=add;
+            temp->next=curr;
+            temp=curr;
+        }
+        while(l!=NULL){
+            int sum=l->val+carry;
+            int add=sum%10;
+            carry=sum/10;
+            l=l->next;
+            ListNode* curr= new ListNode();
+            curr->val=add;
+            temp->next=curr;
+            temp=curr;
+        }
+        while(r!=NULL){
+            int sum=r->val+carry;
+            int add=sum%10;
+            carry=sum/10;
+            r=r->next;
+            ListNode* curr= new ListNode();
+            curr->val=add;
+            temp->next=curr;
+            temp=curr;
+        }
+        while(carry>0){
+            int data=carry%10;
+            carry/=10;
+            ListNode* curr= new ListNode();
+            curr->val=data;
+            temp->next=curr;
+            temp=curr;
+        }
+        return newhead->next;
+    }
+};
