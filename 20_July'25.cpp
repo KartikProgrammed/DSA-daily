@@ -47,3 +47,43 @@ public:
         return res;
     }
 };
+
+//2095. Delete the Middle Node of a Linked List
+// You are given the head of a linked list. Delete the middle node, and return the head of the modified linked list.
+// The middle node of a linked list of size n is the ⌊n / 2⌋th node from the start using 0-based indexing, where ⌊x⌋ denotes the largest integer less than or equal to x.
+// For n = 1, 2, 3, 4, and 5, the middle nodes are 0, 1, 1, 2, and 2, respectively.
+ 
+
+// Approach:
+// 1. Use two pointers, slow and fast.
+// 2. Move slow by one step and fast by two steps.
+// 3. When fast reaches the end, slow will be at the middle node.
+// 4. Remove the middle node by adjusting the pointers.
+
+// CODE:
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+
+class Solution {
+public:
+    ListNode* deleteMiddle(ListNode* head) {
+        ListNode* slow=head;
+        ListNode* fast=head;
+        if(head==NULL || head->next==NULL){
+            return NULL;
+        }
+        while(fast!=NULL && fast->next!=NULL){
+            fast=fast->next->next;
+            slow=slow->next;
+        }
+        fast=head;
+        while(fast->next!=slow){
+            fast=fast->next;
+        }
+        fast->next=slow->next;
+        return head;
+    }
+};
