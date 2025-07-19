@@ -170,3 +170,65 @@ public:
         return newhead;
     }
 };
+
+//160. Intersection of Two Linked Lists
+// Given the heads of two singly linked-lists headA and headB, return the node at which the two lists intersect. If the two linked lists have no intersection at all, return null.
+// For example, the following two linked lists begin to intersect at node c1:
+
+//Approach:
+// count the length of both linked lists.
+// If the lengths are different, move the pointer of the longer list ahead by the difference in lengths.
+// Then move both pointers one step at a time until they meet or reach the end of the lists.
+
+// CODE:
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        int countA=0;
+        ListNode* temp=headA;
+        while(temp!=NULL){
+            countA++;
+            temp=temp->next;
+        }
+        temp=headB;
+        int countB=0;
+        while(temp!=NULL){
+            countB++;
+            temp=temp->next;
+        }
+        ListNode* left=headA;
+        ListNode* right=headB;
+        if(countA>countB){
+            int diff=countA-countB;
+            for(int i=0;i<diff;i++){
+                left=left->next;
+            }
+        }
+        else{
+            int diff=countB-countA;
+            for(int i=0;i<diff;i++){
+                right=right->next;
+            }
+        }
+        if(left==right){
+            return left;
+        }
+        while(left!=NULL && right!=NULL && left->next != right->next){
+            left=left->next;
+            right=right->next;
+        }
+        if(left==NULL || right==NULL){
+            return NULL;
+        }
+        return left->next;
+    }
+};
+
