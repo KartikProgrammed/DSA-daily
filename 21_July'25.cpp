@@ -124,3 +124,52 @@ public:
         return dummy.next;
     }
 };
+
+//61. Rotate List
+// Given the head of a linked list, rotate the list to the right by k places.
+
+// Approach:
+// 1. Count the length of the linked list.
+// 2. Calculate the effective rotation by taking k modulo length.
+// 3. If k is 0 or the list is empty, return the head.
+// 4. Find the new tail of the list, which is at position length - k - 1.
+// 5. Set the next of the new tail to NULL and make the next of the old tail point to the head.
+// 6. Set the new head to the node after the new tail.
+
+// CODE:
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(head==NULL || head->next==NULL){
+            return head;
+        }
+        ListNode* tail=head;
+        int size=1;
+        while(tail->next!=NULL){
+            size++;
+            tail=tail->next;
+        }
+        int rotate=k%size;
+        if(rotate==0){
+            return head;
+        }
+        tail->next=head;
+        ListNode* cut=head;
+        for(int i=0;i<size-rotate-1;++i) {
+            cut=cut->next;
+        }
+        head=cut->next;
+        cut->next=NULL;
+        return head;
+    }
+};
