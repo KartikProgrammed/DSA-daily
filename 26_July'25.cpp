@@ -47,3 +47,35 @@ public:
         return curr;
     }
 };
+
+//22. Generate Parentheses
+// Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+// Approach:
+//create all possible combinations of parentheses using backtracking
+
+// CODE:
+class Solution {
+public:
+    void recursion(vector<string> &res,string curr,int open,int close,int n){
+        if(open==n && close==n){
+            res.push_back(curr);
+        }
+        else{
+            if(open>close){
+                if(open<n){
+                    recursion(res,curr+'(',open+1,close,n);
+                }
+                recursion(res,curr+')',open,close+1,n);
+            }
+            else{
+                recursion(res,curr+'(',open+1,close,n);
+            }
+        }
+    }
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        recursion(res,"",0,0,n);
+        return res;
+    }
+};
