@@ -79,3 +79,37 @@ public:
         return res;
     }
 };
+
+//78. Subsets
+// Given an integer array nums of unique elements, return all possible subsets (the power set).
+// The solution set must not contain duplicate subsets. Return the solution in any order.
+
+// Approach:
+//backtracking
+
+
+// CODE:
+class Solution {
+public:
+    vector<vector<int>> recursion(vector<vector<int>> &res,vector<int> &curr){
+        if(curr.size()==0){
+            return res;
+        }
+
+        int n=curr[0];
+        curr.erase(curr.begin());
+        int size=res.size();
+        for(int i=0;i<size;i++){
+            vector<int> temp=res[i];
+            temp.push_back(n);
+            res.push_back(temp);
+        }
+        return recursion(res,curr);
+    }
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> curr;
+        res.push_back(curr);
+        return recursion(res,nums);
+    }
+};
