@@ -115,3 +115,37 @@ public:
         return res;
     }
 };
+
+
+//90. Subsets II
+
+// Given an integer array nums that may contain duplicates, return all possible subsets (the power set).
+// The solution set must not contain duplicate subsets. Return the solution in any order.
+
+// Approach:
+// Use backtracking to explore all subsets, ensuring that duplicates are handled by skipping over
+// duplicate elements in the input array.
+
+// CODE:
+class Solution {
+public:
+    void recursion(vector<vector<int>>&res,vector<int> &curr,vector<int> &nums,int i){
+        res.push_back(curr);
+        for(int j=i;j<nums.size();j++){
+            if(j>i && nums[j]==nums[j-1]){
+                continue;
+            }
+            curr.push_back(nums[j]);
+            recursion(res,curr,nums,j+1);
+            curr.pop_back();
+        }
+        
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> curr;
+        sort(nums.begin(),nums.end());
+        recursion(res,curr,nums,0);
+        return res;
+    }
+};
