@@ -187,3 +187,50 @@ public:
         return res;
     }
 };
+
+
+// 17. Letter Combinations of a Phone Number
+
+// Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+// A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+// Approach:
+// Use backtracking to explore all possible combinations of letters for the given digits, using a mapping
+// of digits to letters. Each digit corresponds to a set of letters, and we generate combinations by
+// recursively appending letters for each digit.
+
+// CODE:
+class Solution {
+public:
+    void recursion(vector<string> &res,string &curr,string digits,int i,unordered_map<int,string> &map){
+        if(curr.length()==digits.length()){
+            res.push_back(curr);
+            return ;
+        }
+        string tbu=map[digits[i]-'0'];
+        for(int j=0;j<tbu.length();j++){
+            curr.push_back(tbu[j]);
+            recursion(res,curr,digits,i+1,map);
+            curr.pop_back();
+        }
+        
+    }
+    vector<string> letterCombinations(string digits) {
+        if(digits.empty()) return {};
+        
+        unordered_map<int, string> map;
+        map[2] = "abc";
+        map[3] = "def";
+        map[4] = "ghi";
+        map[5] = "jkl";
+        map[6] = "mno";
+        map[7] = "pqrs";
+        map[8] = "tuv";
+        map[9] = "wxyz";
+
+        vector<string> res;
+        string curr="";
+        recursion(res,curr,digits,0,map);
+        return res;
+    }
+};
