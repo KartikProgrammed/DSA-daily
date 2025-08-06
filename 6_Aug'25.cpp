@@ -74,3 +74,44 @@ public:
         return res;
     }
 };
+
+
+//40. Combination Sum II
+// Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
+// Each number in candidates may only be used once in the combination.
+// Note: The solution set must not contain duplicate combinations.
+
+// Approach:
+// Use backtracking to explore all combinations of candidates that sum to the target, ensuring that each
+// candidate is only used once in each combination.
+
+// CODE:
+class Solution {
+public:
+    void recursion(vector<vector<int>> &res,vector<int>&curr,vector<int> &candidates,int sum,int i,int target){
+        if(sum==target){
+            res.push_back(curr);
+            return ;
+        }
+        if(i>=candidates.size() || sum>target){
+            return; 
+        }
+        for(int j=i;j<candidates.size();j++){
+            if(j>i && candidates[j]==candidates[j-1]){
+                continue;
+            }
+            if(sum + candidates[j] > target)
+                break;
+            curr.push_back(candidates[j]);
+            recursion(res,curr,candidates,sum+candidates[j],j+1,target);
+            curr.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>> res;
+        vector<int> curr;
+        sort(candidates.begin(),candidates.end());
+        recursion(res,curr,candidates,0,0,target);
+        return res;
+    }
+};
