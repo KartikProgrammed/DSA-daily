@@ -149,3 +149,41 @@ public:
         return res;
     }
 };
+
+// 216. Combination Sum III
+// Find all valid combinations of k numbers that sum up to n such that the following conditions are true:
+// Only numbers 1 through 9 are used.
+// Each number is used at most once.
+// Return a list of all possible valid combinations. The list must not contain the same combination twice, and the combinations may be returned in any order.
+ 
+
+// Approach:
+// Use backtracking to explore all combinations of numbers from 1 to 9 that sum to
+// the target n, ensuring that each number is used at most once and that the combination
+// contains exactly k numbers.
+
+
+//CODE:
+class Solution {
+public:
+    void recursion(vector<vector<int>>&res,vector<int> &curr,int sum,int target,int i,int k){
+        if(sum==target && curr.size()==k){
+            res.push_back(curr);
+            return ;
+        }
+        if(sum>target || curr.size()>k){
+            return ;
+        }
+        for(int j=i;j<=9;j++){
+            curr.push_back(j);
+            recursion(res,curr,sum+j,target,j+1,k);
+            curr.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> res;
+        vector<int> curr;
+        recursion(res,curr,0,n,1,k);
+        return res;
+    }
+};
