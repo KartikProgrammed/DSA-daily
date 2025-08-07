@@ -113,3 +113,44 @@ public:
         return total;
     }
 };
+
+
+//131. Palindrome Partitioning
+// Given a string s, partition s such that every substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
+
+// Approach:
+// Use backtracking to explore all possible partitions of the string, checking if each substring is a palindrome.
+
+// CODE:
+class Solution {
+public:
+    bool isPalindrome(string s,int start,int end){
+        while(start<=end){
+            if(s[start]!=s[end]){
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+    void recursion(vector<vector<string>> &res,vector<string> &curr,int ind,string s){
+        if(ind==s.length()){
+            res.push_back(curr);
+            return;
+        }
+        for(int i=ind;i<s.length();i++){
+            if(isPalindrome(s,ind,i)){
+                curr.push_back(s.substr(ind,i-ind+1));
+                recursion(res,curr,i+1,s);
+                curr.pop_back();
+            }
+        }
+    }
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> res;
+        vector<string> curr;
+        recursion(res,curr,0,s);
+        return res;
+    }
+};
