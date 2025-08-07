@@ -154,3 +154,49 @@ public:
         return res;
     }
 };
+
+
+//79. Word Search
+
+// Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+// The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+
+// Approach:
+// Use backtracking to explore all possible paths in the grid, checking if the current path matches the word.
+
+// CODE:
+class Solution {
+public:
+    bool recursion(vector<vector<char>>& board,int ind,string word,int row,int col){
+        if(ind==word.size()){
+            return true;
+        }
+        int m=board.size();
+        int n=board[0].size();
+        if(row<0 || col<0 || row>=m || col>=n){
+            return false;
+        }
+        if(board[row][col]!=word[ind]){
+            return false;
+        }
+        char temp = board[row][col];
+
+        board[row][col]='#';
+        bool res=recursion(board,ind+1,word,row+1,col) || recursion(board,ind+1,word,row-1,col) || recursion(board,ind+1,word,row,col+1) || recursion(board,ind+1,word,row,col-1);
+        
+        board[row][col]=temp;
+        return res;
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        for(int i=0;i<board.size();i++){
+            for(int j=0;j<board[0].size();j++){
+                bool res=recursion(board,0,word,i,j);
+                if(res){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
