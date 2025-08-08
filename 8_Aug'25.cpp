@@ -220,3 +220,47 @@ public:
         solve(board);
     }
 };
+
+
+//282. Expression Add Operators
+
+// Given a string num that contains only digits and an integer target, return all possibilities to insert the binary operators '+', '-', and/or '*' between the digits of num so that the resultant expression evaluates to the target value.
+// Note that operands in the returned expressions should not contain leading zeros.
+// Note that a number can contain multiple digits.
+
+// Approach:
+// Use backtracking to explore all possible placements of operators between the digits.
+
+// CODE:
+class Solution {
+public:
+    void recursion(vector<string>& res, string curr, int ind, long calc, long prev, string& num, int target) {
+        if (ind == num.length()) {
+            if (calc == target) {
+                res.push_back(curr);
+            }
+            return;
+        }
+
+        for (int i = ind; i < num.length(); ++i) {
+            if (i != ind && num[ind] == '0') break;
+
+            string part = num.substr(ind, i - ind + 1);
+            long n = stol(part);
+
+            if (ind == 0) {
+                recursion(res, part, i + 1, n, n, num, target);
+            } else {
+                recursion(res, curr + "+" + part, i + 1, calc + n, n, num, target);
+                recursion(res, curr + "-" + part, i + 1, calc - n, -n, num, target);
+                recursion(res, curr + "*" + part, i + 1, calc - prev + prev * n, prev * n, num, target);
+            }
+        }
+    }
+
+    vector<string> addOperators(string num, int target) {
+        vector<string> res;
+        recursion(res, "", 0, 0, 0, num, target);
+        return res;
+    }
+};
