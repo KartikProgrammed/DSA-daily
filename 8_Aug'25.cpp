@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <cmath>
+#include <map>
+#include <set>
+#include <queue>
+#include <stack>
+#include <unordered_map>
+#include <unordered_set>
+#include <limits>
+#include <iomanip>
+#include <sstream>
+#include <fstream>
+
+using namespace std;
+
+//808. Soup Servings
+
+// You have two soups, A and B, each starting with n mL. On every turn, one of the following four serving operations is chosen at random, each with probability 0.25 independent of all previous turns:
+// pour 100 mL from type A and 0 mL from type B
+// pour 75 mL from type A and 25 mL from type B
+// pour 50 mL from type A and 50 mL from type B
+// pour 25 mL from type A and 75 mL from type B
+// Note:
+// There is no operation that pours 0 mL from A and 100 mL from B.
+// The amounts from A and B are poured simultaneously during the turn.
+// If an operation asks you to pour more than you have left of a soup, pour all that remains of that soup.
+// The process stops immediately after any turn in which one of the soups is used up.
+// Return the probability that A is used up before B, plus half the probability that both soups are used up in the same turn. Answers within 10-5 of the actual answer will be accepted.
+
+// Approach:
+// Use memoization to store results for previously computed states.
+// The state can be represented by the remaining amounts of soup A and B.
+// The transitions will depend on the four possible serving operations.
+// The base cases will handle when one or both soups are empty.
+
+// CODE:
+class Solution {
+public:
+    vector<vector<double>> dp;
+
+    double recursion(int a,int b){
+        if(a==0 && b==0){
+            return 0.5;
+        }
+        else if(a==0){
+            return 1;
+        }
+        else if(b==0){
+            return 0;
+        }
+        if(dp[a][b]!=-1){
+            return dp[a][b];
+        }
+        double op1=recursion(max(0,a-100),b);
+        double op2=recursion(max(0,a-75),max(0,b-25));
+        double op3=recursion(max(0,a-50),max(0,b-50));
+        double op4=recursion(max(0,a-25),max(0,b-75));
+        return dp[a][b]=0.25*(op1+op2+op3+op4);
+    }
+    double soupServings(int n) {
+        if(n>=4800){
+            return 1.0;
+        }
+        dp = vector<vector<double>>(n + 1, vector<double>(n + 1, -1));
+        return recursion(n,n);
+    }
+};
