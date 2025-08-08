@@ -68,3 +68,75 @@ public:
         return recursion(n,n);
     }
 };
+
+
+//51. N-Queens
+
+// The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+// Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
+// Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
+
+// Approach:
+// Use backtracking to explore all possible placements of queens on the board.
+// The state can be represented by the current board configuration and the positions of the queens.
+
+// CODE:
+class Solution {
+public:
+    void attack(vector<vector<bool>> &temp,int row,int col,int n){
+        int r=row;
+        int c=col;
+        while(r<n){
+            temp[r++][c]=false;
+        }
+        r=row;
+        while(c<n){
+            temp[r][c++]=false;
+        }
+        r=row;
+        c=col;
+        while(r<n && c<n){
+            temp[r++][c++]=false;
+        }
+        r=row;
+        c=col;
+        while(r>=0 && c>=0){
+            temp[r--][c--]=false;
+        }
+        r=row;
+        c=col;
+        while(r>=0 && c<n){
+            temp[r--][c++]=false;
+        }
+        r=row;
+        c=col;
+        while(r<n && c>=0){
+            temp[r++][c--]=false;
+        }
+    }
+
+    void recursion(vector<vector<string>> &res,vector<string> &curr,int row,int col,int n,vector<vector<bool>> &map){
+        if(row==n){
+            res.push_back(curr);
+            return;
+        }
+        for(int i=0;i<n;i++){
+            if(map[row][i]){
+                curr[row][i]='Q';
+                vector<vector<bool>> temp=map;
+                attack(temp,row,i,n);
+                recursion(res,curr,row+1,0,n,temp);
+                curr[row][i]='.';
+
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<bool>> map(n,vector<bool>(n,true));
+        vector<string> curr(n, string(n, '.'));
+        vector<vector<string>> res;
+        
+        recursion(res,curr,0,0,n,map);
+        return res;
+    }
+};
