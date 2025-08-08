@@ -140,3 +140,33 @@ public:
         return res;
     }
 };
+
+// 139. Word Break
+// Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.
+
+// Note that the same word in the dictionary may be reused multiple times in the segmentation.
+
+// Approach:
+// Use dynamic programming to check if the string can be segmented.
+
+// CODE:
+class Solution {
+public:
+    bool recursion(string s,unordered_set<string> &dict,int ind,unordered_map<int,bool> &memo){
+        if(ind==s.length()){
+            return true;
+        }
+        if (memo.count(ind)) return memo[ind];
+        for(int i=ind;i<s.length();i++){
+            if(dict.count(s.substr(ind,i-ind+1)) && recursion(s,dict,i+1,memo)){
+                return memo[ind]=true;
+            }
+        }
+        return memo[ind]=false;
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_map<int,bool> memo;
+        unordered_set<string> dict(wordDict.begin(),wordDict.end());
+        return recursion(s,dict,0,memo);
+    }
+};
