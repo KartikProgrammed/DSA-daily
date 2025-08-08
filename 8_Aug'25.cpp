@@ -170,3 +170,53 @@ public:
         return recursion(s,dict,0,memo);
     }
 };
+
+//37. Sudoku Solver
+
+// Write a program to solve a Sudoku puzzle by filling the empty cells.
+// A sudoku solution must satisfy all of the following rules:
+// Each of the digits 1-9 must occur exactly once in each row.
+// Each of the digits 1-9 must occur exactly once in each column.
+// Each of the digits 1-9 must occur exactly once in each of the 9 3x3 sub-boxes of the grid.
+// The '.' character indicates empty cells.
+
+// Approach:
+// Use backtracking to fill the empty cells in the Sudoku grid.
+// The state can be represented by the current grid configuration and the positions of the empty cells.
+// The transitions will depend on the valid numbers that can be placed in the empty cells.
+// The base case will handle when all cells are filled.
+
+
+// CODE:
+class Solution {
+public:
+    bool present(vector<vector<char>> &board,char find,int row,int col){
+        for(int i=0;i<9;i++){
+            if(board[i][col]==find || board[row][i]==find || board[3 * (row / 3) + i / 3][3 * (col / 3) + i % 3] == find)
+                return true;
+        }
+        return false;
+    }
+    bool solve(vector<vector<char>>& board) {
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                if(board[i][j]=='.'){
+                    for(int k=1;k<=9;k++){
+                        if(!present(board,k+'0',i,j)){
+                            board[i][j]=k+'0';
+                            if(solve(board))
+                                return true;
+                            board[i][j]='.';
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    void solveSudoku(vector<vector<char>> &board){
+        solve(board);
+    }
+};
