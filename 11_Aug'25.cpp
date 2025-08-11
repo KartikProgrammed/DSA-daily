@@ -88,3 +88,39 @@ public:
         return ans;
     }
 };
+
+
+// 503. Next Greater Element II
+
+// Given a circular integer array nums (i.e., the next element of nums[nums.length - 1] is nums[0]), return the next greater number for every element in nums.
+
+// The next greater number of a number x is the first greater number to its traversing-order next in the array, which means you could search circularly to find its next greater number. If it doesn't exist, return -1 for this number.
+
+// Approach:
+// 1. Use a stack to keep track of the indices of the elements.
+// 2. Iterate through the array twice to handle the circular nature.
+// 3. For each element, pop elements from the stack until the top of the stack
+//    is greater than the current element.
+
+// Code:
+class Solution {
+public:
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> result(n, -1); 
+        stack<int> helper; 
+        
+        for (int i = 0; i < 2 * n; ++i) {
+            int currentIndex = i % n;
+            while (!helper.empty() && nums[helper.top()] < nums[currentIndex]) {
+                result[helper.top()] = nums[currentIndex];
+                helper.pop();
+            }
+            if (i < n) {
+                helper.push(currentIndex);
+            }
+        }
+        
+        return result;
+    }
+};
