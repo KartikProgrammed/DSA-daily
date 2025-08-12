@@ -61,3 +61,50 @@ public:
         return res;
     }
 };
+
+
+// 42. Trapping Rain Water
+
+// Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+
+// Approach:
+// 1. Use two pointers to traverse the array from both ends.
+// 2. Maintain the maximum heights from both ends and calculate the trapped water at each step.
+
+// Code:
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        vector<int> leftMax(height.size(),0);
+        vector<int> rightMax(height.size(),0);
+        int currL;
+        int currR;
+        for(int i=0,j=height.size()-1;i<height.size() && j>=0;i++,j--){
+            if(i==0){
+                leftMax[i]=-1;
+                currL=height[i];
+            }
+            else{
+                leftMax[i]=currL;
+                currL=max(currL,height[i]);
+            }
+            if(j==height.size()-1){
+                rightMax[j]=-1;
+                currR=height[j];
+            }
+            else{
+                rightMax[j]=currR;
+                currR=max(currR,height[j]);
+            }
+        }
+        int count=0;
+        for(int i=1;i<height.size()-1;i++){
+            int nextmax=min(leftMax[i],rightMax[i]);
+            int res=nextmax-height[i];
+            if(res>0){
+                count+=res;
+            }
+        }
+        return count;
+    }
+};
