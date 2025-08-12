@@ -158,3 +158,50 @@ public:
         return (int)total;
     }
 };
+
+//735. Asteroid Collision
+
+// We are given an array asteroids of integers representing asteroids in a row. The indices of the asteriod in the array represent their relative position in space.
+
+// For each asteroid, the absolute value represents its size, and the sign represents its direction (positive meaning right, negative meaning left). Each asteroid moves at the same speed.
+
+// Find out the state of the asteroids after all collisions. If two asteroids meet, the smaller one will explode. If both are the same size, both will explode. Two asteroids moving in the same direction will never meet.
+
+// Approach:
+// 1. Use a stack to keep track of the asteroids.
+// 2. Iterate through the asteroids and handle collisions based on their signs.
+// 3. If a collision occurs, pop the stack until the collision is resolved or the stack is empty.
+// 4. If the stack is empty or the top of the stack is moving right, push the current asteroid onto the stack.
+// 5. If the top of the stack is moving left, handle the collision based on the sizes of the asteroids.
+
+// Code:
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        vector<int> res;
+        stack<int> stk;
+        for(int i=0;i<asteroids.size();i++){
+            bool destroyed=false;
+            while(!stk.empty() && asteroids[i]<0 && stk.top()>0){
+                if(abs(asteroids[i])>stk.top()){
+                    stk.pop();
+                    continue;
+                }
+                else if (abs(asteroids[i]) == stk.top()) {
+                    stk.pop();
+                }
+                destroyed = true; 
+                break;
+            }
+            if(!destroyed){
+                stk.push(asteroids[i]);
+            }
+        }
+        while(!stk.empty()){
+            res.push_back(stk.top());
+            stk.pop();
+        }
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
