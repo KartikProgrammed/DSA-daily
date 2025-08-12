@@ -205,3 +205,89 @@ public:
         return res;
     }
 };
+
+
+//2104. Sum of Subarray Ranges
+
+// You are given an integer array nums. The range of a subarray of nums is the difference between the largest and smallest element in the subarray.
+// Return the sum of all subarray ranges of nums.
+// A subarray is a contiguous non-empty sequence of elements within an array.
+
+// Approach:
+// 1. Use a stack to find the next greater and next smaller elements for each element in the array.
+// 2. Calculate the contribution of each element as the maximum and minimum in all subarrays where it is the maximum or minimum.
+// 3. Use the contributions to calculate the total sum of subarray ranges.
+
+// Code:
+class Solution {
+public:
+    long long subArrayRanges(vector<int>& nums) {
+        vector<int> leftSmaller(nums.size(),-1);
+        vector<int> leftGreater(nums.size(),-1);
+        vector<int> rightSmaller(nums.size(),nums.size());
+        vector<int> rightGreater(nums.size(),nums.size());
+        stack<int> stk;
+
+        for(int i=0;i<nums.size();i++){
+            while(!stk.empty() && nums[stk.top()]>nums[i]){
+                stk.pop();
+            }
+            if(!stk.empty()){
+                leftSmaller[i]=stk.top();
+            }
+            stk.push(i);
+        }
+        while(!stk.empty()){
+            stk.pop();
+        }
+        for(int i=0;i<nums.size();i++){
+            while(!stk.empty() && nums[stk.top()]<nums[i]){
+                stk.pop();
+            }
+            if(!stk.empty()){
+                leftGreater[i]=stk.top();
+            }
+            stk.push(i);
+        }
+        
+        while(!stk.empty()){
+            stk.pop();
+        }
+
+        for(int i=nums.size()-1;i>=0;i--){
+            while(!stk.empty() && nums[stk.top()]>=nums[i]){
+                stk.pop();
+            }
+            if(!stk.empty()){
+                rightSmaller[i]=stk.top();
+            }
+            stk.push(i);
+        }
+        
+        while(!stk.empty()){
+            stk.pop();
+        }
+        for(int i=nums.size()-1;i>=0;i--){
+            while(!stk.empty() && nums[stk.top()]<=nums[i]){
+                stk.pop();
+            }
+            if(!stk.empty()){
+                rightGreater[i]=stk.top();
+            }
+            stk.push(i);
+        }
+        long long tots=0;
+        long long totg=0;
+        for(int i=0;i<nums.size();i++){
+            long long lefts=i-leftSmaller[i];
+            long long rights=rightSmaller[i]-i;
+            tots=tots+lefts*rights*1LL*nums[i];
+
+            long long leftg=i-leftGreater[i];
+            long long rightg=rightGreater[i]-i;
+            totg=totg+leftg*rightg*1LL*nums[i];
+
+        }
+        return totg-tots;
+    }
+};
