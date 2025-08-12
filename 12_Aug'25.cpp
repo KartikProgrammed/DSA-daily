@@ -108,3 +108,53 @@ public:
         return count;
     }
 };
+
+
+//907. Sum of Subarray Minimums
+
+// Given an array of integers arr, find the sum of min(b), where b ranges over every (contiguous) subarray of arr. Since the answer may be large, return the answer modulo 109 + 7.
+
+// Approach:
+// 1. Use a stack to find the next smaller element for each element in the array
+// 2. Calculate the contribution of each element as the minimum in all subarrays where it is the minimum.
+
+// Code:
+#define MOD 1000000007
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& arr) {
+        vector<int> leftSmaller(arr.size(),-1);
+        vector<int> rightSmaller(arr.size(),arr.size());
+        stack<int> stk;
+        for(int i=0;i<arr.size();i++){
+            while(!stk.empty() && arr[stk.top()]>arr[i]){
+                stk.pop();
+            }
+            if(!stk.empty()){
+                leftSmaller[i]=stk.top();
+            }
+            stk.push(i);
+        }
+
+        while(!stk.empty()){
+            stk.pop();
+        }
+
+        for(int i=arr.size()-1;i>=0;i--){
+            while(!stk.empty() && arr[stk.top()]>=arr[i]){
+                stk.pop();
+            }
+            if(!stk.empty()){
+                rightSmaller[i]=stk.top();
+            }
+            stk.push(i);
+        }
+        long long total=0;
+        for(int i=0;i<arr.size();i++){
+            long long left=i-leftSmaller[i];
+            long long right=rightSmaller[i]-i;
+            total=(total+(left*right %MOD) *arr[i]) % MOD;
+        }
+        return (int)total;
+    }
+};
