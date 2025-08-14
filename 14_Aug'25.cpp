@@ -51,3 +51,44 @@ public:
         return res;
     }
 };
+
+
+//402. Remove K Digits
+
+// Given string num representing a non-negative integer num, and an integer k, return the smallest possible integer after removing k digits from num.
+
+// Approach:
+// 1. Use a stack to maintain the digits of the resulting number.
+// 2. Iterate through the digits of num, and for each digit, pop from the stack while the current digit is smaller than the top of the stack and k is greater than 0.
+// 3. Push the current digit onto the stack.
+// 4. If k is still greater than 0 after processing all digits, remove the last k digits from the stack.
+
+// Code:
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        stack<char> stk;
+        string res="";
+        for(int i=0;i<num.size();i++){
+            while(!stk.empty() && stk.top()>num[i] && k>0){
+                stk.pop();
+                k--;
+            }
+            stk.push(num[i]);
+        }
+        while(k>0 && !stk.empty()){
+            stk.pop();
+            k--;
+        }
+        while(!stk.empty()){
+            res.push_back(stk.top());
+            stk.pop();
+        }
+        reverse(res.begin(),res.end());
+        int idx = 0;
+        while (idx < res.size() && res[idx] == '0') idx++;
+        res = res.substr(idx);
+        if (res.empty()) return "0";
+        return res;
+    }
+};
