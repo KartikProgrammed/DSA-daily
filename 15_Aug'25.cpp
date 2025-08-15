@@ -42,3 +42,51 @@ public:
         return true;
     }
 };
+
+//84. Largest Rectangle in Histogram
+
+// Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.
+
+// Approach:
+// 1. Use a stack to keep track of the indices of the bars.
+// 2. find next smaller element for each bar.
+// 3. Calculate the area for each bar using the next smaller elements and update the maximum area found.
+
+// Code:
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> stk;
+        vector<int> nextSmaller(heights.size(),heights.size());
+        vector<int> prevSmaller(heights.size(),-1);
+
+        for(int i=0;i<heights.size();i++){
+            while(!stk.empty() && heights[stk.top()]>=heights[i]){
+                stk.pop();
+            }
+            if(!stk.empty()){
+                prevSmaller[i]=stk.top();
+            }
+            stk.push(i);
+        }
+        while(!stk.empty()){
+            stk.pop();
+        }
+
+        for(int i=heights.size()-1;i>=0;i--){
+            while(!stk.empty() && heights[stk.top()]>=heights[i]){
+                stk.pop();
+            }
+            if(!stk.empty()){
+                nextSmaller[i]=stk.top();
+            }
+            stk.push(i);
+        }
+        int res=0;
+        for(int i=0;i<heights.size();i++){
+            int curr=(nextSmaller[i]-prevSmaller[i]-1) * heights[i];
+            res=max(curr,res);
+        }
+        return res;
+    }
+};
