@@ -90,3 +90,79 @@ public:
         return res;
     }
 };
+
+
+//85. Maximal Rectangle
+
+// Given a rows x cols binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
+
+// Approach:
+//NSL,NSR - calc
+//treat every row as a new pass to the prev solution
+
+//CODE:-
+class Solution {
+public:
+    vector<int> buildVec(vector<char> &num,vector<int> &prev){
+        vector<int> res(num.size());
+        for(int i=0;i<num.size();i++){
+            if(num[i]=='1'){
+                res[i]=1+prev[i];
+            }
+            else{
+                res[i]=0;
+            }
+        }
+        return res;
+    }
+
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> stk;
+        vector<int> nextSmaller(heights.size(),heights.size());
+        vector<int> prevSmaller(heights.size(),-1);
+
+        for(int i=0;i<heights.size();i++){
+            while(!stk.empty() && heights[stk.top()]>=heights[i]){
+                stk.pop();
+            }
+            if(!stk.empty()){
+                prevSmaller[i]=stk.top();
+            }
+            stk.push(i);
+        }
+        while(!stk.empty()){
+            stk.pop();
+        }
+
+        for(int i=heights.size()-1;i>=0;i--){
+            while(!stk.empty() && heights[stk.top()]>=heights[i]){
+                stk.pop();
+            }
+            if(!stk.empty()){
+                nextSmaller[i]=stk.top();
+            }
+            stk.push(i);
+        }
+        int res=0;
+        for(int i=0;i<heights.size();i++){
+            int curr=(nextSmaller[i]-prevSmaller[i]-1) * heights[i];
+            res=max(curr,res);
+        }
+        return res;
+    }
+
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int n=matrix.size();
+        if(n==0){
+            return 0;
+        }
+        vector<int> prev(matrix[0].size(),0);
+        int res=0;
+        for(int i=0;i<matrix.size();i++){
+            prev=buildVec(matrix[i],prev);
+            int curr=largestRectangleArea(prev);
+            res=max(res,curr);
+        }
+        return res;
+    }
+};
