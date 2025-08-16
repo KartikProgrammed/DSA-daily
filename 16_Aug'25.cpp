@@ -206,3 +206,103 @@ public:
         }
     }
 };
+
+
+//460. LFU Cache
+
+// Design and implement a data structure for a Least Frequently Used (LFU) cache.
+// Implement the LFUCache class:
+// LFUCache(int capacity) Initializes the object with the capacity of the data structure.
+// int get(int key) Gets the value of the key if the key exists in the cache. Otherwise, returns -1.
+// void put(int key, int value) Update the value of the key if present, or inserts the key if not already present. When the cache reaches its capacity, it should invalidate and remove the least frequently used key before inserting a new item. For this problem, when there is a tie (i.e., two or more keys with the same frequency), the least recently used key would be invalidated.
+// To determine the least frequently used key, a use counter is maintained for each key in the cache. The key with the smallest use counter is the least frequently used key.
+// When a key is first inserted into the cache, its use counter is set to 1 (due to the put operation). The use counter for a key in the cache is incremented either a get or put operation is called on it.
+// The functions get and put must each run in O(1) average time complexity.
+
+// Approach:
+// 1. Use an unordered_map to store the key-value pairs and their frequencies.
+// 2. Use another unordered_map to store the keys for each frequency.
+// 3. Use a priority queue to keep track of the least frequently used keys.
+// 4. When a key is accessed, update its frequency and move it to the appropriate frequency list.
+// 5. When a new key is added, if the cache is full, remove the least frequently used key.
+// 6. Ensure that both get and put operations run in O(1) average time
+
+
+//CODE:-
+class LFUCache {
+private:
+    int currSize, maxSize, minFreq;
+    struct Node {
+        int key, value, freq;
+        Node(int k, int v, int f) : key(k), value(v), freq(f) {}
+    };
+
+    unordered_map<int, list<Node>::iterator> nodeMap; // Key to node iterator
+    unordered_map<int, list<Node>> freqMap;           // Frequency to list of nodes
+
+public:
+    LFUCache(int capacity) {
+        currSize = 0;
+        maxSize = capacity;
+        minFreq = 0;
+    }
+
+    int get(int key) {
+        if (nodeMap.find(key) == nodeMap.end()) {
+            return -1; 
+        }
+
+        // Update frequency
+        auto it = nodeMap[key];
+        int val = it->value, freq = it->freq;
+
+        freqMap[freq].erase(it); // Remove node from current frequency list
+        if (freqMap[freq].empty() && minFreq == freq) {
+            freqMap.erase(freq);
+            minFreq++;
+        }
+
+        freq++; // Increase frequency
+        freqMap[freq].push_front({key, val, freq}); // Add to new frequency list
+        nodeMap[key] = freqMap[freq].begin();       // Update nodeMap
+
+        return val;
+    }
+
+    void put(int key, int value) {
+        if (maxSize == 0) return; // No capacity to store
+
+        if (nodeMap.find(key) != nodeMap.end()) {
+            // Key exists, update value and frequency
+            auto it = nodeMap[key];
+            it->value = value;
+            get(key); // Update frequency using get
+            return;
+        }
+
+        if (currSize >= maxSize) {
+            // Evict least frequently used node
+            auto &list = freqMap[minFreq];
+            Node node = list.back();
+            nodeMap.erase(node.key);
+            list.pop_back();
+            if (list.empty()) {
+                freqMap.erase(minFreq);
+            }
+            currSize--;
+        }
+
+        // Insert new node
+        minFreq = 1;
+        freqMap[1].push_front({key, value, 1});
+        nodeMap[key] = freqMap[1].begin();
+        currSize++;
+    }
+};
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache* obj = new LFUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key, value);
+ */
