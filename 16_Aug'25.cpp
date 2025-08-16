@@ -44,3 +44,32 @@ public:
         return stoi(nums);
     }
 };
+
+
+//239. Sliding Window Maximum
+
+// You are given an array of integers nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position.
+
+// Return the max sliding window.
+
+// Approach:
+//use a priority queue to keep track of the maximum elements in the current window.
+
+// Code:
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        priority_queue<pair<int,int>> pq;
+        vector<int> res;
+        for(int i=0;i<nums.size();i++){
+            pq.push({nums[i],i});
+            while(!pq.empty() && pq.top().second<= i-k){
+                pq.pop();
+            }
+            if (i >= k - 1) {
+                res.push_back(pq.top().first);
+            }
+        }
+        return res;
+    }
+};
