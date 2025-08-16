@@ -122,3 +122,87 @@ public:
  * StockSpanner* obj = new StockSpanner();
  * int param_1 = obj->next(price);
  */
+
+
+//146. LRU Cache
+
+// Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+// Implement the LRUCache class:
+// LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+// int get(int key) Return the value of the key if the key exists, otherwise return -1.
+// void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.
+// The functions get and put must each run in O(1) average time complexity.
+
+
+// Approach:
+// 1. Use an unordered_map to store the key-value pairs and a doubly linked list to maintain the order of usage.
+// 2. When a key is accessed, move it to the front of the list.
+// 3. When a new key is added, if the cache is full, remove the least recently used key from both the map and the list.
+
+// Code:
+class LRUCache {
+private:
+    struct Node {
+        int key, val;
+        Node* prev;
+        Node* next;
+        Node(int k, int v): key(k), val(v), prev(nullptr), next(nullptr) {}
+    };
+
+    int capacity;
+    unordered_map<int, Node*> mp;
+    Node* head;
+    Node* tail;
+
+    // helper: remove node
+    void remove(Node* node) {
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+
+    // helper: insert at front (after head)
+    void insert(Node* node) {
+        node->next = head->next;
+        node->prev = head;
+        head->next->prev = node;
+        head->next = node;
+    }
+
+public:
+    LRUCache(int capacity) {
+        this->capacity = capacity;
+        head = new Node(0, 0);  // dummy head
+        tail = new Node(0, 0);  // dummy tail
+        head->next = tail;
+        tail->prev = head;
+    }
+
+    int get(int key) {
+        if (mp.find(key) != mp.end()) {
+            Node* node = mp[key];
+            remove(node);
+            insert(node); // move to front
+            return node->val;
+        }
+        return -1;
+    }
+
+    void put(int key, int value) {
+        if (mp.find(key) != mp.end()) {
+            Node* node = mp[key];
+            node->val = value;
+            remove(node);
+            insert(node);
+        } else {
+            if (mp.size() == capacity) {
+                Node* lru = tail->prev;
+                remove(lru);
+                mp.erase(lru->key);
+                delete lru;
+            }
+            Node* node = new Node(key, value);
+            insert(node);
+            mp[key] = node;
+        }
+    }
+};
