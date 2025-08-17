@@ -128,3 +128,38 @@ public:
         return res;
     }
 };
+
+
+//1004. Max Consecutive Ones III
+
+// Given a binary array nums and an integer k, return the maximum number of consecutive 1's in the array if you can flip at most k 0's.
+
+// Approach:
+// 1. Use a sliding window technique with two pointers to track the current window of
+// consecutive 1's and the number of 0's that can be flipped.
+
+// Code:
+class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+        int res=0;
+        int i=0,j=0;
+        int zeros=0;
+        while(i<=j && j<nums.size()){
+            if(nums[j]==0){
+                zeros++;
+            }
+            while(zeros>k){
+                if(nums[i]==0){
+                    zeros--;
+                }
+                i++;
+            }
+
+            int curr=j-i+1;
+            res=max(res,curr);
+            j++;
+        }
+        return res;
+    }
+};
