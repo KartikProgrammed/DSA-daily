@@ -89,3 +89,42 @@ public:
         return result;
     }
 };
+
+
+//3. Longest Substring Without Repeating Characters
+
+// Given a string s, find the length of the longest substring without duplicate characters.
+
+// Approach:
+// 1. Use a sliding window technique with two pointers to track the current substring.
+// 2. Use a hash set to keep track of characters in the current substring.
+// 3. If a character is repeated, move the left pointer until the substring is valid again.
+// 4. Update the maximum length whenever a valid substring is found.
+// 5. Return the maximum length found.
+
+// Code:
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_map<char,int> map;
+        int i=0;
+        int j=0;
+        int res=0;
+        while(i<=j && j<s.length()){
+            if(map[s[j]] == 1){
+                while(i<j && s[i]!=s[j]){
+                    map[s[i]]--;
+                    i++;
+                }
+                map[s[i]]--;
+                i++;
+            }
+            map[s[j]]++;
+            
+            int curr=j-i+1;
+            res=max(res,curr);
+            j++;
+        }
+        return res;
+    }
+};
