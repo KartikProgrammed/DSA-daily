@@ -87,3 +87,57 @@ public:
         return res;
     }
 };
+
+
+//930. Binary Subarrays With Sum
+
+// Given a binary array nums and an integer goal, return the number of non-empty subarrays with a sum goal.
+
+// A subarray is a contiguous part of the array.
+
+//Approach:-
+//use a sliding window approach to find the number of subarrays with a sum equal to the goal.
+//if goal==0 use the same approach but count the number of subarrays with sum equal to 0.
+
+//CODE:-
+class Solution {
+public:
+    int numSubarraysWithSum(vector<int>& nums, int goal) {
+        if(goal==0){
+            int count=0;
+            int zeroCount=0;
+            for(int i=0;i<nums.size();i++){
+                if(nums[i]==0){
+                    zeroCount++;
+                    count+=zeroCount;
+                }
+                else{
+                    zeroCount=0;
+                }
+            }
+            return count;
+        }
+        int res=0;
+        int left=0;
+        int right=0;
+        long long curr=0;
+        while(right<nums.size() && left<=right){
+            curr+=nums[right];
+            while(left<right && curr>goal){
+                curr-=nums[left];
+                left++;
+            }
+            if(curr==goal){
+                int temp=left;
+                while(nums[temp]==0 && temp<=right){
+                    res++;
+                    temp++;
+                }
+                res++;
+            }
+            right++;
+        }
+        
+        return res;
+    }
+};
