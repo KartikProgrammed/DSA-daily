@@ -45,3 +45,37 @@ public:
         return maxArea;
     }
 };
+
+
+//1358. Number of Substrings Containing All Three Characters
+
+// Given a string s consisting only of characters a, b and c.
+// Return the number of substrings containing at least one occurrence of all these characters a, b and c.
+
+//Approach:-
+// We can use a sliding window approach to solve this problem. We will maintain a window that contains at least one occurrence of each character a, b, and c. We will keep track of the count of each character in the current window and the number of valid substrings that can be formed with the current window.
+
+//CODE:-
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int left=0;
+        int n=s.length();
+        int right=0;
+        int res=0;
+        unordered_map<char,int> map;
+        while(right<s.length() && left<=right){
+            map[s[right]]++;
+            while(map.size()==3){
+                res += (n - right);       
+                map[s[left]]--;
+                if (map[s[left]] == 0) {
+                    map.erase(s[left]);
+                }
+                left++;
+            }
+            right++;
+        }
+        return res;
+    }
+};
