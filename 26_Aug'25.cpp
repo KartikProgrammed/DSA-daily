@@ -117,3 +117,62 @@ public:
         return ans;
     }
 };
+
+
+//992. Subarrays with K Different Integers
+
+// Given an integer array nums and an integer k, return the number of good subarrays of nums.
+// A good array is an array where the number of different integers in that array is exactly k.
+// For example, [1,2,3,1,2] has 3 different integers: 1, 2, and 3.
+// A subarray is a contiguous part of an array.
+
+//Approach:-
+// We can use a sliding window approach to solve this problem. We will maintain two windows: one that contains at most k different integers and another that contains at most k-1 different integers. The difference between the sizes of these two windows will give us the number of good subarrays.
+
+
+//CODE:-
+class Solution {
+public:
+    
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        int maxele=*max_element(nums.begin(),nums.end());
+        vector<int> map(maxele+1,0);
+        int left=0;
+        int right=0;
+        int n=nums.size();
+        int res=0;
+        int distinct=0;
+        while(right<n){
+            if(map[nums[right]]==0){
+                distinct++;
+            }
+            map[nums[right]]++;
+            while(distinct>k){
+                if(map[nums[left]]==1){
+                    distinct--;
+                }
+                map[nums[left]]--;
+                left++;
+            }
+            if(distinct==k){
+                int temp=left;
+                while(temp<=right && distinct==k){
+                    if(map[nums[temp]]==1){
+                        distinct--;
+                    }
+                    map[nums[temp]]--;
+                    temp++;
+                    res++;
+                }
+                for (int i = left; i < temp; i++) {
+                    if(map[nums[i]]==0){
+                        distinct++;
+                    }
+                    map[nums[i]]++;
+                }
+            }
+            right++;
+        }
+        return res;
+    }
+};
