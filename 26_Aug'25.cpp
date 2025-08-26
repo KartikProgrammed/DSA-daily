@@ -176,3 +176,54 @@ public:
         return res;
     }
 };
+
+
+//76. Minimum Window Substring
+
+// Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
+// The testcases will be generated such that the answer is unique.
+
+
+//Approach:-
+// We can use a sliding window approach to solve this problem. We will maintain a window that contains all the characters of t. We will keep track of the count of each character in the current window and the minimum length of the window that contains all the characters of t.
+
+
+//CODE:-
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        if (t.size() > s.size()) return "";
+        int left=0;
+        int right=0;
+        int minLen=INT_MAX;
+        unordered_map<char,int> map;
+        unordered_map<char,int> map2;
+        int start=0;
+        int formed=0;
+        for(int i=0;i<t.length();i++){
+            map[t[i]]++;
+        }
+        int req=map.size();
+        while(right<s.length()){
+            map2[s[right]]++;
+            if(map.count(s[right]) && map[s[right]]==map2[s[right]]){
+                formed++;
+            }
+            while(formed==req){
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    start = left;
+                }
+
+                char lc = s[left];
+                map2[lc]--;
+                if (map.count(lc) && map2[lc] < map[lc]) {
+                    formed--;
+                }
+                left++;
+            }
+            right++;
+        }
+        return minLen == INT_MAX ? "" : s.substr(start, minLen);
+    }
+};
