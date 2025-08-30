@@ -58,3 +58,44 @@ public:
         return res;
     }
 };
+
+
+//36. Valid Sudoku
+// Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+
+// Each row must contain the digits 1-9 without repetition.
+// Each column must contain the digits 1-9 without repetition.
+// Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+// Note:
+
+// A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+// Only the filled cells need to be validated according to the mentioned rules.
+
+
+//Approach:-
+// We can use a set to keep track of the numbers we have seen in each row, column, and 3x3 sub-box. If we encounter a number that we have already seen in the same row, column, or sub-box, we return false. If we finish checking all the cells without finding any duplicates, we return true.
+
+
+//CODE:-
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        unordered_set<char> row[9],col[9],box[9];
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                char c=board[i][j];
+                if(c=='.'){
+                    continue;
+                }
+                int boxid=(i/3)*3+(j/3);
+                if(box[boxid].count(c) || row[i].count(c) || col[j].count(c)){
+                    return false;
+                }
+                box[boxid].insert(c);
+                row[i].insert(c);
+                col[j].insert(c);
+            }
+        }
+        return true;
+    }
+};
